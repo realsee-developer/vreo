@@ -219,7 +219,7 @@ ReactDOM.render(<App></App>, document.getElementById('app'))
 }
 ```
 
-**ProofUnit** 的字段说明：
+**VreoUnit** 的字段说明：
 
 - `categoryId`、`categoryText`: 讲解的类别标识符和描述。
 - `video`: 虚拟视频人物视频素材。
@@ -462,4 +462,4 @@ const vreoplayer = new Player(five, {
 
 ## API 文档
 
-详细的 API 文档请参考：[unpkg.com/@realsee/vreo](https://unpkg.com/@realsee/vreo/docs/index.html) 。
+详细的 API 文档请参考：[Vreo API](https://realsee-developer.github.io/vreo/index.html) 。
