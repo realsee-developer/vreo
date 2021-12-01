@@ -1,0 +1,16 @@
+{
+  "name": "Vreo",
+  "entryPoints": ["./typedoc/fivePlugins.ts", "./typedoc/Player.ts", "./typedoc/react.ts"],
+  "markedOptions": {
+    "silent": true,
+    "mangle": true,
+    "langPrefix": "hljs language-"
+  },
+  "hideGenerator": true,
+  "includeVersion": false,
+  "excludeExternals": false,
+  "theme": "default",
+  "out": "./docs",
+  "tsconfig": "./tsconfig.json",
+  "customCss": "./docs-theme/custom.css"
+}
