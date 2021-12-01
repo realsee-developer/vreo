@@ -3,6 +3,10 @@ body {
   font-size: 14px;
   color: #2e2e2e;
 }
+body.dark {
+  color: #e9e9e9;
+}
+
 blockquote {
   color: #7f8fa4;
   padding: 8px 12px;
@@ -49,4 +53,12 @@ a {
 
 a:hover {
   color: darkred;
+}
+
+.dark a {
+  color: var(--color-link);
+}
+
+.dark a:hover {
+  color: #ed8e9f;
 }
