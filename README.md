@@ -1,5 +1,7 @@
 # @realsee/vreo
 
+[![npm version](https://img.shields.io/npm/v/@realsee/vreo.svg?style=flat-square&logo=npm&label=npm%20install%20@realsee/vreo)](https://www.npmjs.com/package/@realsee/vreo)
+
 Vreo (VR Video 缩写) 是基于如视三维渲染引擎 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 用户界面构建库 [React](https://reactjs.org/) 实现的如视 3D 空间剧本播放器。
 
 ## 特性
@@ -49,7 +51,7 @@ vreoplayer.play()
 vreoplayer.pause()
 ```
 
-组件样式入样式：
+引入样式：
 
 ```css
 @import '@realsee/vreo/stylesheets/default.css';
@@ -64,7 +66,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Five, Work, parseWork } from '@realsee/five'
 import { createFiveProvider, FiveCanvas } from '@realsee/five/react'
-import { VreoProvider, useVreoAction } from '@realsee/vreo/react'
+import { VreoProvider, useVreoAction } from '@realsee/vreo/lib/react'
 
 // 创建 FiveProvider
 const FiveProvider = createFiveProvider({

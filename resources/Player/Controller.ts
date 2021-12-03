@@ -20,10 +20,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
   visible = false
 
-  drawerConfig?: {
+  drawerConfig: {
     content: string | JSX.Element
     height?: number | string
-  }
+  } | null = null
 
   setVisible(v: boolean) {
     this.visible = v

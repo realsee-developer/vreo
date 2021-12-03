@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
 
-import { work } from './data/znRoyv06SZQeqA7m'
+import { work } from './data/works/znRoyv06SZQeqA7m'
 import { imageMogr2 } from './shared-utils/imageMogr2'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
@@ -13,7 +13,7 @@ import { App } from './App'
 import './index.css'
 
 import '../stylesheets/default.css'
-import { data } from './data/debug-a'
+import { data } from './data/vreo-units/vreo-unit-a'
 
 Object.assign(window, { $data: data })
 

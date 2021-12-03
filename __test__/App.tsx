@@ -2,7 +2,7 @@ import { unsafe__useFiveInstance } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
-import { data } from './data/debug-a'
+import { data } from './data/vreo-units/vreo-unit-a'
 
 enum PlayerState {
   notReady = 'notReady',

@@ -14,10 +14,10 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     stopInterval?: () => void;
     playing: boolean;
     visible: boolean;
-    drawerConfig?: {
+    drawerConfig: {
         content: string | JSX.Element;
         height?: number | string;
-    };
+    } | null;
     setVisible(v: boolean): void;
     setPlaying(playing: boolean): void;
     openDrawer(drawerConfig?: false | {
