@@ -13,9 +13,6 @@ import { App } from './App'
 import './index.css'
 
 import '../stylesheets/default.css'
-import { data } from './data/vreo-units/vreo-unit-a'
-
-Object.assign(window, { $data: data })
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024, transform: imageMogr2 },

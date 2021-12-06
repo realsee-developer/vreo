@@ -133,7 +133,10 @@
   opacity: 1;
   transition: opacity 0.5s;
 }
-
+.vreo-prompter--audio {
+  top: 72px;
+  left: 64px;
+}
 .vreo-prompter-innerText {
   position: absolute;
   left: 0;
@@ -494,4 +497,9 @@
 .vreo-infoPanelVideo {
   width: 100%;
   max-width: 375px;
+}
+
+.vreo-panel--hidden .vreo-panel-inner {
+  opacity: 0;
+  transition: opacity 0.45s;
 }

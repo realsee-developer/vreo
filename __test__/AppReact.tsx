@@ -1,0 +1,33 @@
+import * as React from 'react'
+import { useVreoAction, useVreoPausedState } from '../resources/react'
+import { VreoUnit } from '../typedoc/Player'
+import { data } from './data/vreo-units/vreo-unit-a'
+
+export function App() {
+  const loaded = React.useRef(false)
+  const { show, play, hide, pause, load } = useVreoAction()
+  const paused = useVreoPausedState()
+  return (
+    <div className="btns">
+      <button
+        onClick={async () => {
+          if (!paused) {
+            pause()
+            hide()
+            return
+          }
+          show()
+
+          if (!loaded.current) {
+            loaded.current = true
+            load(data as VreoUnit)
+          } else {
+            play()
+          }
+        }}
+      >
+        {paused ? '播放' : '暂停'}
+      </button>
+    </div>
+  )
+}
