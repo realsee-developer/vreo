@@ -88,9 +88,13 @@ export function useVreoEventCallback<T extends keyof VreoKeyframeEvent>(
   if (deps !== undefined) {
     dependencyList = dependencyList.concat(deps)
   }
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     // @ts-ignore
-    return player.on(name, callback)
+    player.on(name, callback)
+    return () => {
+      // @ts-ignore
+      player.off(name, callback)
+    }
   }, dependencyList)
 }
 

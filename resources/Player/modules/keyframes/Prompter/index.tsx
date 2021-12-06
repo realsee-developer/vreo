@@ -45,6 +45,7 @@ export function Prompter() {
     <div
       className={classNames('vreo-prompter', {
         'vreo-prompter--hidden': hidden,
+        'vreo-prompter--audio': controller.isAudio,
       })}
     >
       {text ? (

@@ -159,7 +159,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       if (this.videoInstance.currentTime === 0) return
       this.freeze = false
       this.videoInstance.muted = false
-      uniforms.enable.value = 1
+      uniforms.enable.value = this.videoUrl?.endsWith('.mp4') ? 1 : 0
       this.videoInstance.removeEventListener('timeupdate', onStart, false)
     }
 

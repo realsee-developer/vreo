@@ -5,6 +5,7 @@ export declare class VideoAgentScene {
     scene: THREE.Scene;
     camera: THREE.OrthographicCamera;
     renderer: THREE.WebGLRenderer;
+    container: HTMLElement;
     constructor(container: HTMLElement, needRender?: boolean);
     run: () => void;
 }

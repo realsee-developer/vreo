@@ -8,11 +8,12 @@ import { imageMogr2 } from './shared-utils/imageMogr2'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
 
-import { App } from './App'
+import { App } from './AppReact'
 
 import './index.css'
 
 import '../stylesheets/default.css'
+import { VreoProvider } from '../resources/react'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024, transform: imageMogr2 },
@@ -29,7 +30,9 @@ ReactDOM.render(
   <React.StrictMode>
     <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
       <ResponsiveFullScreenFiveCanvas />
-      <App />
+      <VreoProvider>
+        <App />
+      </VreoProvider>
     </FiveProvider>
   </React.StrictMode>,
   document.getElementById('root')

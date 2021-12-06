@@ -3,6 +3,8 @@ import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
 import { data } from './data/vreo-units/vreo-unit-a'
+// 无视频版本
+// import { data } from './data/vreo-units/vreo-unit-b'
 
 enum PlayerState {
   notReady = 'notReady',

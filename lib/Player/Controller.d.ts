@@ -14,6 +14,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     stopInterval?: () => void;
     playing: boolean;
     visible: boolean;
+    get isAudio(): boolean;
     drawerConfig: {
         content: string | JSX.Element;
         height?: number | string;

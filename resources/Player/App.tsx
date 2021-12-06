@@ -24,6 +24,9 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
       <div className="vreo-panel-inner">
         <VideoAgent
           onClick={() => {
+            if (controller.isAudio) {
+              return
+            }
             if (controller.playing) {
               controller.setPlaying(false)
             } else {

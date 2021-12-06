@@ -7,8 +7,10 @@ export class VideoAgentScene {
   scene = new THREE.Scene()
   camera = new THREE.OrthographicCamera(-240, 240, 135, -135)
   renderer = new THREE.WebGLRenderer({ alpha: true })
+  container: HTMLElement
 
   constructor(container: HTMLElement, needRender = true) {
+    this.container = container
     this.camera.position.set(0, 0, 10)
     this.camera.lookAt(0, 0, 0)
     const state = {

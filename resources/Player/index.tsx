@@ -55,6 +55,13 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
   }
 
   async load(vreoUnit: VreoUnit, currentTime = 0) {
+    if (!controller.visible) {
+      controller.setVisible(true)
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(true), 500)
+      })
+    }
+
     if (controller.stopInterval) {
       controller.stopInterval()
       controller.stopInterval = undefined

@@ -1,5 +1,5 @@
 import { Five, Subscribe } from '@realsee/five'
-import { action, makeObservable, observable, reaction } from 'mobx'
+import { action, computed, makeObservable, observable, reaction } from 'mobx'
 import * as React from 'react'
 import { requestAnimationFrameInterval } from '../shared-utils/animationFrame'
 import { VreoKeyframe, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
@@ -19,6 +19,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
   playing = false
 
   visible = false
+
+  get isAudio() {
+    return !this.videoAgentScene?.videoAgentMesh.videoUrl?.endsWith('.mp4')
+  }
 
   drawerConfig: {
     content: string | JSX.Element
@@ -55,7 +59,6 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
       setPlaying: action,
       drawerConfig: observable.ref,
       openDrawer: action,
-
     })
 
     // 监听播放情况：抛出触发时机
