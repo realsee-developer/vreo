@@ -7,13 +7,16 @@ const VreoContext = React.createContext<Player | null>(null)
 
 export const VreoProvider: React.FC = (props) => {
   const five = unsafe__useFiveInstance()
+
   const [player, setPlayer] = React.useState<Player | null>(null)
+  const playerRef = React.useRef<Player | null>(null)
 
   React.useEffect(() => {
-    setPlayer(new Player(five))
+    playerRef.current = new Player(five)
+    setPlayer(playerRef.current)
 
     return () => {
-      player?.dispose()
+      playerRef.current?.dispose()
     }
   }, [])
 

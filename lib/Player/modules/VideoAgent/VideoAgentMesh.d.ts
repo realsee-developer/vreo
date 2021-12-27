@@ -11,6 +11,7 @@ export declare class VideoAgentMesh extends THREE.Mesh {
     freeze: boolean;
     paused: boolean;
     audioInstance: HTMLAudioElement;
+    $removeEventListener: () => void;
     get videoInstance(): HTMLAudioElement;
     /**
      *
@@ -27,4 +28,5 @@ export declare class VideoAgentMesh extends THREE.Mesh {
      * 转成毫秒，保障精准度
      */
     get currentTime(): number;
+    dispose(): void;
 }

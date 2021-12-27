@@ -57,6 +57,11 @@ void main(void) {
 }
 `
 
+const cacheInstance: {
+  videoInstance?: HTMLVideoElement
+  audioInstance?: HTMLAudioElement
+} = {}
+
 export interface VideoAgentMeshOptions {
   videoInstance?: HTMLVideoElement
 }
@@ -70,6 +75,7 @@ export class VideoAgentMesh extends THREE.Mesh {
   freeze: boolean
   paused: boolean
   audioInstance: HTMLAudioElement
+  $removeEventListener: () => void
 
   get videoInstance(): HTMLAudioElement {
     if (this.videoUrl?.endsWith('mp3')) {
@@ -96,13 +102,19 @@ export class VideoAgentMesh extends THREE.Mesh {
     options: VideoAgentMeshOptions = {},
   ) {
     if (!options.videoInstance) {
-      const videoInstance = document.createElement('video')
-      videoInstance.style.opacity = '0'
-      videoInstance.style.display = 'none'
-      document.body.append(videoInstance)
-      options.videoInstance = videoInstance
-      videoInstance.playsInline = true
-      videoInstance.controls = false
+      if (cacheInstance.videoInstance) {
+        options.videoInstance = cacheInstance.videoInstance
+      } else {
+        const videoInstance = document.createElement('video')
+        videoInstance.style.opacity = '0'
+        videoInstance.style.display = 'none'
+        document.body.append(videoInstance)
+        options.videoInstance = videoInstance
+        cacheInstance.videoInstance = videoInstance
+        videoInstance.playsInline = true
+        videoInstance.controls = false
+      }
+
     }
 
     const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments)
@@ -123,23 +135,40 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.paused = true
 
     {
-      const audioInstance = document.createElement('audio')
-      audioInstance.crossOrigin = ''
-      // videoInstance.muted = true
-      audioInstance.muted = false
-      audioInstance.setAttribute('playsinline', 'true')
-      audioInstance.setAttribute('webkit-playsinline', 'true')
-      audioInstance.setAttribute('autoplay', 'false')
-      audioInstance.setAttribute('style', 'display: none;')
-      document.body.appendChild(audioInstance)
-      this.audioInstance = audioInstance
+      if (cacheInstance.audioInstance) {
+        this.audioInstance = cacheInstance.audioInstance
+
+      } else {
+        const audioInstance = document.createElement('audio')
+        audioInstance.crossOrigin = ''
+        // videoInstance.muted = true
+        audioInstance.muted = false
+        audioInstance.setAttribute('playsinline', 'true')
+        audioInstance.setAttribute('webkit-playsinline', 'true')
+        audioInstance.setAttribute('autoplay', 'false')
+        audioInstance.setAttribute('style', 'display: none;')
+        document.body.appendChild(audioInstance)
+        this.audioInstance = audioInstance
+        cacheInstance.audioInstance = audioInstance
+      }
+
     }
+
     makeObservable(this, { paused: observable })
 
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
-    this.videoInstance.addEventListener('pause', () => updatePaused(true))
-    this.videoInstance.addEventListener('play', () => updatePaused(false))
+    const onPause = () => updatePaused(true)
+    const onPlay = () => updatePaused(false)
+
+    this.videoInstance.addEventListener('pause', onPause)
+    this.videoInstance.addEventListener('play', onPlay)
+
+    this.$removeEventListener = () => {
+      this.videoInstance.removeEventListener('pause', onPause)
+      this.videoInstance.removeEventListener('play', onPlay)
+    }
   }
+
 
   private async update(videoUrl: string) {
     if (this.videoUrl === videoUrl) {
@@ -198,5 +227,19 @@ export class VideoAgentMesh extends THREE.Mesh {
    */
   get currentTime() {
     return this.videoInstance.currentTime * 1000
+  }
+
+  dispose() {
+    // 销毁事件监听
+    this.$removeEventListener()
+    if (cacheInstance.audioInstance) {
+      document.body.removeChild(cacheInstance.audioInstance)
+      cacheInstance.audioInstance = undefined
+    }
+
+    if (cacheInstance.videoInstance) {
+      document.body.removeChild(cacheInstance.videoInstance)
+      cacheInstance.videoInstance = undefined
+    }
   }
 }

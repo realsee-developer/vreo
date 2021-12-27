@@ -37,4 +37,8 @@ export class VideoAgentScene {
     }
     requestAnimationFrame(this.run)
   }
+
+  dispose = () => {
+    this.videoAgentMesh?.dispose()
+  }
 }

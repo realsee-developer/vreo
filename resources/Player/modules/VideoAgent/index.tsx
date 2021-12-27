@@ -14,6 +14,11 @@ export function VideoAgent(props: { onClick?: () => void }) {
     }
     const videoAgentScene = new VideoAgentScene(ref.current)
     controller.videoAgentScene = videoAgentScene
+
+    return () => {
+      controller.dispose()
+      controller.videoAgentScene?.dispose()
+    }
   }, [])
 
   return (
