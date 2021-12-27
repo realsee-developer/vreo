@@ -4,7 +4,6 @@ import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
 
 import { work } from './data/works/znRoyv06SZQeqA7m'
-import { imageMogr2 } from './shared-utils/imageMogr2'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
 
@@ -16,8 +15,8 @@ import '../stylesheets/default.css'
 import { VreoProvider } from '../resources/react'
 
 const defaultInitArgs: FiveInitArgs = {
-  imageOptions: { size: 1024, transform: imageMogr2 },
-  textureOptions: { size: 64, transform: imageMogr2 },
+  imageOptions: { size: 1024 },
+  textureOptions: { size: 64 },
   onlyRenderIfNeeds: true,
   antialias: false,
   model: {},

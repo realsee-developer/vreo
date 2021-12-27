@@ -8,4 +8,5 @@ export declare class VideoAgentScene {
     container: HTMLElement;
     constructor(container: HTMLElement, needRender?: boolean);
     run: () => void;
+    dispose: () => void;
 }

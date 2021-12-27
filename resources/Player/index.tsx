@@ -9,18 +9,19 @@ import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { PlayerConfigs } from './typings'
 
-const controller = new Controller()
-
 export class Player extends Subscribe<VreoKeyframeEvent> {
   $five: Five
+  private controller: Controller
   configs: Readonly<PlayerConfigs>
 
   constructor(five: Five, configs: Partial<PlayerConfigs> = {}) {
     super()
-    this.$five = controller.$five = five
+    this.controller = new Controller()
+    this.$five = this.controller.$five = five
 
     if (!configs.containter) {
-      const containter = document.createElement('div')
+      const containter = document.querySelector('#vreo-app') || document.createElement('div')
+      ReactDOM.unmountComponentAtNode(containter)
       containter.setAttribute('id', 'vreo-app')
       configs.containter = containter
       document.body.append(containter)
@@ -35,10 +36,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
       )
     )
 
-    controller.configs = this.configs
+    this.controller.configs = this.configs
 
     ReactDOM.render(
-      <ControllerContext.Provider value={controller}>
+      <ControllerContext.Provider value={this.controller}>
         <App></App>
         <Drawer />
       </ControllerContext.Provider>,
@@ -47,7 +48,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     // 监听播放情况：抛出触发时机
     reaction(
-      () => controller.playing,
+      () => this.controller.playing,
       (playing) => {
         this.emit(playing ? 'playing' : 'paused')
       }
@@ -55,56 +56,61 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
   }
 
   async load(vreoUnit: VreoUnit, currentTime = 0) {
-    if (!controller.visible) {
-      controller.setVisible(true)
+    if (!this.controller.visible) {
+      this.controller.setVisible(true)
       await new Promise((resolve) => {
         setTimeout(() => resolve(true), 500)
       })
     }
 
-    if (controller.stopInterval) {
-      controller.stopInterval()
-      controller.stopInterval = undefined
+    if (this.controller.stopInterval) {
+      this.controller.stopInterval()
+      this.controller.stopInterval = undefined
     }
 
-    controller.vreoUnit = vreoUnit
-    controller.videoInstance?.pause()
+    this.controller.vreoUnit = vreoUnit
+    this.controller.videoInstance?.pause()
 
     if (vreoUnit.video.url) {
-      if (controller.videoAgentScene?.videoAgentMesh.videoInstance) {
-        controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
+      if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
+        this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
       }
-      await controller.videoAgentScene?.videoAgentMesh.play(vreoUnit.video.url)
+      await this.controller.videoAgentScene?.videoAgentMesh.play(vreoUnit.video.url)
       this.play()
     }
-    controller.run((type, keyframe) => this.emit(type, keyframe))
+    this.controller.run((type, keyframe) => this.emit(type, keyframe))
     return true
   }
 
   get paused() {
-    return !controller.playing
+    return !this.controller.playing
   }
 
   play() {
-    if (controller.playing) return true
-    controller.setPlaying(true)
+    if (this.controller.playing) return true
+    this.controller.setPlaying(true)
     return true
   }
 
   pause() {
-    controller.setPlaying(false)
+    this.controller.setPlaying(false)
   }
 
   show() {
-    controller.setVisible(true)
+    this.controller.setVisible(true)
   }
 
   hide() {
-    controller.setVisible(false)
+    this.controller.setVisible(false)
   }
 
   dispose() {
-    controller.dispose()
+    this.pause()
+    this.controller.dispose()
+
+    if (this.configs.containter) {
+      ReactDOM.unmountComponentAtNode(this.configs.containter as Element)
+    }
   }
 }
 

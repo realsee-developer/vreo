@@ -1062,10 +1062,10 @@
   resolved "https://r.cnpmjs.org/@protobufjs/utf8/download/@protobufjs/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@realsee/five@^5.0.0-alpha.57":
-  version "5.0.0-alpha.57"
-  resolved "https://r.cnpmjs.org/@realsee/five/download/@realsee/five-5.0.0-alpha.57.tgz#75c9be7de97f4b60746c591e3a028fcba60e205a"
-  integrity sha512-l0g2Mb0FLqW9LY7x87mR84HgEANCUsGIiIyERwhwCrOPvbvJvs+o0aSy/+wbl0LTwFdETFEz4C4r/2XT/89t+A==
+"@realsee/five@^5.0.0-alpha.80":
+  version "5.0.0-alpha.80"
+  resolved "http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/@realsee/five/-/five-5.0.0-alpha.80.tgz#a4b4ca709bb436a365ef9f8e21162ab1f65fb3e8"
+  integrity sha1-pLTKcJu0NqNl75+OIRYqsfZfs+g=
   dependencies:
     archiver "^5.3.0"
     commander "^8.2.0"
