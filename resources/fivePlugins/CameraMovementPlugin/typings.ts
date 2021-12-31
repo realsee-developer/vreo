@@ -46,6 +46,7 @@ export type MoveOpts = {
 } & CameraMovementOptsCallback
 
 export type RotateArgs = {
+  mode?: Mode
   panoIndex: number
   loop: boolean
   rotateSpeed: number
