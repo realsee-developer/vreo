@@ -6,5 +6,5 @@ export type {
   PrompterData, UpdateVRPanoramaData, Vertex,
   QuadrangleVertexs, ModelVideoData, PanoTextLabelData,
   PanoTagEnum, PanoTagData, PanoEffectEnum, PanoEffectData,
-  InfoPanelTypeEnum, InfoPanelData, VideoEffectData
+  InfoPanelTypeEnum, InfoPanelData, VideoEffectData, CustomData
 } from '../resources/typings/VreoUnit'
