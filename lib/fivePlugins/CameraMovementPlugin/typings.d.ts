@@ -38,6 +38,7 @@ export declare type MoveOpts = {
     preload?: boolean;
 } & CameraMovementOptsCallback;
 export declare type RotateArgs = {
+    mode?: Mode;
     panoIndex: number;
     loop: boolean;
     rotateSpeed: number;

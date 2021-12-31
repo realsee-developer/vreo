@@ -139,11 +139,16 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
       opts.asyncStartCallback()
     }
 
-    if (five.currentMode !== Five.Mode.Panorama) {
-      await five.changeMode(Five.Mode.Panorama)
+    // 先切换模型再出旋转效果
+    if (args.mode && five.currentMode !== args.mode) {
+      await five.changeMode(args.mode)
     }
 
-    if (args.panoIndex !== undefined && args.panoIndex !== five.panoIndex) {
+    // 全景状态下，需要点位对齐
+    if (args.mode === Five.Mode.Panorama &&
+      five.currentMode === Five.Mode.Panorama &&
+      args.panoIndex !== undefined &&
+      args.panoIndex !== five.panoIndex) {
       if (opts.preload) await five.preloadPano(args.panoIndex)
       await new Promise((resolve, reject) => {
         five.moveToPano(args.panoIndex, {
