@@ -40,6 +40,10 @@ export enum VreoKeyframeEnum {
    * 结束
    */
   Exit = 'Exit',
+  /**
+   * 自定义剧本帧
+   */
+  Custom = 'Custom',
 }
 
 /**
@@ -223,3 +227,6 @@ export type VideoEffectData = {
   direction?: Vertex
   vector?: Pick<Pose, 'longitude' | 'latitude'>
 }
+
+/** 自定义序列帧 */
+export type CustomData = Record<string, any>
