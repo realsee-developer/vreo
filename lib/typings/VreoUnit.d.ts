@@ -1,4 +1,4 @@
-import { Mode, Pose, WorkCubeImage } from '@realsee/five';
+import { Mode, Pose, WorkCubeImage, Work } from '@realsee/five';
 import { CameraMovementEffect, Rotation } from '../fivePlugins/CameraMovementPlugin/typings';
 export declare enum VreoKeyframeEnum {
     /** 运镜 */
@@ -115,6 +115,7 @@ export declare type PrompterData = {
 export declare type UpdateVRPanoramaData = {
     panoIndex: number;
     images: WorkCubeImage;
+    work?: Work;
 };
 /**
  * 顶点

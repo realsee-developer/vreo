@@ -9,8 +9,14 @@ export function UpdateVRPanorama() {
 
   React.useEffect(() => {
     const callback = (keyframe: VreoKeyframe) => {
-      const { panoIndex, images } = keyframe.data as UpdateVRPanoramaData
+      const { panoIndex, images, work } = keyframe.data as UpdateVRPanoramaData
 
+      if (work) {
+        five.load(work)
+        return
+      }
+
+      console.warn('not support.')
       Object.keys(images).forEach((_key) => {
         const key = _key as keyof WorkCubeImage
         images[key] = images[key].replace(/https*:\/\//, '//')

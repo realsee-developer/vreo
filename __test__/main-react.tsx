@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
 
-import { work } from './data/works/znRoyv06SZQeqA7m'
+import { work } from './data/works/81zxMaeVKLQU93OZMG'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
 
