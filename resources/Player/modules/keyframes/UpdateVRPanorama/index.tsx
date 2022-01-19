@@ -17,10 +17,6 @@ export function UpdateVRPanorama() {
       }
 
       console.warn('not support.')
-      Object.keys(images).forEach((_key) => {
-        const key = _key as keyof WorkCubeImage
-        images[key] = images[key].replace(/https*:\/\//, '//')
-      })
       const newWorkJSON = JSON.parse(JSON.stringify(five.work?.raw.work))
 
       // // 原Work数据不能被修改

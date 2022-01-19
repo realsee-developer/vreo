@@ -31,9 +31,18 @@ export class VideoAgentScene {
   }
 
   run = () => {
+    const domElement = this.renderer.domElement
+
     // 视频开始 1s 不渲染：规避某些设备黑屏闪烁问题。视频前 2s 是最好是静默的。
     if (!(this.videoAgentMesh.paused || this.videoAgentMesh.freeze) && this.videoAgentMesh.currentTime > 1000) {
       this.renderer.render(this.scene, this.camera)
+    }
+
+    // 兼容非视频场景
+    if (!this.videoAgentMesh.videoUrl?.endsWith('.mp4')) {
+      if (domElement.style.display !== 'none') domElement.style.display = 'none'
+    } else {
+      if (domElement.style.display !== 'block') domElement.style.display = 'block'
     }
     requestAnimationFrame(this.run)
   }
