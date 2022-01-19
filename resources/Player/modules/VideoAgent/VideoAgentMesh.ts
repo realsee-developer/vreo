@@ -196,7 +196,7 @@ export class VideoAgentMesh extends THREE.Mesh {
   }
 
   async play(videoUrl = '') {
-    videoUrl = (videoUrl || '').replace(/https*:/, '')
+    videoUrl = videoUrl || ''
     if (!videoUrl) {
       if (this.videoUrl) await this.videoInstance.play()
       else console.warn('警告：视频资源未初始化。')

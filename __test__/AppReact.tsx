@@ -7,6 +7,8 @@ export function App() {
   const loaded = React.useRef(false)
   const { show, play, hide, pause, load } = useVreoAction()
   const paused = useVreoPausedState()
+
+  Object.assign(window, { $load: load, $show: show })
   return (
     <div className="btns">
       <button

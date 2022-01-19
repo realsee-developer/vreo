@@ -20,8 +20,8 @@ export function ModelVideo() {
       ref.current.disable()
       await ref.current.load(
         {
-          video_src: videoSrc.replace(/https*:/, ''),
-          video_poster_src: videoPosterSrc.replace(/https*:/, ''),
+          video_src: videoSrc,
+          video_poster_src: videoPosterSrc,
           points: [vertexs],
         },
         controller.configs?.videos?.modelTVVideo
