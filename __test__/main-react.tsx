@@ -2,6 +2,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
+import { vreoUnitD as data } from './data/vreo-units/vreo-unit-d-new'
 
 import { work } from './data/works/81zxMaeVKLQU93OZMG'
 import { vreoUnitNoVideo } from './data/vreo-units/vreo-unit-novideo'
