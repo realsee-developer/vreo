@@ -1,4 +1,4 @@
-import { Mode, Pose, WorkCubeImage, Work } from '@realsee/five';
+import { Mode, Pose } from '@realsee/five';
 import { CameraMovementEffect, Rotation } from '../fivePlugins/CameraMovementPlugin/typings';
 export declare enum VreoKeyframeEnum {
     /** 运镜 */
@@ -36,6 +36,10 @@ export declare enum VreoKeyframeEnum {
      */
     VideoEffect = "VideoEffect",
     /**
+     * 背景音乐
+     */
+    BgMusic = "BgMusic",
+    /**
      * 结束
      */
     Exit = "Exit",
@@ -57,6 +61,7 @@ export declare type VreoKeyframeConfigMap = {
  * 剧本关键帧
  */
 export interface VreoKeyframe {
+    uuid: string;
     type: VreoKeyframeEnum;
     start: number;
     end: number;
@@ -89,6 +94,7 @@ export interface VreoUnit {
 export declare type VreoKeyframeEvent = {
     [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void;
 } & {
+    loaded: (vreoUnit: VreoUnit) => void;
     paused: () => void;
     playing: () => void;
 };
@@ -113,9 +119,22 @@ export declare type PrompterData = {
  * VR 全景切换
  */
 export declare type UpdateVRPanoramaData = {
-    panoIndex: number;
-    images: WorkCubeImage;
-    work?: Work;
+    _signature: string;
+    allow_hosts: string[];
+    certificate: string;
+    expire_at: string;
+    dynamic_scene?: {
+        images: {
+            index: number;
+            right: string;
+            left: string;
+            up: string;
+            down: string;
+            front: string;
+            back: string;
+        };
+    };
+    [key: string]: any;
 };
 /**
  * 顶点
@@ -196,6 +215,8 @@ export declare enum InfoPanelTypeEnum {
 export declare type InfoPanelData = {
     type: InfoPanelTypeEnum;
     url: string;
+    tilte?: string;
+    subTitle?: string;
 };
 /**
  * 视频特效
@@ -206,6 +227,12 @@ export declare type VideoEffectData = {
     fov: number;
     direction?: Vertex;
     vector?: Pick<Pose, 'longitude' | 'latitude'>;
+};
+/**
+ * 背景音乐
+ */
+export declare type BgMusicData = {
+    url: string;
 };
 /** 自定义序列帧 */
 export declare type CustomData = Record<string, any>;

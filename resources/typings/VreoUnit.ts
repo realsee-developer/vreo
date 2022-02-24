@@ -37,6 +37,10 @@ export enum VreoKeyframeEnum {
    */
   VideoEffect = 'VideoEffect',
   /**
+   * 背景音乐
+   */
+  BgMusic = 'BgMusic',
+  /**
    * 结束
    */
   Exit = 'Exit',
@@ -61,6 +65,7 @@ export type VreoKeyframeConfigMap = {
  * 剧本关键帧
  */
 export interface VreoKeyframe {
+  uuid: string
   type: VreoKeyframeEnum
   start: number
   end: number
@@ -96,6 +101,7 @@ export interface VreoUnit {
  * 剧本事件
  */
 export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void } & {
+  loaded: (vreoUnit: VreoUnit) => void
   paused: () => void
   playing: () => void
 }
@@ -123,9 +129,22 @@ export type PrompterData = {
  * VR 全景切换
  */
 export type UpdateVRPanoramaData = {
-  panoIndex: number
-  images: WorkCubeImage
-  work?: Work
+  _signature: string
+  allow_hosts: string[]
+  certificate: string
+  expire_at: string
+  dynamic_scene?: {
+    images: {
+      index: number
+      right: string
+      left: string
+      up: string
+      down: string
+      front: string
+      back: string
+    }
+  }
+  [key: string]: any
 }
 
 /**
@@ -216,6 +235,8 @@ export enum InfoPanelTypeEnum {
 export type InfoPanelData = {
   type: InfoPanelTypeEnum
   url: string
+  tilte?: string
+  subTitle?: string
 }
 
 /**
@@ -227,6 +248,13 @@ export type VideoEffectData = {
   fov: number
   direction?: Vertex
   vector?: Pick<Pose, 'longitude' | 'latitude'>
+}
+
+/**
+ * 背景音乐
+ */
+export type BgMusicData = {
+  url: string
 }
 
 /** 自定义序列帧 */
