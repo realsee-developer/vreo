@@ -21,6 +21,16 @@ export const data =
         "text": "您好，我是您的智慧家庭设计师"
       }
     },
+    {
+      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c123",
+      "type": "BgMusic",
+      "start": 2000,
+      "end": 46000,
+      "parsed": false,
+      "data": {
+        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+      }
+    },
     // 动线效果
     {
       "uuid": "cbd4326c-3cb1-411e-348a-55a6fa42d6d0",

@@ -464,14 +464,12 @@ export const vreoUnitD: VreoUnit = {
       "parsed": false,
       "data": {
         "work": {
-          "_signature": "PZEjCPlEMY2zThx3PqdVzEgdvxTRIpUNxukHaycglZ2cHz/ahVZtqSuPIk5i6OpnMXd3zlqIP+NsYEs8hVmvDc+4t6yHN0CTtwzARu4oM2xp1Gz+v3knpKgcH5lOsrdUuB2cegxP698BHvysNucLnMrjP1OT4dBKWouu/j59Xkk=",
-          "allow_hosts": [
-            "*"
-          ],
+          "_signature": "WxD8TnkxFFpKPRSob+YWR6xtd5JGk285E8raIgiIV62WjDpFAOywWE/O4DyUvu6+7LJGDhQ4N44RzefFz/kTVABJp6Tq89rlO7UGzexq3+bJ5KXHXGhv8YCzPENGd9pOuwv9MlQ6ybEZTeFNPIU+Co+Qa5wp8/mK26qSZ2cnHUU=",
+          "allow_hosts": [],
           "base_url": "https://vrlab-public.ljcdn.com/",
           "certificate": "-----BEGIN CERTIFICATE-----\nMIIEMzCCAhsCCQDYAS/7ATZRmTANBgkqhkiG9w0BAQsFADCBkzELMAkGA1UEBhMC\nQ04xEDAOBgNVBAgMB0JlaWppbmcxEDAOBgNVBAcMB0JlaWppbmcxFDASBgNVBAoM\nC2xpYW5qaWEuY29tMRAwDgYDVQQLDAdSZWFsc2VlMREwDwYDVQQDDAhIYXJkd2Fy\nZTElMCMGCSqGSIb3DQEJARYWbml1aGFpcWluZ0BsaWFuamlhLmNvbTAeFw0yMTA5\nMTAwNTIwMDBaFw0zMTA5MDgwNTIwMDBaMIGmMQswCQYDVQQGEwJDTjEQMA4GA1UE\nCAwHQmVpSmluZzEQMA4GA1UEBwwHQmVpSmluZzEQMA4GA1UECgwHUmVhbHNlZTEZ\nMBcGA1UECwwQUmVhbHNlZUFwcEdldHdheTEgMB4GA1UEAwwXYXBwLWdhdGV3YXku\ncmVhbHNlZS5jb20xJDAiBgkqhkiG9w0BCQEWFWRldmVsb3BlckByZWFsc2VlLmNv\nbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuv/y3Ezsy/wh3LCA8vomPbgI\nSO9iO5kyR+oAetklD+epMU6J/ZbvTDEomZxuS5iyyKGBupzAh2ZFLIy7tsE71Vx1\nIIvT7Kdyq66lMU4YzdrpKUcxv7oOQnO8DA1orKluNa4jkyXBywHKs/Q+20LVc+RD\ngKXqFGJUdo8mAxEScs0CAwEAATANBgkqhkiG9w0BAQsFAAOCAgEAkMxsU4VLPd4J\n0rElBNBIyqPtvnlTs6VkhIK0l4oM58wtDKc1uG9UPSX5j29NguZM6LOe0jCsU2Vg\nEpUseMWQjx4o2yBg7MokQyjWc1zu6PppKhQ+RqHQy/biJ2zsIMpX3oMASXffvnW5\nn4Bjyo1JdDJiLm1fLvLlVVxQoraJD+rtpqWDEYixGVREUo5OIL5Y5dVjkHG2r9RQ\nQuu3yEiyr9gAW8yhz3YR6/sJ6boyGK8NC0v8Jih7NnCdT+9ML+3jn3P5F3TeXdSf\nVeYIm5oWAOTe3AjjKP8ARMb2RYACjg80/AcowD/dvRRjbwQmyucUNug2pXJynXpD\nNfx1IBmUmzSAT1Z5yNuY/f3VRBJvmIQ6Jpmef+g0/wUJpyS4SObguItyYlFPLqRH\nK1oKqNX/uV0GWWEQl6Lml986TzlHxc4ljtHBhjzlKYIYYZLWWipk4JiB8hxJcTK+\ncrgvclEQSxFlmAyoqxYFClrOOsPqZJdBhDTvoUWnnWuJLQt7DLHpyInp+S75Gg3o\n0zgHpt9m26B3YbjQGYMQlYmhl2VLQa+Ey0W8UZQXLcTvoRT4p+8crqr6cNNsxCyZ\nm08vBbEMIMvhBeLQvpM75oaMBmelegipFl2eelxVIHdGJWoyJSZQUdXN0uSidhZp\nI7AIgzhqK1Ku/IXK0OSXJonn+/9X/VI=\n-----END CERTIFICATE-----",
           "create_time": null,
-          "expire_at": "1957872646013",
+          "expire_at": "1642950159862",
           "initial": {
             "fov": 110,
             "latitude": 0,
@@ -1644,13 +1642,17 @@ export const vreoUnitD: VreoUnit = {
                 "up": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/3/3_u.jpg"
               },
               {
-                "back": "release/seesay/tools/CubeMap6___a7aa36815c189686aebe98837e04e9da.jpg",
-                "down": "release/seesay/tools/CubeMap4___4fab554a9603ae67b517379d32d81c77.jpg",
-                "front": "release/seesay/tools/CubeMap5___1730ea28887b90e552e7a1e65efa2686.jpg",
+                "back": "release/web/cube_2048/4/back_CubeMap6.jpeg",
+                "down": "release/web/cube_2048/4/down_CubeMap4.jpeg",
+                "front": "release/web/cube_2048/4/front_CubeMap5.jpeg",
                 "index": 4,
-                "left": "release/seesay/tools/CubeMap2___bf99270a7a612beba1a735013c860b1a.jpg",
-                "right": "release/seesay/tools/CubeMap1___becba634c5881531de11262a3bcc42d0.jpg",
-                "up": "release/seesay/tools/CubeMap3___aca4e56663dc25fa47e1b95a2d91ad2f.jpg"
+                "left": "release/web/cube_2048/4/left_CubeMap2.jpeg",
+                "right": "release/web/cube_2048/4/right_CubeMap1.jpeg",
+                "tiles": [
+                  1,
+                  2
+                ],
+                "up": "release/web/cube_2048/4/up_CubeMap3.jpeg"
               },
               {
                 "back": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/5/5_b.jpg",
@@ -1939,14 +1941,12 @@ export const vreoUnitD: VreoUnit = {
       "parsed": false,
       "data": {
         "work": {
-          "_signature": "lVOXRW4WXh2A4ove7azpau8pRZ/IV3+wowL4S6Ansa476hplPaVRFJ06i48W1sUWMsrV/7N+JY21Z87BmjwwcnfoV6Selkc+9MMtITwHi1BG0tzAaKQpgDybqRKGv6b3cFqe6uaFYMafZOd0vY/IRFJxa2J4ExsBE3zKAMVkmDU=",
-          "allow_hosts": [
-            "*"
-          ],
+          "_signature": "NyaoofluL7bYPvGJwuX0vQdsCX6z/gTTwjItkjwJZjTN88X+clJMeZ9ISP0unudCSXZ62VNbAFNV8sSmPP7iHOea0hVn+IoWr2CCC14w+UwU/OPeP4pk8sym5s8BSGyb5NV1iLdCMmbKZpght8/A4Y55N+dK61MuLeSvDatdbik=",
+          "allow_hosts": [],
           "base_url": "https://vrlab-public.ljcdn.com/",
           "certificate": "-----BEGIN CERTIFICATE-----\nMIIEMzCCAhsCCQDYAS/7ATZRmTANBgkqhkiG9w0BAQsFADCBkzELMAkGA1UEBhMC\nQ04xEDAOBgNVBAgMB0JlaWppbmcxEDAOBgNVBAcMB0JlaWppbmcxFDASBgNVBAoM\nC2xpYW5qaWEuY29tMRAwDgYDVQQLDAdSZWFsc2VlMREwDwYDVQQDDAhIYXJkd2Fy\nZTElMCMGCSqGSIb3DQEJARYWbml1aGFpcWluZ0BsaWFuamlhLmNvbTAeFw0yMTA5\nMTAwNTIwMDBaFw0zMTA5MDgwNTIwMDBaMIGmMQswCQYDVQQGEwJDTjEQMA4GA1UE\nCAwHQmVpSmluZzEQMA4GA1UEBwwHQmVpSmluZzEQMA4GA1UECgwHUmVhbHNlZTEZ\nMBcGA1UECwwQUmVhbHNlZUFwcEdldHdheTEgMB4GA1UEAwwXYXBwLWdhdGV3YXku\ncmVhbHNlZS5jb20xJDAiBgkqhkiG9w0BCQEWFWRldmVsb3BlckByZWFsc2VlLmNv\nbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuv/y3Ezsy/wh3LCA8vomPbgI\nSO9iO5kyR+oAetklD+epMU6J/ZbvTDEomZxuS5iyyKGBupzAh2ZFLIy7tsE71Vx1\nIIvT7Kdyq66lMU4YzdrpKUcxv7oOQnO8DA1orKluNa4jkyXBywHKs/Q+20LVc+RD\ngKXqFGJUdo8mAxEScs0CAwEAATANBgkqhkiG9w0BAQsFAAOCAgEAkMxsU4VLPd4J\n0rElBNBIyqPtvnlTs6VkhIK0l4oM58wtDKc1uG9UPSX5j29NguZM6LOe0jCsU2Vg\nEpUseMWQjx4o2yBg7MokQyjWc1zu6PppKhQ+RqHQy/biJ2zsIMpX3oMASXffvnW5\nn4Bjyo1JdDJiLm1fLvLlVVxQoraJD+rtpqWDEYixGVREUo5OIL5Y5dVjkHG2r9RQ\nQuu3yEiyr9gAW8yhz3YR6/sJ6boyGK8NC0v8Jih7NnCdT+9ML+3jn3P5F3TeXdSf\nVeYIm5oWAOTe3AjjKP8ARMb2RYACjg80/AcowD/dvRRjbwQmyucUNug2pXJynXpD\nNfx1IBmUmzSAT1Z5yNuY/f3VRBJvmIQ6Jpmef+g0/wUJpyS4SObguItyYlFPLqRH\nK1oKqNX/uV0GWWEQl6Lml986TzlHxc4ljtHBhjzlKYIYYZLWWipk4JiB8hxJcTK+\ncrgvclEQSxFlmAyoqxYFClrOOsPqZJdBhDTvoUWnnWuJLQt7DLHpyInp+S75Gg3o\n0zgHpt9m26B3YbjQGYMQlYmhl2VLQa+Ey0W8UZQXLcTvoRT4p+8crqr6cNNsxCyZ\nm08vBbEMIMvhBeLQvpM75oaMBmelegipFl2eelxVIHdGJWoyJSZQUdXN0uSidhZp\nI7AIgzhqK1Ku/IXK0OSXJonn+/9X/VI=\n-----END CERTIFICATE-----",
           "create_time": null,
-          "expire_at": "1957872759398",
+          "expire_at": "1642950068554",
           "initial": {
             "fov": 110,
             "latitude": 0,
@@ -3249,13 +3249,17 @@ export const vreoUnitD: VreoUnit = {
                 "up": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/13/13_u.jpg"
               },
               {
-                "back": "release/seesay/tools/CubeMap12___480ae291062e94d6662fab924ea23667.jpg",
-                "down": "release/seesay/tools/CubeMap10___9e2f19e429bc6ee0a362652b29f45f6c.jpg",
-                "front": "release/seesay/tools/CubeMap11___47e1610e000aaba6bb71216b6cec628f.jpg",
+                "back": "release/web/cube_2048/14/back_CubeMap12___480ae291062e94d6662fab924ea23667.jpeg",
+                "down": "release/web/cube_2048/14/down_CubeMap10___9e2f19e429bc6ee0a362652b29f45f6c.jpeg",
+                "front": "release/web/cube_2048/14/front_CubeMap11___47e1610e000aaba6bb71216b6cec628f.jpeg",
                 "index": 14,
-                "left": "release/seesay/tools/CubeMap8___27eb9b9c34b336a8f00f9ac3c7a4d231.jpg",
-                "right": "release/seesay/tools/CubeMap7___3ae2de1fee464be00e51a7f1547af4b1.jpg",
-                "up": "release/seesay/tools/CubeMap9___476b54d4b0b2713d9e43f791f40f8a78.jpg"
+                "left": "release/web/cube_2048/14/left_CubeMap8___27eb9b9c34b336a8f00f9ac3c7a4d231.jpeg",
+                "right": "release/web/cube_2048/14/right_CubeMap7___3ae2de1fee464be00e51a7f1547af4b1.jpeg",
+                "tiles": [
+                  1,
+                  2
+                ],
+                "up": "release/web/cube_2048/14/up_CubeMap9___476b54d4b0b2713d9e43f791f40f8a78.jpeg"
               },
               {
                 "back": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/15/15_b.jpg",
@@ -3414,14 +3418,12 @@ export const vreoUnitD: VreoUnit = {
       "parsed": false,
       "data": {
         "work": {
-          "_signature": "pB1YydLJWh/ZP785PmP2VAqYzk15kUtmDmYLVrUJhgJ4N69X0Rp939+Ygz5PX/0wjj1ccF/4ZF2XM5aXXOWZQsCN4DC9On532HLrRbZgTh4AqjBjSc7lxKih8kcxm3uXOg6dIe8xax8pJL7Zlkm/PIeAkqBxPKKSZhVvMqQD/0g=",
-          "allow_hosts": [
-            "*"
-          ],
+          "_signature": "jSYKRlQlqMDoDNMd2uRybMfH5oC3/26pfX9kf65vS874HbZEaMJhiqq3zBQoIlogqYM7XhAuA22ptR9M+KtfYRnO8CJBhCEMD2FCqghaCYwRdqN+97NanjDQkISDxya/vfMAfQiJNAQBaBlQuN7XWrq+byAabb1/AyPxJUJWjh4=",
+          "allow_hosts": [],
           "base_url": "https://vrlab-public.ljcdn.com/",
           "certificate": "-----BEGIN CERTIFICATE-----\nMIIEMzCCAhsCCQDYAS/7ATZRmTANBgkqhkiG9w0BAQsFADCBkzELMAkGA1UEBhMC\nQ04xEDAOBgNVBAgMB0JlaWppbmcxEDAOBgNVBAcMB0JlaWppbmcxFDASBgNVBAoM\nC2xpYW5qaWEuY29tMRAwDgYDVQQLDAdSZWFsc2VlMREwDwYDVQQDDAhIYXJkd2Fy\nZTElMCMGCSqGSIb3DQEJARYWbml1aGFpcWluZ0BsaWFuamlhLmNvbTAeFw0yMTA5\nMTAwNTIwMDBaFw0zMTA5MDgwNTIwMDBaMIGmMQswCQYDVQQGEwJDTjEQMA4GA1UE\nCAwHQmVpSmluZzEQMA4GA1UEBwwHQmVpSmluZzEQMA4GA1UECgwHUmVhbHNlZTEZ\nMBcGA1UECwwQUmVhbHNlZUFwcEdldHdheTEgMB4GA1UEAwwXYXBwLWdhdGV3YXku\ncmVhbHNlZS5jb20xJDAiBgkqhkiG9w0BCQEWFWRldmVsb3BlckByZWFsc2VlLmNv\nbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuv/y3Ezsy/wh3LCA8vomPbgI\nSO9iO5kyR+oAetklD+epMU6J/ZbvTDEomZxuS5iyyKGBupzAh2ZFLIy7tsE71Vx1\nIIvT7Kdyq66lMU4YzdrpKUcxv7oOQnO8DA1orKluNa4jkyXBywHKs/Q+20LVc+RD\ngKXqFGJUdo8mAxEScs0CAwEAATANBgkqhkiG9w0BAQsFAAOCAgEAkMxsU4VLPd4J\n0rElBNBIyqPtvnlTs6VkhIK0l4oM58wtDKc1uG9UPSX5j29NguZM6LOe0jCsU2Vg\nEpUseMWQjx4o2yBg7MokQyjWc1zu6PppKhQ+RqHQy/biJ2zsIMpX3oMASXffvnW5\nn4Bjyo1JdDJiLm1fLvLlVVxQoraJD+rtpqWDEYixGVREUo5OIL5Y5dVjkHG2r9RQ\nQuu3yEiyr9gAW8yhz3YR6/sJ6boyGK8NC0v8Jih7NnCdT+9ML+3jn3P5F3TeXdSf\nVeYIm5oWAOTe3AjjKP8ARMb2RYACjg80/AcowD/dvRRjbwQmyucUNug2pXJynXpD\nNfx1IBmUmzSAT1Z5yNuY/f3VRBJvmIQ6Jpmef+g0/wUJpyS4SObguItyYlFPLqRH\nK1oKqNX/uV0GWWEQl6Lml986TzlHxc4ljtHBhjzlKYIYYZLWWipk4JiB8hxJcTK+\ncrgvclEQSxFlmAyoqxYFClrOOsPqZJdBhDTvoUWnnWuJLQt7DLHpyInp+S75Gg3o\n0zgHpt9m26B3YbjQGYMQlYmhl2VLQa+Ey0W8UZQXLcTvoRT4p+8crqr6cNNsxCyZ\nm08vBbEMIMvhBeLQvpM75oaMBmelegipFl2eelxVIHdGJWoyJSZQUdXN0uSidhZp\nI7AIgzhqK1Ku/IXK0OSXJonn+/9X/VI=\n-----END CERTIFICATE-----",
           "create_time": null,
-          "expire_at": "1957872791706",
+          "expire_at": "1642950130127",
           "initial": {
             "fov": 110,
             "latitude": 0,
@@ -4802,13 +4804,17 @@ export const vreoUnitD: VreoUnit = {
                 "up": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/19/19_u.jpg"
               },
               {
-                "back": "release/seesay/tools/CubeMap18___0c3a301d4b1d95f88290b185343c4f9d.jpg",
-                "down": "release/seesay/tools/CubeMap16___07cffe4d031552c9df7d456bc1c85eba.jpg",
-                "front": "release/seesay/tools/CubeMap17___b3721117af26881f8d66eca3e93bd389.jpg",
+                "back": "release/web/cube_2048/20/back_CubeMap18___0c3a301d4b1d95f88290b185343c4f9d.jpeg",
+                "down": "release/web/cube_2048/20/down_CubeMap16___07cffe4d031552c9df7d456bc1c85eba.jpeg",
+                "front": "release/web/cube_2048/20/front_CubeMap17___b3721117af26881f8d66eca3e93bd389.jpeg",
                 "index": 20,
-                "left": "release/seesay/tools/CubeMap14___af0651a9f2287590417671df1974db9d.jpg",
-                "right": "release/seesay/tools/CubeMap13___8acdf732f273ac3f3d1b3a32712fbc6b.jpg",
-                "up": "release/seesay/tools/CubeMap15___821cf3cf64278170577af275f561a640.jpg"
+                "left": "release/web/cube_2048/20/left_CubeMap14___af0651a9f2287590417671df1974db9d.jpeg",
+                "right": "release/web/cube_2048/20/right_CubeMap13___8acdf732f273ac3f3d1b3a32712fbc6b.jpeg",
+                "tiles": [
+                  1,
+                  2
+                ],
+                "up": "release/web/cube_2048/20/up_CubeMap15___821cf3cf64278170577af275f561a640.jpeg"
               },
               {
                 "back": "release/ue4/6898cbea64bfa53120b12c2c554902ba/ue4_result/cube_2048/21/21_b.jpg",

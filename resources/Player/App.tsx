@@ -13,6 +13,7 @@ import { Prompter } from './modules/keyframes/Prompter'
 import { UpdateVRPanorama } from './modules/keyframes/UpdateVRPanorama'
 import { VideoEffect } from './modules/keyframes/VideoEffect'
 import { VideoAgent } from './modules/VideoAgent'
+import { BgMusic } from './modules/keyframes/BgMusic'
 
 const AppView = observer(({ controller }: { controller: Controller }) => {
   return (
@@ -35,6 +36,7 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
           }}
         />
         <Prompter />
+        {controller.configs?.customPanelChildren}
       </div>
     </div>
   )
@@ -53,6 +55,7 @@ export function App() {
         <PanoTextLabel />
         <InfoPanel />
         <PanoEffect />
+        <BgMusic />
       </>
       <AppView controller={controller} />
     </>
