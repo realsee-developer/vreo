@@ -5,7 +5,7 @@ import { Controller } from '../../Controller'
 import { useController } from '../../hooks'
 
 const DrawerView = observer(({ controller }: { controller: Controller }) => {
-  const maxHeight = '540px'
+  const maxHeight = '400px'
   const height = (() => {
     const height = controller.drawerConfig?.height
     if (!height) {

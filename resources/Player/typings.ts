@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { VreoKeyframeConfigMap } from '../typings/VreoUnit'
 
 export interface PlayerConfigs {
@@ -12,4 +13,8 @@ export interface PlayerConfigs {
     videoEffect?: HTMLVideoElement
     modelTVVideo?: HTMLVideoElement
   }
+  /**
+   * 如果需要在 底部面板添加自定义内容，可以传递个 React 组件。
+   */
+  customPanelChildren?: ReactNode
 }
