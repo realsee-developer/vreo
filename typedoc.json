@@ -1,6 +1,6 @@
 {
   "name": "Vreo",
-  "entryPoints": ["./typedoc/fivePlugins.ts", "./typedoc/Player.ts", "./typedoc/react.ts"],
+  "entryPoints": ["./typedoc/fivePlugins.ts", "./typedoc/Player.ts", "./typedoc/react.ts",  "./typedoc/custom.ts"],
   "markedOptions": {
     "silent": true,
     "mangle": true,

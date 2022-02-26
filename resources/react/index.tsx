@@ -1,18 +1,23 @@
 import { unsafe__useFiveInstance } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../Player'
+import { PlayerConfigs } from '../Player/typings'
 import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
 
 const VreoContext = React.createContext<Player | null>(null)
 
-export const VreoProvider: React.FC = (props) => {
+export interface VreoProviderProps {
+  configs?: Partial<PlayerConfigs>
+} 
+
+export const VreoProvider: React.FC<VreoProviderProps> = (props ) => {
   const five = unsafe__useFiveInstance()
 
   const [player, setPlayer] = React.useState<Player | null>(null)
   const playerRef = React.useRef<Player | null>(null)
 
   React.useEffect(() => {
-    playerRef.current = new Player(five)
+    playerRef.current = new Player(five, props.configs || {})
     setPlayer(playerRef.current)
 
     return () => {

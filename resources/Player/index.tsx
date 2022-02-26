@@ -4,7 +4,7 @@ import { Five, Subscribe } from '@realsee/five'
 
 import { App } from './App'
 import { Controller, ControllerContext } from './Controller'
-import { VreoKeyframeEvent, VreoKeyframeConfigMap, VreoUnit } from '../typings/VreoUnit'
+import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
 import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { PlayerConfigs } from './typings'
@@ -42,6 +42,18 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
       <ControllerContext.Provider value={this.controller}>
         <App></App>
         <Drawer />
+        {this.configs.customKeyframes &&
+          this.configs.customKeyframes.map((CustomCmpt, key) => (
+            <CustomCmpt
+              key={key}
+              subscribe={{
+                on: (name, callback) => this.on(name, callback),
+                once: (name, callback) => this.once(name, callback),
+                off: (name, callback) => this.off(name, callback),
+              }}
+              five={five}
+            />
+          ))}
       </ControllerContext.Provider>,
       configs.containter
     )

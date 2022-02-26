@@ -2,7 +2,6 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
-import { vreoUnitD as data } from './data/vreo-units/vreo-unit-d-new'
 
 import { work } from './data/works/81zxMaeVKLQU93OZMG'
 import { vreoUnitNoVideo } from './data/vreo-units/vreo-unit-novideo'
@@ -16,7 +15,10 @@ import { App } from './AppReact'
 import './index.css'
 
 import '../stylesheets/default.css'
+import '../stylesheets/custom/SpatialScenePanel.css'
+
 import { VreoProvider } from '../resources/react'
+import { SpatialScenePanel } from '../resources/Player/custom/SpatialScenePanel'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },
@@ -33,7 +35,9 @@ ReactDOM.render(
   <React.StrictMode>
     <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
       <ResponsiveFullScreenFiveCanvas />
-      <VreoProvider>
+      <VreoProvider configs={{
+        customKeyframes: [SpatialScenePanel]
+      }}>
         <App />
       </VreoProvider>
     </FiveProvider>

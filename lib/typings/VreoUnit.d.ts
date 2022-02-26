@@ -97,6 +97,7 @@ export declare type VreoKeyframeEvent = {
     loaded: (vreoUnit: VreoUnit) => void;
     paused: () => void;
     playing: () => void;
+    unknownKeyframeType: (keyframe: Record<string, any>) => void;
 };
 /**
  * 相机运动
@@ -215,7 +216,7 @@ export declare enum InfoPanelTypeEnum {
 export declare type InfoPanelData = {
     type: InfoPanelTypeEnum;
     url: string;
-    tilte?: string;
+    title?: string;
     subTitle?: string;
 };
 /**

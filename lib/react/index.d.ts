@@ -1,6 +1,10 @@
 import * as React from 'react';
+import { PlayerConfigs } from '../Player/typings';
 import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit';
-export declare const VreoProvider: React.FC;
+export interface VreoProviderProps {
+    configs?: Partial<PlayerConfigs>;
+}
+export declare const VreoProvider: React.FC<VreoProviderProps>;
 /**
  * VreoPlayer 命令集合。
  */
