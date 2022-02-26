@@ -485,6 +485,13 @@
   display: block;
 }
 
+.vreo-infoPanelWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .vreo-infoPanel {
   width: 100%;
   height: 100%;
@@ -531,6 +538,10 @@
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+.vreo-infoPanelVideo {
+  max-width: 412px;
+} 
 
 .vreo-panel--hidden .vreo-panel-inner {
   opacity: 0;
