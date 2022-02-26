@@ -1,4 +1,4 @@
-import { Mode, Pose, WorkCubeImage, Work } from '@realsee/five'
+import { Mode, Pose } from '@realsee/five'
 import { CameraMovementEffect, Rotation } from '../fivePlugins/CameraMovementPlugin/typings'
 
 export enum VreoKeyframeEnum {
@@ -101,9 +101,14 @@ export interface VreoUnit {
  * 剧本事件
  */
 export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void } & {
+  // 新数据载入完成
   loaded: (vreoUnit: VreoUnit) => void
+  // 语音状态 播放 -> 暂停
   paused: () => void
+  // 语音状态 暂停 -> 播放
   playing: () => void
+  // 未知的 剧本帧类型
+  unknownKeyframeType: (keyframe: Record<string, any>) => void
 }
 
 /**
@@ -133,6 +138,7 @@ export type UpdateVRPanoramaData = {
   allow_hosts: string[]
   certificate: string
   expire_at: string
+  // 动态场景
   dynamic_scene?: {
     images: {
       index: number
@@ -235,7 +241,9 @@ export enum InfoPanelTypeEnum {
 export type InfoPanelData = {
   type: InfoPanelTypeEnum
   url: string
-  tilte?: string
+  // 标题
+  title?: string
+  // 副标题
   subTitle?: string
 }
 

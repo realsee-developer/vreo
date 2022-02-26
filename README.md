@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@realsee/vreo.svg?style=flat-square&logo=npm&label=npm%20install%20@realsee/vreo)](https://www.npmjs.com/package/@realsee/vreo)
 
-Vreo (VR Video 缩写) 是基于如视三维渲染引擎 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 用户界面构建库 [React](https://reactjs.org/) 实现的如视 3D 空间剧本播放器。
+**Vreo** (VR Video 缩写) 是基于如视三维渲染引擎 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 用户界面构建库 [React](https://reactjs.org/) 实现的如视 3D 空间剧本播放器。
 
 ## 特性
 
@@ -59,7 +59,7 @@ vreoplayer.pause()
 
 ## React Context & Hooks 模式使用
 
-Vreo 支持 [React Context](https://reactjs.org/docs/context.html) 与 [Hooks](https://reactjs.org/docs/hooks-intro.html) 相配合的模式使用，简单样例如下：
+**Vreo** 支持 [React Context](https://reactjs.org/docs/context.html) 与 [Hooks](https://reactjs.org/docs/hooks-intro.html) 相配合的模式使用，简单样例如下：
 
 ```jsx
 import * as React from 'react'
@@ -114,7 +114,7 @@ ReactDOM.render(<App></App>, document.getElementById('app'))
 
 ### 结构描述
 
-**VreoUnit** 是剧本数据结构的最小单元，用以描述音视频、关键帧序列等信息。
+**VreoUnit** 是剧本数据结构的最小单元，用以描述音视频、剧本帧序列等信息。
 
 **VreoUnit** 数据结构样例如下：
 
@@ -233,25 +233,25 @@ ReactDOM.render(<App></App>, document.getElementById('app'))
 
 > 注意事项：**视频素材必须是绿幕背景**。
 
-- `keyframes`：关键帧集合。
+- `keyframes`：剧本帧集合。
 
-  - `uuid`: 关键帧 `uuid`。
-  - `type`: 关键帧类别枚举，详见下文 **剧本关键帧** 部分。
+  - `uuid`: 剧本帧 `uuid`。
+  - `type`: 剧本帧类别枚举，详见下文 **剧本关键帧** 部分。
   - `start`: 触发时间戳。
   - `end`: 结束时间戳。
   - `parsed`: 解析状态。
-  - `data`: 当前关键帧类别数据依赖。
+  - `data`: 当前剧本帧类别数据依赖。
 
 > **如何获取剧本数据？**
 > 剧本服务及剧本编辑器公开版本尚在开发中，预计 2022 年 2 月份中旬发布，敬请期待。
 
-### 关键帧说明
+### 剧本帧说明
 
-Vreo 剧本行为是按照剧本关键帧来执行的，即根据音视频播放的时间序列命中关键帧后，按照关键帧的类型执行相机运镜、全景标签、模型特效等动作。
+**Vreo** 剧本行为是按照剧本关键帧来执行的，即根据音视频播放的时间序列命中剧本帧后，按照剧本帧的类型执行相机运镜、全景标签、模型特效等动作。
 
-> 目前支持九种类型剧本关键帧，后续会不断完善及添加新的剧本关键帧行为。
+> 目前支持多种类型剧本关键帧（详见：[Player.VreoKeyframeEnum](https://realsee-developer.github.io/vreo/enums/Player.VreoKeyframeEnum.html)），后续会不断完善及添加新的剧本关键帧行为。
 
-Vreo 内置了每一个剧本关键帧的 UI 动作行为，通过 `vreoplayer.on()` 可监听到相应的剧本关键帧的命中时机，并按需添加业务逻辑。
+**Vreo** 内置了每一个剧本关键帧的 UI 动作行为，通过 `vreoplayer.on()` 可监听到相应的剧本关键帧的命中时机，并按需添加业务逻辑。
 
 ### 剧本关键帧
 
@@ -393,9 +393,9 @@ type VideoEffectData = {
 }
 ```
 
-### 自定义关键帧行为
+### 自定义剧本帧行为
 
-Vreo 中的关键帧行为是内置的，但如果您有强烈的诸如统一 UI 风格类的诉求，不想使用内置剧本逻辑，也可以通过 `new Player(five, {keyframeMap: {PanoTag: false}})` 来禁用内置关键帧解析，然后通过监听关键帧触发事件来补充您自己的剧本 UI 行为。
+**Vreo** 中的剧本帧行为是内置的，但如果您有强烈的诸如统一 UI 风格类的诉求，不想使用内置剧本逻辑，也可以通过 `new Player(five, {keyframeMap: {PanoTag: false}})` 来禁用内置剧本帧解析，然后通过监听剧本帧触发事件来补充您自己的剧本 UI 行为。
 
 比如，禁用全景标签的解析：
 
@@ -416,6 +416,29 @@ vreoplayer.off(VreoKeyframeEnum.PanoTag, callback)
 ```
 
 目前仅 DOM 相关的剧本关键帧支持自定义，与 3D 空间模型相关的内容（如：运镜、特效等）尚不支持用户自定义，请采用内置方案。
+
+### 自定义剧本帧
+
+除了默认内置的剧本帧之外，**Vreo** 支持自定义剧本帧。你可以将剧本帧类型设定为 `VreoKeyframeEnum.Custom`，然后通过监听 `vreoplayer.on(VreoKeyframeEnum.Custom, callback)` 剧本事件去解析你自己定义的剧本行为。
+
+此外，你也可以实现个 `React` 组件，例如：
+
+```ts
+export function YourCustomKeyframe(props: CustomVreoKeyframeProps) {
+
+  React.useEffect(() => {
+    props.subscribe.on(VreoKeyframeEnum.Custom, callback)
+
+    return () => {
+      props.subscribe.off(VreoKeyframeEnum.Custom, callback)
+    }
+  }, [])
+
+  return <>...</>
+}
+```
+
+然后通过 `new Player(five, {customKeyframes: [YourCustomKeyframe]})` 配置参数添加进去即可。
 
 ## 注意事项
 
