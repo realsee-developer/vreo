@@ -1,0 +1,1 @@
+export type { SpatialScenePanel } from '../resources/Player/custom/SpatialScenePanel'

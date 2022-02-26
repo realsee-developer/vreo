@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
-import { VreoKeyframeConfigMap } from '../typings/VreoUnit';
+import React, { ReactNode } from 'react';
+import { Subscribe, Five } from '@realsee/five';
+import { VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit';
 export interface PlayerConfigs {
     containter?: ReactDOM.Container;
     keyframeMap: VreoKeyframeConfigMap;
@@ -16,4 +17,10 @@ export interface PlayerConfigs {
      * 如果需要在 底部面板添加自定义内容，可以传递个 React 组件。
      */
     customPanelChildren?: ReactNode;
+    customKeyframes?: React.FC<CustomVreoKeyframeProps>[];
+}
+export declare type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
+export interface CustomVreoKeyframeProps {
+    subscribe: VreoSubscribe;
+    five: Five;
 }

@@ -1,1 +1,2 @@
-export type { VreoProvider, VreoActionCallbacks, useVreoAction, useVreoEventCallback, useVreoPausedState } from '../resources/react'
+export type { VreoProvider, VreoActionCallbacks, VreoProviderProps,
+  useVreoAction, useVreoEventCallback, useVreoPausedState } from '../resources/react'
