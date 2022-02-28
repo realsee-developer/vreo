@@ -1,4 +1,4 @@
-import { Five } from '@realsee/five'
+import { Five, MovePanoOptions } from '@realsee/five'
 import type { FivePlugin } from '@realsee/five'
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -97,14 +97,16 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
     return await new Promise<boolean>((resolve, reject) => {
       const panoIndex = args.panoIndex !== undefined ? args.panoIndex : five.panoIndex
       if (panoIndex !== undefined) {
+        const movePanoOptions: MovePanoOptions = {
+          duration, // 移动耗时
+          moveEndCallback: () => resolve(true), // 移动结束
+          moveCancelCallback: () => reject(false), // 移动开始
+          effect: 'fade',
+        }
         five.moveToPano(
           panoIndex,
           Object.assign(
-            {
-              duration, // 移动耗时
-              moveEndCallback: () => resolve(true), // 移动结束
-              moveCancelCallback: () => reject(false), // 移动开始
-            },
+            movePanoOptions,
             args,
           ),
         )
@@ -154,6 +156,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
         five.moveToPano(args.panoIndex, {
           moveEndCallback: () => resolve(true), // 移动结束
           moveCancelCallback: () => reject(false), // 移动开始
+          effect: 'fade',
         })
       })
     }

@@ -1,4 +1,4 @@
-import { Mode, Pose } from '@realsee/five';
+import { Mode, MovePanoOptions, Pose } from '@realsee/five';
 export interface CameraMovementPluginParameterType {
 }
 export interface CameraMovementPluginExportType {
@@ -33,7 +33,7 @@ export interface CameraMovementOptsCallback {
 export declare type MoveArgs = {
     mode: Mode;
     panoIndex: number;
-} & Pose;
+} & Pose & Pick<MovePanoOptions, 'effect'>;
 export declare type MoveOpts = {
     preload?: boolean;
 } & CameraMovementOptsCallback;
