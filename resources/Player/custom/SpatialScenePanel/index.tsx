@@ -22,13 +22,13 @@ export interface SpatialScenePanelData {
 
 interface SearchParams {
   five: Five
-  position: Vector3
-  rotation?: Vector3
-  quaternion: [number, number, number, number]
+  // position: Vector3
+  // rotation?: Vector3
+  // quaternion: [number, number, number, number]
   dom: HTMLDivElement 
 }
 
-const searchV1 = ({ five, position, rotation, dom }: SearchParams) => {
+const searchV1 = ({ five, dom }: SearchParams) => {
   const cameraDirection = new Vector3()
   five.camera.getWorldDirection(cameraDirection)
   const cameraPosition = five.camera.position
@@ -82,16 +82,11 @@ export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
       }
 
       const data = keyframe.data as SpatialScenePanelData
-      // const data = mockData as SpatialScenePanelData
 
       const { points, ratio } = searchV1({
         five: props.five,
-        position: new Vector3(data.position.x, data.position.y, data.position.z),
-        quaternion: data.quaternion,
         dom: ref.current!
       })
-
-      console.log(points, ratio)
 
       const { container, dispose, css3DObject, render } =
         rendererRef.current.create3DDomContainer(points, { ratio, autoRender: false }) || {}
@@ -124,7 +119,6 @@ export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
         }, end - start)
     }
 
-    Object.assign(window, {$SpatialScenePanelCallback: callback})
     props.subscribe.on(VreoKeyframeEnum.Custom, callback)
 
     return () => {
