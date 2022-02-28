@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Mode, Pose } from '@realsee/five'
+import { Mode, MovePanoOptions, Pose } from '@realsee/five'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CameraMovementPluginParameterType { }
@@ -39,7 +39,7 @@ export interface CameraMovementOptsCallback {
 export type MoveArgs = {
   mode: Mode
   panoIndex: number
-} & Pose
+} & Pose & Pick<MovePanoOptions, 'effect'>
 
 export type MoveOpts = {
   preload?: boolean

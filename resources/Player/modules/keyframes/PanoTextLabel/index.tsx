@@ -30,13 +30,13 @@ export function PanoTextLabel() {
       if (!res) return
       const { x: left, y: top } = res
 
-      Object.assign(window, { $PanoTextLabel: { setState } })
+      // Object.assign(window, { $PanoTextLabel: { setState } })
       setState({ left, top, text: data.text || '', fontSize: data.fontSize || 16 })
       timeoutRef.current = setTimeout(() => setState(null), end - start)
     }
     controller.on(VreoKeyframeEnum.PanoTextLabel, callback)
 
-    Object.assign(window, { $panoTextLabel: { setState } })
+    // Object.assign(window, { $panoTextLabel: { setState } })
     return () => {
       controller.off(VreoKeyframeEnum.PanoTextLabel, callback)
       if (timeoutRef.current) {
