@@ -8,6 +8,7 @@ import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
 import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { PlayerConfigs } from './typings'
+import { PopUp } from './modules/PopUp'
 
 export class Player extends Subscribe<VreoKeyframeEvent> {
   $five: Five
@@ -42,6 +43,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
       <ControllerContext.Provider value={this.controller}>
         <App></App>
         <Drawer />
+        <PopUp />
         {this.configs.customKeyframes &&
           this.configs.customKeyframes.map((CustomCmpt, key) => (
             <CustomCmpt

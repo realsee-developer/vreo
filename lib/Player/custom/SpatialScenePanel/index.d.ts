@@ -8,12 +8,12 @@ export interface SpatialScenePanelData {
         text: string;
         icon: string;
     }[];
-    position: {
+    position?: {
         x: number;
         y: number;
         z: number;
     };
-    quaternion: [number, number, number, number];
+    quaternion?: [number, number, number, number];
 }
 /**
  * 空间场景面板

@@ -547,3 +547,69 @@
   opacity: 0;
   transition: opacity 0.45s;
 }
+
+.vreo-PopUp {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7) 65%);
+  opacity: 0;
+  transition: opacity .45s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vreo-PopUp.vreo-PopUp-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.vreo-PopUp-inner {
+  width: 339px;
+  height: 425px;
+  position: relative;
+}
+
+@media only screen and (min-width: 960px) {
+  .vreo-PopUp-inner {
+    width: 678px;
+    height: 620px;
+    position: relative;
+  }
+  .vreo-infoPanelVideo {
+    max-width: 100%;
+  }
+}
+
+.vreo-PopUp-inner .vreo-infoPanel {
+  background-color: initial;
+  justify-content: center;
+}
+
+.vreo-PopUp-inner .vreo-infoPanel-title {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: end;
+  height: 200px;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+}
+
+.vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
+  padding-left: 0;
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 14px;
+}
+
+.vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t2 {
+  padding: 0 0 24px 0;
+  font-size: 14px;
+  opacity: 0.85;
+}

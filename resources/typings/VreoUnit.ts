@@ -235,11 +235,17 @@ export enum InfoPanelTypeEnum {
   Video = 'Video',
 }
 
+export enum InfoPanelStyleEnum {
+  Drawer = 'Drawer',
+  PopUp = 'PopUp',
+}
+
 /**
  * 信息面板
  */
 export type InfoPanelData = {
   type: InfoPanelTypeEnum
+  style?: InfoPanelStyleEnum
   url: string
   // 标题
   title?: string

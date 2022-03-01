@@ -82,7 +82,7 @@
 </ul>
 <blockquote>
 <p><strong>如何获取剧本数据？</strong>
-剧本服务及剧本编辑器公开版本尚在开发中，预计 2022 年 2 月份中旬发布，敬请期待。</p>
+剧本服务及剧本编辑器公开版本尚在开发中，敬请期待。</p>
 </blockquote>
 
 <a href="#剧本帧说明" id="剧本帧说明" style="color: inherit; text-decoration: none;">
@@ -159,7 +159,7 @@
   <h4>更换全景</h4>
 </a>
 <p><strong>更换全景</strong> 可以动态修改某个点位的全景图片。</p>
-<pre><code class="hljs language-ts"><span class="hl-2">export</span><span class="hl-0"> </span><span class="hl-3">type</span><span class="hl-0"> </span><span class="hl-8">UpdateVRPanoramaData</span><span class="hl-0"> = {</span><br/><span class="hl-0">  </span><span class="hl-4">panoIndex</span><span class="hl-0">: </span><span class="hl-8">number</span><span class="hl-0"> </span><span class="hl-1">// 点位</span><br/><span class="hl-0">  </span><span class="hl-4">images</span><span class="hl-0">: </span><span class="hl-8">WorkCubeImage</span><span class="hl-0"> </span><span class="hl-1">// 全景贴图</span><br/><span class="hl-0">}</span>
+<pre><code class="hljs language-ts"><span class="hl-2">export</span><span class="hl-0"> </span><span class="hl-3">type</span><span class="hl-0"> </span><span class="hl-8">UpdateVRPanoramaData</span><span class="hl-0"> = {</span><br/><span class="hl-0">  </span><span class="hl-4">_signature</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0"> </span><span class="hl-1">// 签名字段</span><br/><span class="hl-0">  </span><span class="hl-4">allow_hosts</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0">[] </span><span class="hl-1">// 域名白名单</span><br/><span class="hl-0">  </span><span class="hl-4">certificate</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0"> </span><span class="hl-1">// 签名值</span><br/><span class="hl-0">  </span><span class="hl-4">expire_at</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0"> </span><span class="hl-1">// 过期时间</span><br/><span class="hl-0">  </span><span class="hl-1">// 动态场景</span><br/><span class="hl-0">  </span><span class="hl-4">dynamic_scene</span><span class="hl-0">?: {</span><br/><span class="hl-0">    </span><span class="hl-4">images</span><span class="hl-0">: { </span><span class="hl-1">// 切换全景的图片</span><br/><span class="hl-0">      </span><span class="hl-4">index</span><span class="hl-0">: </span><span class="hl-8">number</span><span class="hl-0"> </span><span class="hl-1">// 对应的全景点位</span><br/><span class="hl-0">      </span><span class="hl-4">right</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">      </span><span class="hl-4">left</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">      </span><span class="hl-4">up</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">      </span><span class="hl-4">down</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">      </span><span class="hl-4">front</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">      </span><span class="hl-4">back</span><span class="hl-0">: </span><span class="hl-8">string</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">  [</span><span class="hl-4">key</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0">]: </span><span class="hl-8">any</span><br/><span class="hl-0">}</span>
 </code></pre>
 <p>比如，您可以拍摄某个房间开灯与关灯两个场景的全景，通过动态切换可以营造出全景中开灯、关灯的效果。</p>
 <p>同样的，如果您在同一个位置分别拍摄了早晨、上午、中午、下午、傍晚、深夜的全景图片，就可以营造出该位置在一天中不同时间段的光照效果。</p>
@@ -199,6 +199,10 @@
 
 <a href="#注意事项" id="注意事项" style="color: inherit; text-decoration: none;">
   <h2>注意事项</h2>
+</a>
+
+<a href="#兼容性" id="兼容性" style="color: inherit; text-decoration: none;">
+  <h3>兼容性</h3>
 </a>
 <p>浏览器对视频自动播放有严格的限制（播放行为必须由用户触发），<code>@realsee/vreo</code> 内部已经最大限度规避了浏览器对视频自动播放的限制。</p>
 <p>但是规避 <a href="https://developers.weixin.qq.com/community/develop/doc/000e640d77cfa001132a6cb8456c01">微信浏览器中音视频自动播放限制</a> 需要调用 <a href="https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html">微信 JS-SDK</a> 触发<code>WeixinJSBridgeReady</code>事件后才能实现。</p>
