@@ -24,6 +24,16 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     return !this.videoAgentScene?.videoAgentMesh.videoUrl?.endsWith('.mp4')
   }
 
+  popUp: string | JSX.Element | null = null
+
+  openPopUp(popUp: string | JSX.Element | false) {
+    if (!popUp) {
+      this.popUp = null
+      return
+    }
+    this.popUp = popUp
+  }
+
   drawerConfig: {
     content: string | JSX.Element
     height?: number | string
@@ -57,6 +67,8 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
       setVisible: action,
       playing: observable,
       setPlaying: action,
+      popUp: observable.ref,
+      openPopUp: action,
       drawerConfig: observable.ref,
       openDrawer: action,
     })

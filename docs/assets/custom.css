@@ -29,10 +29,10 @@ blockquote p {
 .hljs {
   background-color: transparent;
   font-family: monospace;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 code {
-  font-size: 12px;
+  font-size: 14px;
   background-color: rgb(96 125 139 / 10%);
 }
 
