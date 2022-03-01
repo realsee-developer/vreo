@@ -210,11 +210,16 @@ export declare enum InfoPanelTypeEnum {
     Image = "Image",
     Video = "Video"
 }
+export declare enum InfoPanelStyleEnum {
+    Drawer = "Drawer",
+    PopUp = "PopUp"
+}
 /**
  * 信息面板
  */
 export declare type InfoPanelData = {
     type: InfoPanelTypeEnum;
+    style?: InfoPanelStyleEnum;
     url: string;
     title?: string;
     subTitle?: string;

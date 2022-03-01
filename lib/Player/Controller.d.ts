@@ -15,6 +15,8 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     playing: boolean;
     visible: boolean;
     get isAudio(): boolean;
+    popUp: string | JSX.Element | null;
+    openPopUp(popUp: string | JSX.Element | false): void;
     drawerConfig: {
         content: string | JSX.Element;
         height?: number | string;

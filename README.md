@@ -243,7 +243,7 @@ ReactDOM.render(<App></App>, document.getElementById('app'))
   - `data`: 当前剧本帧类别数据依赖。
 
 > **如何获取剧本数据？**
-> 剧本服务及剧本编辑器公开版本尚在开发中，预计 2022 年 2 月份中旬发布，敬请期待。
+> 剧本服务及剧本编辑器公开版本尚在开发中，敬请期待。
 
 ### 剧本帧说明
 
@@ -353,8 +353,23 @@ type PanoEffectData = {
 
 ```ts
 export type UpdateVRPanoramaData = {
-  panoIndex: number // 点位
-  images: WorkCubeImage // 全景贴图
+  _signature: string // 签名字段
+  allow_hosts: string[] // 域名白名单
+  certificate: string // 签名值
+  expire_at: string // 过期时间
+  // 动态场景
+  dynamic_scene?: {
+    images: { // 切换全景的图片
+      index: number // 对应的全景点位
+      right: string
+      left: string
+      up: string
+      down: string
+      front: string
+      back: string
+    }
+  }
+  [key: string]: any
 }
 ```
 
@@ -441,6 +456,8 @@ export function YourCustomKeyframe(props: CustomVreoKeyframeProps) {
 然后通过 `new Player(five, {customKeyframes: [YourCustomKeyframe]})` 配置参数添加进去即可。
 
 ## 注意事项
+
+### 兼容性
 
 浏览器对视频自动播放有严格的限制（播放行为必须由用户触发），`@realsee/vreo` 内部已经最大限度规避了浏览器对视频自动播放的限制。
 
