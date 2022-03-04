@@ -1,13 +1,15 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { Five } from '@realsee/five'
-import { Raycaster, Vector3 } from 'three'
+import * as THREE from 'three'
+import { Object3D, Raycaster, Vector3 } from 'three'
 import { tweenProgress } from '@realsee/dnalogel/shared-utils/animationFrame/BetterTween'
 import { CSS3DRenderPlugin, CSS3DRenderPluginExportType } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
 
 import { VreoKeyframe, VreoKeyframeEnum } from '../../../typings/VreoUnit'
 import { CustomVreoKeyframeProps } from '../../typings'
 
+// __debug__
 // const mockData: SpatialScenePanelData = {
 //   customType: 'SpatialScenePanel',
 //   "stateList": [
@@ -66,6 +68,7 @@ const searchV1 = ({ five, dom }: SearchParams) => {
   const [intersect] = five.model.intersectRaycaster(new Raycaster(cameraPosition, cameraDirection))
   const point = five.project2d(intersect.point)
 
+  const widescreen = window.innerWidth > 560 ? true : false
   // const width = dom!.clientWidth
   const height = dom!.clientHeight
   dom!.style.left = point!.x + 'px'
@@ -79,8 +82,8 @@ const searchV1 = ({ five, dom }: SearchParams) => {
   const rightBottom = new Vector3(right, bottom)
 
   const points = [leftBottom, rightBottom, rightTop, leftTop].map((point) => {
-    point.setX((point.x / window.innerWidth) * 2 - 1.25)
-    point.setY(-(point.y / window.innerHeight) * 2 + 1)
+    point.setX((point.x / window.innerWidth) * 2 - (widescreen ? 1.25: 1.75))
+    point.setY(-(point.y / window.innerHeight) * 2 + (widescreen ? 1.35: 1.125))
     point.setZ(0.5)
     return point.unproject(five.camera).addScaledVector(cameraDirection, 0.2)
   })
@@ -89,7 +92,8 @@ const searchV1 = ({ five, dom }: SearchParams) => {
   // const colors = [0xdc143c, 0xffff00, 0x0000ff, 0x008000]
   // points.forEach((p, index) => five.scene.add(getSphere(p, colors[index])))
 
-  const ratio = leftBottom.distanceTo(rightBottom) / 150
+  // 判断是手机 150
+  const ratio = leftBottom.distanceTo(rightBottom) / (widescreen ? 150 : 120)
   return { points, ratio }
 }
 
@@ -98,6 +102,7 @@ const searchV1 = ({ five, dom }: SearchParams) => {
  * @returns
  */
 export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const ref = React.useRef<HTMLDivElement>(null)
   const panelRef = React.useRef<HTMLDivElement | null>(null)
   const rendererRef = React.useRef<CSS3DRenderPluginExportType>(CSS3DRenderPlugin(props.five))
@@ -123,16 +128,19 @@ export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
       const { container, dispose, css3DObject, render } =
         rendererRef.current.create3DDomContainer(points, { ratio, autoRender: false }) || {}
 
+      Object.assign(window, { $css3DObject: css3DObject })
       if (!container) return
 
       ReactDOM.render(<Panel ref={(ref) => (panelRef.current = ref)} data={data} />, container)
       const startRotateY = -(Math.PI * 2) / 9
       let lastRotateY = 0
+    
       tweenProgress(1000)
         .onUpdate(({ progress }) => {
           const needRotateY = (Math.PI / 90) * 11 * progress
           const rotateY = needRotateY - lastRotateY
           css3DObject?.rotateY(rotateY)
+          // css3DObject?.rotateZ
           lastRotateY = needRotateY
         })
         .onStart(() => {
@@ -143,30 +151,71 @@ export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
           panelRef.current?.classList.add('show')
         })
         .play()
+
+    // Object.assign(window, {  $dispose: () => {
+    //   panelRef.current?.classList.add('hide')
+    //   setTimeout(() => dispose?.(), 1500)
+    // } })
+
       const { start, end } = keyframe
 
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         panelRef.current?.classList.add('hide')
-        setTimeout(() => dispose?.(), 1500)
+        timeoutRef.current = setTimeout(() => {
+          dispose?.()
+          timeoutRef.current = null
+        }, 1500)
       }, end - start)
     }
 
-    // Object.assign(window, { $callback: callback })
+    Object.assign(window, { $callback: callback })
+
+    // setTimeout(() => {callback()}, 8000)
     props.subscribe.on(VreoKeyframeEnum.Custom, callback)
 
     return () => {
       props.subscribe.off(VreoKeyframeEnum.Custom, callback)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
     }
   }, [])
 
   return <div className="vreo-SpatialScenePanel" ref={ref}></div>
 }
 
+/** 背景动画：控制延迟 */
+function SpatialScenePanelBg() {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+  React.useEffect(() => {
+    if (!ref.current) return
+
+    const listener = () => {
+      console.log('listener')
+      ref.current?.setAttribute('class', 'SpatialScenePanel-bg')
+
+      timeoutRef.current = setTimeout(() => {
+        ref.current?.setAttribute('class', 'SpatialScenePanel-bg SpatialScenePanel-bg--animation')
+        timeoutRef.current = null
+      }, 3000)
+    }
+
+    ref.current.addEventListener('animationend', listener)
+
+    return () => {
+      if (ref.current) ref.current.removeEventListener('animationend', listener)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
+  return <div ref={ref} className="SpatialScenePanel-bg SpatialScenePanel-bg--animation"></div>
+}
+
 const Panel = React.forwardRef(
   (props: { data: SpatialScenePanelData }, myRef: React.LegacyRef<HTMLDivElement> | undefined) => (
     <div className="SpatialScenePanel" ref={myRef}>
       <div className="SpatialScenePanel-show-area">
-        <div className="SpatialScenePanel-bg"></div>
+        <SpatialScenePanelBg />
         <div className="SpatialScenePanel-header">
           <div className="SpatialScenePanel-title">{props.data?.title}</div>
           <div className="SpatialScenePanel-temperature">{props.data?.temperature}℃</div>
@@ -186,3 +235,31 @@ const Panel = React.forwardRef(
     </div>
   )
 )
+
+
+// export function SpatialScenePanel() {
+//   // const data = mockData
+
+//   return (
+//     <div className="SpatialScenePanel" >
+//     <div className="SpatialScenePanel-show-area">
+//       <SpatialScenePanelBg />
+//       <div className="SpatialScenePanel-header">
+//         <div className="SpatialScenePanel-title">{data?.title}</div>
+//         <div className="SpatialScenePanel-temperature">{data?.temperature}℃</div>
+//       </div>
+//       <div className="SpatialScenePanel-body">
+//         {data?.stateList?.map((state, index) => (
+//           <div key={`scene-${state.text}`} className={`SpatialScenePanel-item index_${index}`}>
+//             <img className="SpatialScenePanel-icon" src={state.icon}></img>
+//             <div className="SpatialScenePanel-text">{state.text}</div>
+//             <div className="SpatialScenePanel-dot"></div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+
+//     <div className="SpatialScenePanel-disappear-area"></div>
+//   </div>
+//   )
+// }

@@ -13,22 +13,22 @@ export const vreoUnitD: VreoUnit = {
     "url": "https://test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/LEJhnm1R/aitalk_text/merged.mp4"
   },
   "keyframes": [
-    {
-      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
-      "type": "InfoPanel",
-      "start": 3000,
-      "end": 80000,
-      "parsed": false,
-      "data": {
-        "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
-        "type": "Image"
-      }
-    },
+    // {
+    //   "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+    //   "type": "InfoPanel",
+    //   "start": 3000,
+    //   "end": 80000,
+    //   "parsed": false,
+    //   "data": {
+    //     "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
+    //     "type": "Image"
+    //   }
+    // },
     {
       "uuid": "5ae5b05d-5172-4c72-2fe3-26c822e119d7",
       "type": "UpdateVRPanorama",
-      "start": 5000,
-      "end": 15000,
+      "start": 500,
+      "end": 81200,
       "parsed": false,
       "data": {
         "_signature": "QgdOve0ciDNgaVXEKtHqORfgnx7pMxovfb1y/63bmZpaZ7v4u0VVhTpxTGYc5AYQGa1Z5hNw7MIAbXM9zWIPj6OfNuf9Oti3pUGmpqrnqkdNDVU2wwgVe5ostKNVSYRRiuw2+XZS0BSSoCrKTfM0I+M2rE5isn4g0UaQKf7PUuM=",
