@@ -77,8 +77,14 @@
   background-image: url("//vrlab-static.ljcdn.com/release/web/VoiceAssistant/images/panel-min.7d9ba2b7.png");
   background-size: 340rem 13.4375rem;
   background-repeat: no-repeat;
-  animation: SpatialScenePanel-panel-sprites-animation 1.375s 0s steps(33) infinite normal
+  z-index: -1;
 }
+
+.SpatialScenePanel-bg--animation {
+  /* animation: SpatialScenePanel-panel-sprites-animation 1.375s 0s steps(33) infinite normal; */
+  animation: SpatialScenePanel-panel-sprites-animation 1.375s 0.5s steps(33) normal;
+}
+
 
 .SpatialScenePanel-show-area .SpatialScenePanel-header {
   width: 7.5rem;
@@ -89,7 +95,9 @@
   background-image: url("//vrlab-static.ljcdn.com/release/web/VoiceAssistant/images/title-bg.377af865.png");
   background-size: 100%;
   margin: 1.875rem auto 1.25rem auto;
-  padding-bottom: .25rem
+  background-image: linear-gradient(to left, rgba(234, 208, 154, 0), rgb(255 229 176 / 21%) 47%, rgba(234, 208, 154, 0));
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 2px;
 }
 
 .SpatialScenePanel-show-area .SpatialScenePanel-header .SpatialScenePanel-title {
@@ -97,7 +105,7 @@
   font-size: 1.0625rem;
   color: #ffe5b0;
   letter-spacing: 0;
-  line-height: 1.0625rem;
+  line-height: 1.125;
   text-shadow: 0 0 1.25rem rgba(0,0,0,0.15)
 }
 
@@ -106,7 +114,7 @@
   font-size: .625rem;
   color: rgba(255,229,176,0.6);
   letter-spacing: 0;
-  line-height: .625rem;
+  line-height: 1.25rem;
   text-shadow: 0 0 .625rem rgba(255,255,255,0.03);
   align-self: flex-end
 }
@@ -270,9 +278,7 @@
 
 .SpatialScenePanel.hide .SpatialScenePanel-show-area {
   transform: scale3d(0,1,1);
-  transition: -webkit-transform 500ms linear;
-  transition: transform 500ms linear;
-  transition: transform 500ms linear, -webkit-transform 500ms linear
+  transition: transform 150ms linear;
 }
 
 .SpatialScenePanel.hide .SpatialScenePanel-disappear-area {
@@ -298,6 +304,6 @@
   background-image: url("//vrlab-static.ljcdn.com/release/web/VoiceAssistant/images/line.4ac1c0bb.png");
   background-size: 10rem 11.666666666666666rem;
   background-repeat: no-repeat;
-  animation: SpatialScenePanel-line-sprites-animation 500ms 500ms steps(23) 1 normal
+  animation: SpatialScenePanel-line-sprites-animation 500ms 100ms steps(23) 1 normal
 }
 
