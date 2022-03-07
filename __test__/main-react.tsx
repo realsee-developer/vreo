@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
 
-import { work } from './data/works/81zxMaeVKLQU93OZMG'
-import { vreoUnitNoVideo } from './data/vreo-units/vreo-unit-novideo'
-
-Object.assign(window, { $vreoUnitNoVideo: vreoUnitNoVideo })
+import work  from './data/works/work3.json'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
 

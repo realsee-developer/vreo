@@ -20,6 +20,8 @@ export interface PlayerConfigs {
    */
   customPanelChildren?: ReactNode
   customKeyframes?: React.FC<CustomVreoKeyframeProps>[]
+  imageOptions?: { size: number }
+  autoPreload?: boolean
 }
 
 export type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>

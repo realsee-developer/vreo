@@ -1,4 +1,4 @@
-import { Mode, Pose } from '@realsee/five'
+import { Mode, MovePanoOptions, Pose } from '@realsee/five'
 import { CameraMovementEffect, Rotation } from '../fivePlugins/CameraMovementPlugin/typings'
 
 export enum VreoKeyframeEnum {
@@ -65,7 +65,7 @@ export type VreoKeyframeConfigMap = {
  * 剧本关键帧
  */
 export interface VreoKeyframe {
-  uuid: string
+  uuid?: string
   type: VreoKeyframeEnum
   start: number
   end: number
@@ -104,7 +104,7 @@ export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyf
   // 新数据载入完成
   loaded: (vreoUnit: VreoUnit) => void
   // 语音状态 播放 -> 暂停
-  paused: () => void
+  paused: (ended?: boolean) => void
   // 语音状态 暂停 -> 播放
   playing: () => void
   // 未知的 剧本帧类型
@@ -115,7 +115,8 @@ export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyf
  * 相机运动
  */
 export type CameraMovementData = {
-  effect: CameraMovementEffect
+  effect?: CameraMovementEffect
+  transEffect?: "fly" | "fade" | "instant"
   mode: Mode
   panoIndex: number
   loop?: boolean
