@@ -192,7 +192,6 @@ function SpatialScenePanelBg() {
     if (!ref.current) return
 
     const listener = () => {
-      console.log('listener')
       ref.current?.setAttribute('class', 'SpatialScenePanel-bg')
 
       timeoutRef.current = setTimeout(() => {

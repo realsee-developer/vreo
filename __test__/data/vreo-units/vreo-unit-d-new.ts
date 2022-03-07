@@ -13,21 +13,89 @@ export const vreoUnitD: VreoUnit = {
     "url": "https://test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/LEJhnm1R/aitalk_text/merged.mp4"
   },
   "keyframes": [
-    // {
-    //   "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
-    //   "type": "InfoPanel",
-    //   "start": 3000,
-    //   "end": 80000,
-    //   "parsed": false,
-    //   "data": {
-    //     "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
-    //     "type": "Image"
-    //   }
-    // },
+    {
+      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+      "type": "CameraMovement",
+      "start": 3000,
+      "end": 5000,
+      "parsed": false,
+      "data": {
+        "effect": "Rotate",
+        "panoIndex": 6,
+        "fov": 110,
+        "mode": "Panorama",
+        "latitude": 0.003545632869,
+        "longitude": 1.596554310922,
+        "rotateSpeed": 0.3,
+        "rotation": "Clockwise"
+      }
+    },
+    {
+      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+      "type": "CameraMovement",
+      "start": 6000,
+      "end": 8000,
+      "parsed": false,
+      "data": {
+        "effect": "Move",
+        "panoIndex": 4,
+        "fov": 110,
+        "mode": "Panorama",
+        "latitude": 0.003545632869,
+        "longitude": 1.596554310922,
+      
+      }
+    },
+    {
+      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+      "type": "CameraMovement",
+      "start": 9000,
+      "end": 11000,
+      "parsed": false,
+      "data": {
+        "effect": "Move",
+        "panoIndex": 8,
+        "fov": 110,
+        "mode": "Panorama",
+        "latitude": 0.003545632869,
+        "longitude": 1.596554310922,
+
+      }
+    },
+    {
+      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+      "type": "CameraMovement",
+      "start": 12000,
+      "end": 15000,
+      "parsed": false,
+      "data": {
+        "effect": "Move",
+        "panoIndex": 11,
+        "fov": 110,
+        "mode": "Panorama",
+        "latitude": 0.003545632869,
+        "longitude": 1.596554310922,
+      }
+    },
+    {
+      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+      "type": "CameraMovement",
+      "start": 16000,
+      "end": 18000,
+      "parsed": false,
+      "data": {
+        "effect": "Move",
+        "panoIndex": 4,
+        "fov": 93,
+        "mode": "Panorama",
+        "latitude": 0.003545632869,
+        "longitude": 3.051953968086625,
+      }
+    },
     {
       "uuid": "5ae5b05d-5172-4c72-2fe3-26c822e119d7",
       "type": "UpdateVRPanorama",
-      "start": 500,
+      "start": 20000,
       "end": 81200,
       "parsed": false,
       "data": {

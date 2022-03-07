@@ -1,0 +1,29 @@
+.PlayController-Button {
+  position: fixed;
+  right: 24px;
+  top: 24px;
+}
+
+.PlayController-Panel {
+  position: fixed;
+  height: 42px;
+  width: 340px;
+  background-color: #009688;
+  bottom: 36px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: brown;
+  color: white;
+  height: 100%;
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
