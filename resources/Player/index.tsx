@@ -4,7 +4,7 @@ import { Five, Subscribe } from '@realsee/five'
 
 import { App } from './App'
 import { Controller, ControllerContext } from './Controller'
-import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
+import { CameraMovementData, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
 import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { PlayerConfigs } from './typings'
@@ -69,7 +69,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     )
   }
 
-  async load(vreoUnit: VreoUnit, currentTime = 0) {
+  async load(vreoUnit: VreoUnit, currentTime = 0, preload = false) {
     if (!this.controller.visible) {
       this.controller.setVisible(true)
       // 延迟 500ms 规避跟 DOM 动画冲突
@@ -86,6 +86,38 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     this.controller.vreoUnit = vreoUnit
     this.controller.videoInstance?.pause()
 
+    // 预载逻辑
+    // 是否降低图片分辨率
+    if (this.$five.imageOptions.size && this.configs.imageOptions?.size && this.$five.imageOptions.size > this.configs.imageOptions.size) {
+      this.$five.imageOptions.size = this.configs.imageOptions.size
+    }
+    
+    // 预载数据中的点位
+    if (preload || (preload === undefined && this.configs.autoPreload)) {
+      const panoIndexMap = vreoUnit.keyframes.filter((vreoKeyframe) => {
+        if (vreoKeyframe.type !== VreoKeyframeEnum.CameraMovement) {
+          return false
+        }
+  
+        const data = vreoKeyframe.data as CameraMovementData
+        if (data.panoIndex === undefined) {
+          return false
+        }
+        return true
+      }).reduce((accu: Record<number, boolean>, curr) => {
+        const panoIndex = curr.data.panoIndex as number
+        if (!accu[panoIndex]) {
+          accu[panoIndex] = true
+        }
+        return accu
+      }, {})
+  
+      const panoIndexs = Object.keys(panoIndexMap)
+      for (let i = 0; i < panoIndexs.length; i++) {
+        await this.$five.preloadPano(Number(panoIndexs[i]))
+      }
+    }
+    
     // 新数据载入就绪
     this.emit('loaded', vreoUnit)
     if (vreoUnit.video.url) {

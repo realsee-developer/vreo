@@ -50,65 +50,73 @@ function progressNumber(from: number, to: number, pst: number) {
 export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType, CameraMovementPluginExportType> = (
   five: Five,
 ) => {
-  const move = async (args: Partial<MoveArgs>, duration: number, opts: MoveOpts = { preload: true }) => {
-    if (opts.asyncStartCallback) {
-      opts.asyncStartCallback()
-    }
+  const move = (args: Partial<MoveArgs>, duration: number, opts: MoveOpts = { preload: true }) => {
+    return new Promise<boolean>(async (resolve, reject) => {
 
-    if (args.mode && args.mode !== five.currentMode) {
-      await new Promise((resolve) => {
-        if (!args.mode) return
-        five.once('modeChange', (mode) => {
-          five.once('initAnimationEnded', () => {
-            if (mode === args.mode) {
-              resolve(true)
-            }
+      if (opts.asyncStartCallback) {
+        opts.asyncStartCallback()
+      }
+
+      if (five.panoIndex === undefined) {
+        return reject(false)
+      }
+
+      if (args.mode && args.mode !== five.currentMode) {
+        await new Promise((resolve) => {
+          if (!args.mode) return
+          five.once('modeChange', (mode) => {
+            five.once('initAnimationEnded', () => {
+              if (mode === args.mode) {
+                resolve(true)
+              }
+            })
+          })
+          five.changeMode(args.mode, {
+            fov: args.fov || undefined,
+            latitude: args.latitude || undefined,
+            longitude: args.longitude || undefined,
+            panoIndex: args.panoIndex || undefined,
           })
         })
-        five.changeMode(args.mode, {
-          fov: args.fov || undefined,
-          latitude: args.latitude || undefined,
-          longitude: args.longitude || undefined,
-          panoIndex: args.panoIndex || undefined,
-        })
-      })
-    }
+      }
 
-    if (args.mode === Five.Mode.Floorplan) {
-      return true
-    }
+      if (args.mode === Five.Mode.Floorplan) {
+        return resolve(true)
+      }
 
-    if (opts.preload && args.panoIndex !== undefined && args.panoIndex !== five.panoIndex) {
-      await five.preloadPano(args.panoIndex)
-    }
+      if (opts.preload && args.panoIndex !== undefined && args.panoIndex !== five.panoIndex) {
+        await five.preloadPano(args.panoIndex)
+      }
 
-    if (opts.asyncEndCallback) {
-      opts.asyncEndCallback()
-    }
+      if (opts.asyncEndCallback) {
+        opts.asyncEndCallback()
+      }
 
-    if (
-      args.panoIndex === undefined &&
-      args.fov === undefined &&
-      args.latitude === undefined &&
-      args.longitude === undefined
-    ) {
-      return true
-    }
-    return await new Promise<boolean>((resolve, reject) => {
+      if (
+        args.panoIndex === undefined &&
+        args.fov === undefined &&
+        args.latitude === undefined &&
+        args.longitude === undefined
+      ) {
+        return resolve(true)
+      }
+
+
       const panoIndex = args.panoIndex !== undefined ? args.panoIndex : five.panoIndex
+
       if (panoIndex !== undefined) {
-        const movePanoOptions: MovePanoOptions = {
+        const movePanoOptions: MovePanoOptions = Object.assign(args, {
           duration, // 移动耗时
           moveEndCallback: () => resolve(true), // 移动结束
-          moveCancelCallback: () => reject(false), // 移动开始
-          effect: 'fade',
-        }
-        five.moveToPano(
+          moveCancelCallback: () => {
+            resolve(true)
+          }, // 移动开始
+          // effect: args.transEffect || 'fade',
+        })
+
+        await five.moveToPano(
           panoIndex,
-          Object.assign(
-            movePanoOptions,
-            args,
-          ),
+          movePanoOptions,
         )
       } else {
         reject(false)

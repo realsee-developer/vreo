@@ -39,7 +39,8 @@ export interface CameraMovementOptsCallback {
 export type MoveArgs = {
   mode: Mode
   panoIndex: number
-} & Pose & Pick<MovePanoOptions, 'effect'>
+  transEffect?: "fly" | "fade" | "instant"
+} & Pose
 
 export type MoveOpts = {
   preload?: boolean
