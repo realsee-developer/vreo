@@ -61,7 +61,7 @@ export declare type VreoKeyframeConfigMap = {
  * 剧本关键帧
  */
 export interface VreoKeyframe {
-    uuid: string;
+    uuid?: string;
     type: VreoKeyframeEnum;
     start: number;
     end: number;
@@ -95,7 +95,7 @@ export declare type VreoKeyframeEvent = {
     [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void;
 } & {
     loaded: (vreoUnit: VreoUnit) => void;
-    paused: () => void;
+    paused: (ended?: boolean) => void;
     playing: () => void;
     unknownKeyframeType: (keyframe: Record<string, any>) => void;
 };
@@ -103,7 +103,8 @@ export declare type VreoKeyframeEvent = {
  * 相机运动
  */
 export declare type CameraMovementData = {
-    effect: CameraMovementEffect;
+    effect?: CameraMovementEffect;
+    transEffect?: "fly" | "fade" | "instant";
     mode: Mode;
     panoIndex: number;
     loop?: boolean;

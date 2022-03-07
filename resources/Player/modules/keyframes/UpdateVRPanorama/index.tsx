@@ -6,48 +6,51 @@ import { UpdateVRPanoramaData, VreoKeyframe, VreoKeyframeEnum } from '../../../.
 export function UpdateVRPanorama() {
   const controller = useController()
   const five = useFiveInstance()
-  const rawRef = React.useRef<string[] | null>(null)
-  const workRef = React.useRef<Work | null>(null)
+  const deafultWorkRef = React.useRef<string[] | null>(null)
+  const updateWorkRef = React.useRef<Work | null>(null)
 
   const restoreCallback = React.useCallback(() => {
-    if (rawRef.current) {
-      const work = parseWork(rawRef.current)
+
+    if (deafultWorkRef.current) {
+      const work = parseWork(deafultWorkRef.current)
       five.load(work)
     }
    
-    workRef.current = null
+    updateWorkRef.current = null
   }, [])
 
   const pausedCallback = React.useCallback(() => {
-    if (rawRef.current) {
-      const work = parseWork(rawRef.current)
+    if (deafultWorkRef.current) {
+      const work = parseWork(deafultWorkRef.current)
+      Object.assign(window, {$rawWork: work})
       five.load(work)
     }
   }, [])
 
   const playingCallback = React.useCallback(() => {
-    if (!workRef.current) {
+    if (!updateWorkRef.current) {
       return
     }
-    five.load(workRef.current)
+    five.load(updateWorkRef.current)
   }, [])
 
   React.useEffect(() => {
     const callback = (keyframe: VreoKeyframe) => {
-      if (!rawRef.current) {
-        rawRef.current = five.work.raw.works
+      if (!deafultWorkRef.current) {
+        deafultWorkRef.current = five.work.raw.works
       }
 
       const data = keyframe.data as UpdateVRPanoramaData
 
       // 如果数据中有新 work 数据，则直接载入
       if (data.work) {
-        workRef.current = parseWork(data.work)
-        five.load(workRef.current)
+        updateWorkRef.current = parseWork(data.work)
+        five.load(updateWorkRef.current)
         return
       }
 
       const lastRawWork = five.work?.raw.works[0]
+
 
       // 动态场景：不提供完成的签名数据，需重新整理
       if (data.dynamic_scene && !data.panorama) {
@@ -59,8 +62,10 @@ export function UpdateVRPanorama() {
         delete data.dynamic_scene
       }
 
-      workRef.current = parseWork([lastRawWork, data])
-      five.load(workRef.current)
+      Object.assign(window, {$work1: JSON.parse(lastRawWork), $work2: data, parseWork: parseWork})
+
+      updateWorkRef.current = parseWork([lastRawWork, data])
+      five.load(updateWorkRef.current)
     }
 
     controller.on(VreoKeyframeEnum.UpdateVRPanorama, callback)

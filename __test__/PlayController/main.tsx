@@ -1,21 +1,12 @@
-import * as React from 'react'
-import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
+import * as React from 'react'
+import ReactDOM from 'react-dom'
+import { ResponsiveFullScreenFiveCanvas } from '../components/ResponsiveFullScreenFiveCanvas'
+import work from './work.json'
 
-import work  from './data/works/work3.json'
-
-import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
-
-import { App } from './AppReact'
-
-import './index.css'
-
-import '../stylesheets/default.css'
-import '../stylesheets/custom/SpatialScenePanel.css'
-
-import { VreoProvider } from '../resources/react'
-import { SpatialScenePanel } from '../resources/Player/custom/SpatialScenePanel'
+import '../index.css'
+import { App } from './App'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },
@@ -32,11 +23,7 @@ ReactDOM.render(
   <React.StrictMode>
     <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
       <ResponsiveFullScreenFiveCanvas />
-      <VreoProvider configs={{
-        customKeyframes: [SpatialScenePanel]
-      }}>
-        <App />
-      </VreoProvider>
+      <App />
     </FiveProvider>
   </React.StrictMode>,
   document.getElementById('root')
