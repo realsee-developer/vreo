@@ -9,7 +9,7 @@ export class VideoAgentScene {
   renderer = new THREE.WebGLRenderer({ alpha: true })
   container: HTMLElement
 
-  constructor(container: HTMLElement, needRender = true) {
+  constructor(container: HTMLElement, needRender = true, options: { videoInstance?: HTMLVideoElement, audioInstance?: HTMLAudioElement } = {}) {
     this.container = container
     this.camera.position.set(0, 0, 10)
     this.camera.lookAt(0, 0, 0)
@@ -22,7 +22,7 @@ export class VideoAgentScene {
     this.renderer.setSize(state.width * window.devicePixelRatio, state.height * window.devicePixelRatio)
     domElement.setAttribute('style', `width: ${state.width}px;height: ${state.height}px;`)
 
-    this.videoAgentMesh = new VideoAgentMesh(480, 270, 1, 1)
+    this.videoAgentMesh = new VideoAgentMesh(480, 270, 1, 1, options)
     if (needRender) {
       container.append(domElement)
       this.scene.add(this.videoAgentMesh)
