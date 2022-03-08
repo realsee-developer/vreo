@@ -64,6 +64,7 @@ const cacheInstance: {
 
 export interface VideoAgentMeshOptions {
   videoInstance?: HTMLVideoElement
+  audioInstance?: HTMLAudioElement
 }
 
 /**
@@ -134,10 +135,9 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.freeze = false
     this.paused = true
 
-    {
+    if (!options.audioInstance) {
       if (cacheInstance.audioInstance) {
         this.audioInstance = cacheInstance.audioInstance
-
       } else {
         const audioInstance = document.createElement('audio')
         audioInstance.crossOrigin = ''
@@ -151,7 +151,8 @@ export class VideoAgentMesh extends THREE.Mesh {
         this.audioInstance = audioInstance
         cacheInstance.audioInstance = audioInstance
       }
-
+    } else {
+      this.audioInstance = options.audioInstance
     }
 
     makeObservable(this, { paused: observable })
