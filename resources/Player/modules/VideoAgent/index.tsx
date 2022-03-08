@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { useController } from '../../hooks'
+import { VideoAgentMeshOptions } from './VideoAgentMesh'
 import { VideoAgentScene } from './VideoAgentScene'
 
-export function VideoAgent(props: { onClick?: () => void }) {
+export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMeshOptions }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const controller = useController()
 
@@ -12,7 +13,7 @@ export function VideoAgent(props: { onClick?: () => void }) {
       console.warn('"VideoAgentScene" 重复初始化，已被过滤 ...')
       return
     }
-    const videoAgentScene = new VideoAgentScene(ref.current)
+    const videoAgentScene = new VideoAgentScene(ref.current, true, props.options || {})
     controller.videoAgentScene = videoAgentScene
 
     return () => {

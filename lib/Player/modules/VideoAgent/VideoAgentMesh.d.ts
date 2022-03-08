@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 export interface VideoAgentMeshOptions {
     videoInstance?: HTMLVideoElement;
+    audioInstance?: HTMLAudioElement;
 }
 /**
  * 视频经纪人MESH

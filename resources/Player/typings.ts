@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Subscribe, Five } from '@realsee/five';
 
 import { VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit'
+import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 
 export interface PlayerConfigs {
   containter?: ReactDOM.Container
@@ -15,6 +16,8 @@ export interface PlayerConfigs {
     videoEffect?: HTMLVideoElement
     modelTVVideo?: HTMLVideoElement
   }
+
+  videoAgentMeshOptions?: VideoAgentMeshOptions
   /**
    * 如果需要在 底部面板添加自定义内容，可以传递个 React 组件。
    */
