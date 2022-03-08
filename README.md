@@ -477,9 +477,23 @@ const creatVideo = (): HTMLVideoElement => {
   return video
 }
 
+const creatAudio = (): HTMLVideoElement => {
+  const audio = document.createElement('audio')
+
+  video.setAttribute('autoplay', 'true')
+
+  return audio
+}
+
 // 提前创建 Video
+// 视频特效
 const videoEffect = creatVideo()
+// 视频广告
 const modelTVVideo = creatVideo()
+// 视频数字人形象
+const videoInstance = creatVideo()
+// 无数字人，仅音频
+const audioInstance = createAudio()
 
 // 微信限制：需在 WeixinJSBridgeReady 回调中触发一次
 document.addEventListener(
@@ -487,6 +501,8 @@ document.addEventListener(
   () => {
     videoEffect.play()
     modelTVVideo.play()
+    videoInstance.play()
+    audioInstance.play
   },
   false
 )
@@ -497,6 +513,10 @@ const vreoplayer = new Player(five, {
     videoEffect, // 视频特效 时依赖的 HTMLVideoElement
     modelTVVideo, // 视频广告 时依赖的 HTMLVideoElement
   },
+  videoAgentMeshOptions: {
+    videoInstance,
+    audioInstance,
+  }
 })
 ```
 

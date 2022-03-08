@@ -16,6 +16,7 @@ import { VideoAgent } from './modules/VideoAgent'
 import { BgMusic } from './modules/keyframes/BgMusic'
 
 const AppView = observer(({ controller }: { controller: Controller }) => {
+  
   return (
     <div
       className={classNames('vreo-panel', {
@@ -34,6 +35,7 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
               controller.setPlaying(true)
             }
           }}
+          options={controller.configs?.videoAgentMeshOptions || {}}
         />
         <Prompter />
         {controller.configs?.customPanelChildren}
