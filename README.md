@@ -480,7 +480,7 @@ const creatVideo = (): HTMLVideoElement => {
 const creatAudio = (): HTMLVideoElement => {
   const audio = document.createElement('audio')
 
-  video.setAttribute('autoplay', 'true')
+  audio.setAttribute('autoplay', 'true')
 
   return audio
 }
