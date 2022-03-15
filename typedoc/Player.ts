@@ -6,7 +6,7 @@ export type { PlayerConfigs, CustomVreoKeyframeProps, VreoSubscribe} from '../re
 export type {
   VreoKeyframeEnum, VreoKeyframe, VreoVideo, VreoUnit,
   VreoKeyframeConfigMap as VreoKeyframeMap, VreoKeyframeEvent, CameraMovementData,
-  PrompterData, UpdateVRPanoramaData, Vertex,
+  PrompterData, UpdateVRPanoramaData, Vertex, Vertexs,
   QuadrangleVertexs, ModelVideoData, PanoTextLabelData,
   PanoTagEnum, PanoTagData, PanoEffectEnum, PanoEffectData,
   InfoPanelTypeEnum, InfoPanelStyleEnum, InfoPanelData, VideoEffectData, CustomData,

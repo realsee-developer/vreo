@@ -69,7 +69,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     )
   }
 
-  async load(vreoUnit: VreoUnit, currentTime = 0, preload = false) {
+  async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false) {
+    if (force) {
+      vreoUnit = JSON.parse(JSON.stringify(vreoUnit))
+    }
     if (!this.controller.visible) {
       this.controller.setVisible(true)
       // 延迟 500ms 规避跟 DOM 动画冲突
@@ -120,6 +123,8 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     
     // 新数据载入就绪
     this.emit('loaded', vreoUnit)
+    this.controller.emit('loaded', vreoUnit)
+
     if (vreoUnit.video.url) {
       if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
         this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000

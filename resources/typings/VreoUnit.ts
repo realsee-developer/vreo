@@ -164,9 +164,13 @@ export interface Vertex {
 }
 
 /**
- * 四个顶点元组
+ * 矩形顶点
  */
 export type QuadrangleVertexs = [Vertex, Vertex, Vertex, Vertex]
+/**
+ * 顶点数组
+ */
+export type Vertexs = Vertex[]
 
 /**
  * 视频广告
@@ -183,7 +187,8 @@ export type ModelVideoData = {
   /**
    * 视频映射在模型中的顶点
    */
-  vertexs: QuadrangleVertexs
+  vertexs: QuadrangleVertexs | Vertexs
+  matrixWorld?: number[]
 }
 
 /**

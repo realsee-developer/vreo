@@ -6,7 +6,7 @@ export declare class Player extends Subscribe<VreoKeyframeEvent> {
     private controller;
     configs: Readonly<PlayerConfigs>;
     constructor(five: Five, configs?: Partial<PlayerConfigs>);
-    load(vreoUnit: VreoUnit, currentTime?: number, preload?: boolean): Promise<boolean>;
+    load(vreoUnit: VreoUnit, currentTime?: number, preload?: boolean, force?: boolean): Promise<boolean>;
     get paused(): boolean;
     play(): boolean;
     pause(): void;

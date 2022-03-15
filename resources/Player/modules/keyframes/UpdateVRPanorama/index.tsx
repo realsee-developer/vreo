@@ -9,16 +9,19 @@ export function UpdateVRPanorama() {
   const deafultWorkRef = React.useRef<string[] | null>(null)
   const updateWorkRef = React.useRef<Work | null>(null)
 
+  // 恢复默认 VR
   const restoreCallback = React.useCallback(() => {
+    // 先清理掉 之前的 VR 数据备份
+    updateWorkRef.current = null
 
     if (deafultWorkRef.current) {
       const work = parseWork(deafultWorkRef.current)
       five.load(work)
     }
    
-    updateWorkRef.current = null
   }, [])
 
+  // 暂停时： 恢复默认 VR 
   const pausedCallback = React.useCallback(() => {
     if (deafultWorkRef.current) {
       const work = parseWork(deafultWorkRef.current)
@@ -27,6 +30,7 @@ export function UpdateVRPanorama() {
     }
   }, [])
 
+  // 播放时：如果暂停前有更新 VR 需要还原
   const playingCallback = React.useCallback(() => {
     if (!updateWorkRef.current) {
       return
@@ -89,7 +93,7 @@ export function UpdateVRPanorama() {
       controller.off('paused', pausedCallback)
       controller.off('playing', playingCallback)
     }
-  }, [controller])
+  }, [])
 
   return <></>
 }
