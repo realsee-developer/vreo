@@ -11,8 +11,12 @@ export declare const VreoProvider: React.FC<VreoProviderProps>;
 export interface VreoActionCallbacks {
     /**
      * 载入剧本数据。
+     * @param vreoUnit 剧本数据
+     * @param currentTime 开始时间戳
+     * @param preload 是否开启预载
+     * @param force 是否强制载入
      */
-    load: (vreoUnit: VreoUnit, currentTime?: number) => Promise<boolean>;
+    load: (vreoUnit: VreoUnit, currentTime?: number, preload?: boolean, force?: boolean) => Promise<boolean>;
     /**
      * 播放。
      */

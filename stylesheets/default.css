@@ -131,36 +131,44 @@
   width: 250px;
   font-size: 14px;
   opacity: 1;
-  transition: opacity 0.5s;
+  transition: opacity 0.1s;
 }
+
 .vreo-prompter--audio {
   top: 72px;
   left: 64px;
 }
+
 .vreo-prompter-innerText {
   position: absolute;
   left: 0;
   top: 0;
   padding-right: 10px;
 }
+
+.vreo-prompter--audio .vreo-prompter-innerText {
+  padding-right: 0;
+  text-align: center;
+  width: 100%;
+}
 .vreo-prompter--hidden {
   opacity: 0;
 }
 
-.vreo-prompter-text-transition-enter-active {
+/* .vreo-prompter-text-transition-enter-active {
   opacity: 0;
-}
+} */
 
-.vreo-prompter-text-transition-enter-done {
+/* .vreo-prompter-text-transition-enter-done {
   opacity: 1;
   transition: opacity 1000ms;
-}
-
+} */
+/* 
 .vreo-prompter-text-transition-exit-active,
 .vreo-prompter-text-transition-exit-done {
   opacity: 0;
   transition: opacity 500ms;
-}
+} */
 
 .VideoEffect {
   position: absolute;

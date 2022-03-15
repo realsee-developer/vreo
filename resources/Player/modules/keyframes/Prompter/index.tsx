@@ -2,7 +2,6 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { useController } from '../../../hooks'
 
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 
 export function Prompter() {
@@ -48,19 +47,9 @@ export function Prompter() {
         'vreo-prompter--audio': controller.isAudio,
       })}
     >
-      {text ? (
-        /* @warning "index.js:1 Warning: findDOMNode is deprecated in StrictMode." */
-        <TransitionGroup className="vreo-prompter-text">
-          <CSSTransition
-            key={text}
-            classNames="vreo-prompter-text-transition"
-            timeout={500}
-            addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
-          >
-            <div className="vreo-prompter-innerText">{text}</div>
-          </CSSTransition>
-        </TransitionGroup>
-      ) : undefined}
+      <div className="vreo-prompter-text">
+        <div className="vreo-prompter-innerText">{text}</div>
+      </div>
     </div>
   )
 }
