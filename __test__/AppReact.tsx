@@ -19,7 +19,6 @@ export function App() {
             return
           }
           show()
-
           if (!loaded.current) {
             loaded.current = true
             load(data as VreoUnit)
