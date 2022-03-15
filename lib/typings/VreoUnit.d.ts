@@ -147,9 +147,13 @@ export interface Vertex {
     z: number;
 }
 /**
- * 四个顶点元组
+ * 矩形顶点
  */
 export declare type QuadrangleVertexs = [Vertex, Vertex, Vertex, Vertex];
+/**
+ * 顶点数组
+ */
+export declare type Vertexs = Vertex[];
 /**
  * 视频广告
  */
@@ -165,7 +169,8 @@ export declare type ModelVideoData = {
     /**
      * 视频映射在模型中的顶点
      */
-    vertexs: QuadrangleVertexs;
+    vertexs: QuadrangleVertexs | Vertexs;
+    matrixWorld?: number[];
 };
 /**
  * 全景文本标签
