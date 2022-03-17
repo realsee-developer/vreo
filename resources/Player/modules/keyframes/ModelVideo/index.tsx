@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as THREE from 'three'
+import { useController, useFiveInstance } from '../../../hooks'
 import { ModelTVVideoPlugin } from '../../../../fivePlugins/ModelTVVideoPlugin'
 import { createTransMatrix } from '../../../../shared-utils/createTransMatrix'
 import { ModelVideoData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
-import { useController, useFiveInstance } from '../../../hooks'
 
 export function ModelVideo() {
   const controller = useController()
