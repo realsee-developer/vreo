@@ -26,7 +26,8 @@ export function Prompter() {
 
       ref.current = setTimeout(() => {
         setHidden(true)
-        setTimeout(() => setText(''), 500)
+        setText('')
+        // setTimeout(() => setText(''), 500)
 
         if (ref.current) clearTimeout(ref.current)
         ref.current = null
