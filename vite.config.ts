@@ -8,12 +8,13 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   build: {
-    outDir: 'vreo',
+    outDir: 'docs/demo',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
         react: resolve(__dirname, 'index-react.html'),
         dynamic: resolve(__dirname, 'index-react-dynamic.html'),
+        examples: resolve(__dirname, 'examples.html'),
       }
     }
   }
