@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom'
 import { FiveInitArgs, parseWork } from '@realsee/five'
 import { createFiveProvider } from '@realsee/five/react'
 
-import work  from './data/works/work3.json'
+// import work  from './data/works/work3.json'
+
+import {work} from './data/works/80Lykj3NW2RGgMrG06'
 
 import { ResponsiveFullScreenFiveCanvas } from './components/ResponsiveFullScreenFiveCanvas'
 
