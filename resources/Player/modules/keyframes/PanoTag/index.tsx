@@ -2,13 +2,21 @@ import classNames from 'classnames'
 import * as React from 'react'
 import { Vector3 } from 'three'
 import { useController, useFiveInstance, useFiveProject2d } from '../../../hooks'
-import { PanoTagData, PanoTagEnum, Vertex, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
+import {
+  PanoTagData,
+  PanoTagEnum,
+  PanoTagStyleEnum,
+  Vertex,
+  VreoKeyframe,
+  VreoKeyframeEnum,
+} from '../../../../typings/VreoUnit'
 
 export function PanoTag() {
   const [state, setState] = React.useState<{
     vertex: Vertex
     text?: string
     type: PanoTagEnum
+    style?: PanoTagStyleEnum
     imgUrl?: string
   } | null>(null)
 
@@ -30,6 +38,7 @@ export function PanoTag() {
       const vertex = panoTagData.vertex
       const { x, y, z } = panoTagData.vertex
       const res = project2d(new Vector3(x, y, z))
+
       if (!res) return
       const { x: left, y: top } = res
       setState({
@@ -37,6 +46,7 @@ export function PanoTag() {
         text: panoTagData.text || PanoTagEnum.Text,
         type: panoTagData.type,
         imgUrl: panoTagData.imgUrl,
+        style: panoTagData.style || PanoTagStyleEnum.Growth,
       })
       setPos({ left, top })
       timeoutRef.current = setTimeout(() => {
@@ -92,6 +102,25 @@ export function PanoTag() {
     return undefined
   })()
 
+  if (state?.style === PanoTagStyleEnum.Expand) {
+    return (
+      <>
+        <div
+          className={classNames('PanoTag', {
+            'PanoTag--expand': true,
+            'PanoTag--notHidden': state,
+          })}
+          style={{
+            left: (pos?.left || 0) + 'px',
+            top: (pos?.top || 0) + 'px',
+          }}
+        >
+          <div className={'PanoTag-box PanoTag-box--' + (state?.type || '')}>{boxContent}</div>
+          <div className="PanoTag-guideline"></div>
+        </div>
+      </>
+    )
+  }
   return (
     <>
       <div
@@ -109,17 +138,7 @@ export function PanoTag() {
             <span className="PanoTag-slashline"></span>
             <span className="PanoTag-straightline"></span>
           </span>
-          <div
-            onClick={() => {
-              if (state?.imgUrl) {
-                // @TODO
-                // setDrawerVisible(true)
-              }
-            }}
-            className={'PanoTag-box PanoTag-box--' + (state?.type || '')}
-          >
-            {boxContent}
-          </div>
+          <div className={'PanoTag-box PanoTag-box--' + (state?.type || '')}>{boxContent}</div>
         </div>
       </div>
     </>

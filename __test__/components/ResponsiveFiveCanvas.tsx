@@ -23,8 +23,8 @@ export function ResponsiveFiveCanvas() {
     const updateState = ({ width, height }: { width: number; height: number }) => setState({ width, height })
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0]
-      const width = window.innerWidth
-      const height = window.innerHeight
+      const width = entry.target.clientWidth
+      const height = entry.target.clientHeight
       updateState({ width, height })
     })
 

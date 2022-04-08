@@ -208,8 +208,23 @@ export enum PanoTagEnum {
   Image = 'Image',
 }
 
+/**
+ * 标签样式种类
+ */
+export enum PanoTagStyleEnum {
+  /**
+   * 生长动画：默认值
+   */
+  Growth = 'Growth',
+  /**
+   * 展开动画
+   */
+  Expand = 'Expand',
+}
+
 export type PanoTagData = {
   type: PanoTagEnum
+  style: PanoTagStyleEnum
   text: string
   vertex: Vertex
   imgUrl?: string

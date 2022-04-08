@@ -196,7 +196,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.videoInstance.addEventListener('timeupdate', onStart, false)
   }
 
-  async play(videoUrl = '') {
+  async play(videoUrl = '', currentTime = 0) {
     videoUrl = videoUrl || ''
     if (!videoUrl) {
       if (this.videoUrl) await this.videoInstance.play()
@@ -205,7 +205,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     }
 
     if (videoUrl === this.videoUrl) {
-      this.videoInstance.currentTime = 0
+      this.videoInstance.currentTime = currentTime
       await this.videoInstance.play()
       return true
     }
@@ -216,7 +216,7 @@ export class VideoAgentMesh extends THREE.Mesh {
 
     return await new Promise((resolve) =>
       setTimeout(async () => {
-        this.videoInstance.currentTime = 0
+        this.videoInstance.currentTime = currentTime
         await this.videoInstance.play()
         resolve(true)
       }, 20),
