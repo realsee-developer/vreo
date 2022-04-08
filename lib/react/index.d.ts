@@ -20,7 +20,7 @@ export interface VreoActionCallbacks {
     /**
      * 播放。
      */
-    play: () => void;
+    play: (currentTime?: number) => void;
     /**
      * 暂停。
      */
@@ -42,7 +42,7 @@ export declare function useVreoAction(): {
     load: (vreoUnit: VreoUnit, currentTime?: number | undefined) => Promise<boolean>;
     pause: () => void;
     show: () => void;
-    play: () => boolean;
+    play: (currentTime?: number | undefined) => boolean;
     hide: () => void;
     dispose: () => void;
 };

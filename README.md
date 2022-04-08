@@ -551,4 +551,4 @@ vreoplayer.load(vreoUnit, 0, true)
 
 ## API 文档
 
-详细的 API 文档请参考：[Vreo API](https://realsee-developer.github.io/vreo/index.html) 。
+详细的 API 文档请参考：[Vreo API](https://realsee.js.org/vreo/index.html) 。
