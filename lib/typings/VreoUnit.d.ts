@@ -187,8 +187,22 @@ export declare enum PanoTagEnum {
     Text = "Text",
     Image = "Image"
 }
+/**
+ * 标签样式种类
+ */
+export declare enum PanoTagStyleEnum {
+    /**
+     * 生长动画：默认值
+     */
+    Growth = "Growth",
+    /**
+     * 展开动画
+     */
+    Expand = "Expand"
+}
 export declare type PanoTagData = {
     type: PanoTagEnum;
+    style: PanoTagStyleEnum;
     text: string;
     vertex: Vertex;
     imgUrl?: string;
