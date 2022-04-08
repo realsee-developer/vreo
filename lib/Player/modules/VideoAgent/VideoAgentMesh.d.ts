@@ -24,7 +24,7 @@ export declare class VideoAgentMesh extends THREE.Mesh {
      */
     constructor(width: number, height: number, widthSegments: number, heightSegments: number, options?: VideoAgentMeshOptions);
     private update;
-    play(videoUrl?: string): Promise<unknown>;
+    play(videoUrl?: string, currentTime?: number): Promise<unknown>;
     /**
      * 转成毫秒，保障精准度
      */
