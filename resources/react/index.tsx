@@ -54,7 +54,7 @@ export interface VreoActionCallbacks {
   /**
    * 播放。
    */
-  play: () => void
+  play: (currentTime?: number) => void
   /**
    * 暂停。
    */
@@ -81,7 +81,7 @@ export function useVreoAction() {
     [player]
   )
 
-  const play = React.useCallback(() => player.play(), [player])
+  const play = React.useCallback((currentTime?: number) => player.play(currentTime || 0), [player])
   const pause = React.useCallback(() => player.pause(), [player])
   const show = React.useCallback(() => player.show(), [player])
   const hide = React.useCallback(() => player.hide(), [player])

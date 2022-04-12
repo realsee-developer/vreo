@@ -2,8 +2,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
@@ -31,7 +31,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 150px;
   color: white;
   transition: transform 0.5s;
@@ -193,6 +193,27 @@
 .PanoTag {
   position: fixed;
   opacity: 0;
+}
+
+.PanoTag--expand {
+  transform: translate(-50%, -50%);
+  color: white;
+  min-width: 150px;
+  max-width: 200px;
+  margin-top: 4px;
+}
+
+.PanoTag--expand .PanoTag-box.PanoTag-box--Text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.PanoTag-guideline {
+  width: 100%;
+  background: linear-gradient(45deg, transparent 20% ,white, transparent 80%);
+  height: 3px;
 }
 
 .PanoTag--notHidden {
@@ -582,7 +603,7 @@
   position: relative;
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1080px) {
   .vreo-PopUp-inner {
     width: 678px;
     height: 620px;

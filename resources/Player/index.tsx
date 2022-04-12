@@ -129,7 +129,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
       if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
         this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
       }
-      await this.controller.videoAgentScene?.videoAgentMesh.play(vreoUnit.video.url)
+      await this.controller.videoAgentScene?.videoAgentMesh.play(vreoUnit.video.url, currentTime / 1000)
       this.play()
     }
     this.controller.run((type, keyframe) => this.emit(type, keyframe))
@@ -140,8 +140,12 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     return !this.controller.playing
   }
 
-  play() {
+  play(currentTime?: number) {
     if (this.controller.playing) return true
+    if (currentTime && this.controller.videoInstance) {
+      // Object.assign(window, {$vreoController: this.controller})
+      this.controller.videoInstance.currentTime = currentTime / 1000
+    }
     this.controller.setPlaying(true)
     return true
   }

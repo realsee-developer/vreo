@@ -36,7 +36,7 @@ export const data = {
       "data": {
         "url": "//vrlab-public.ljcdn.com/release/seesay/tools/___2b82e40ca6a7d298cc6f4134a80ba58e.png",
         "type": "Image",
-        "style": "PopUp"
+        // "style": "PopUp"
       }
     },
     {
@@ -48,7 +48,7 @@ export const data = {
       "data": {
         "url": "//vrlab-public.ljcdn.com/release/seesay/tools/___6b581b51cf12461442a31b3aef9aa504.jpg",
         "type": "Image",
-        "style": "PopUp"
+        // "style": "PopUp"
       }
     },
     {
@@ -1354,7 +1354,7 @@ export const data = {
       "data": {
         "url": "//vrlab-public.ljcdn.com/release/seesay/tools/4___35fe05bbba927f9dedee4de525d7394f.jpg",
         "type": "Image",
-        "style": "PopUp"
+        // "style": "PopUp"
       }
     },
     {
