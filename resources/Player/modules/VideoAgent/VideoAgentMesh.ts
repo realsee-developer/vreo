@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
+import AudioLike from '../../../shared-utils/AduioLike'
 
 const vertexShader = `
 varying vec2 vUv;
@@ -76,14 +77,21 @@ export class VideoAgentMesh extends THREE.Mesh {
   freeze: boolean
   paused: boolean
   audioInstance: HTMLAudioElement
+  audioLikeInstance: AudioLike
   $removeEventListener: () => void
 
-  get videoInstance(): HTMLAudioElement {
+  get videoInstance(): HTMLAudioElement | AudioLike {
+    if (!this.videoUrl) {
+      return this.audioLikeInstance
+    }
+
     if (this.videoUrl?.endsWith('mp3')) {
       return this.audioInstance
     }
+
     const uniforms = (this.material as THREE.ShaderMaterial).uniforms
     const videoInstance = uniforms.map.value.image as HTMLVideoElement
+
     return videoInstance
   }
 
@@ -155,6 +163,8 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.audioInstance = options.audioInstance
     }
 
+    this.audioLikeInstance = new AudioLike()
+
     makeObservable(this, { paused: observable })
 
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
@@ -172,6 +182,7 @@ export class VideoAgentMesh extends THREE.Mesh {
 
 
   private async update(videoUrl: string) {
+
     if (this.videoUrl === videoUrl) {
       return
     }
@@ -196,8 +207,18 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.videoInstance.addEventListener('timeupdate', onStart, false)
   }
 
-  async play(videoUrl = '', currentTime = 0) {
+  async play(videoUrl = '', currentTime = 0, duration?: number) {
     videoUrl = videoUrl || ''
+    if (duration && !videoUrl) {
+      if (this.currentTime) {
+        this.videoInstance.currentTime = currentTime
+      }
+      (this.videoInstance as AudioLike).duration = duration
+      this.videoUrl = ''
+      this.videoInstance.play()
+      return true
+    }
+
     if (!videoUrl) {
       if (this.videoUrl) await this.videoInstance.play()
       else console.warn('警告：视频资源未初始化。')

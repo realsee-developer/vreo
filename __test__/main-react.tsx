@@ -18,6 +18,7 @@ import '../stylesheets/custom/SpatialScenePanel.css'
 
 import { VreoProvider } from '../resources/react'
 import { SpatialScenePanel } from '../resources/Player/custom/SpatialScenePanel'
+import AudioLike from '../resources/shared-utils/AduioLike'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },
@@ -43,3 +44,33 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
+
+
+const audioLike = new AudioLike({duration: 8000})
+
+const state = {
+  start: 0,
+   end: 0
+}
+
+Object.assign(window, {$audioLike: audioLike})
+audioLike.addEventListener('play', () => {
+  state.start = performance.now()
+  console.log('00 --- play', state.start)
+
+  // console.log('play', audioLike.currentTime, audioLike.duration)
+})
+audioLike.addEventListener('playing', () => {
+  // console.log('playing', audioLike.currentTime, audioLike.duration)
+})
+audioLike.addEventListener('pause', () => {
+  // console.log('paused', audioLike.currentTime, audioLike.duration)
+})
+audioLike.addEventListener('ended', () => {
+  // console.log('ended', audioLike.currentTime, audioLike.duration)
+  state.end = performance.now()
+
+  // console.log('duration', state.end - state.start)
+  console.log('+00 --- play', state.end, state.end - state.start)
+
+})
