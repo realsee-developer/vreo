@@ -5,7 +5,6 @@ import { useController, useFiveInstance } from '../../../hooks'
 import { CSS3DRenderPlugin } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
 import ReactDOM from 'react-dom'
 import * as THREE from 'three'
-import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer'
 
 
 export function PanoTextLabel() {
@@ -56,10 +55,9 @@ export function PanoTextLabel() {
       const wrapperLength = 200
       const wrapperWidth = 30
       const points = calcPoints(centerPoint, wrapperLength, wrapperWidth)
-      let container: void | { container: HTMLElement; dispose: () => void; css3DObject: CSS3DObject; render?: (() => void) | undefined }
 
       if (!ref.current) ref.current = CSS3DRenderPlugin(five)
-      container = ref.current.create3DDomContainer(points)
+      const container = ref.current.create3DDomContainer(points)
       const css3DObject = container?.css3DObject
       // 将获取的mesh进行旋转操作，根据欧拉角去进行mesh的变换
       if(data.quaternion) {
