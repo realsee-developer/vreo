@@ -91,47 +91,56 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     // 预载逻辑
     // 是否降低图片分辨率
-    if (this.$five.imageOptions.size && this.configs.imageOptions?.size && this.$five.imageOptions.size > this.configs.imageOptions.size) {
+    if (
+      this.$five.imageOptions.size &&
+      this.configs.imageOptions?.size &&
+      this.$five.imageOptions.size > this.configs.imageOptions.size
+    ) {
       this.$five.imageOptions.size = this.configs.imageOptions.size
     }
-    
+
     // 预载数据中的点位
     if (preload || (preload === undefined && this.configs.autoPreload)) {
-      const panoIndexMap = vreoUnit.keyframes.filter((vreoKeyframe) => {
-        if (vreoKeyframe.type !== VreoKeyframeEnum.CameraMovement) {
-          return false
-        }
-  
-        const data = vreoKeyframe.data as CameraMovementData
-        if (data.panoIndex === undefined) {
-          return false
-        }
-        return true
-      }).reduce((accu: Record<number, boolean>, curr) => {
-        const panoIndex = curr.data.panoIndex as number
-        if (!accu[panoIndex]) {
-          accu[panoIndex] = true
-        }
-        return accu
-      }, {})
-  
+      const panoIndexMap = vreoUnit.keyframes
+        .filter((vreoKeyframe) => {
+          if (vreoKeyframe.type !== VreoKeyframeEnum.CameraMovement) {
+            return false
+          }
+
+          const data = vreoKeyframe.data as CameraMovementData
+          if (data.panoIndex === undefined) {
+            return false
+          }
+          return true
+        })
+        .reduce((accu: Record<number, boolean>, curr) => {
+          const panoIndex = curr.data.panoIndex as number
+          if (!accu[panoIndex]) {
+            accu[panoIndex] = true
+          }
+          return accu
+        }, {})
+
       const panoIndexs = Object.keys(panoIndexMap)
       for (let i = 0; i < panoIndexs.length; i++) {
         await this.$five.preloadPano(Number(panoIndexs[i]))
       }
     }
-    
+
     // 新数据载入就绪
     this.emit('loaded', vreoUnit)
     this.controller.emit('loaded', vreoUnit)
 
-    if (vreoUnit.video.url) {
-      if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
-        this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
-      }
-      await this.controller.videoAgentScene?.videoAgentMesh.play(vreoUnit.video.url, currentTime / 1000)
-      this.play()
+    if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
+      this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
     }
+    await this.controller.videoAgentScene?.videoAgentMesh.play(
+      vreoUnit.video.url,
+      currentTime / 1000,
+      vreoUnit.video.duration
+    )
+    this.play()
+
     this.controller.run((type, keyframe) => this.emit(type, keyframe))
     return true
   }
@@ -143,9 +152,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
   play(currentTime?: number) {
     if (this.controller.playing) return true
     if (currentTime && this.controller.videoInstance) {
-      // Object.assign(window, {$vreoController: this.controller})
       this.controller.videoInstance.currentTime = currentTime / 1000
     }
+    Object.assign(window, {$vreoController: this.controller})
+
     this.controller.setPlaying(true)
     return true
   }

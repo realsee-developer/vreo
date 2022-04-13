@@ -114,12 +114,14 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
       this.videoInstance.pause()
       return
     }
+
     if (!this.playing) {
       if (!this.videoInstance?.paused) {
         this.videoInstance?.pause()
       }
       return
     }
+
     if (this.videoInstance?.paused && this.playing) {
       this.videoInstance.play()
     }

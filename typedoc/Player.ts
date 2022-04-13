@@ -11,3 +11,5 @@ export type {
   PanoTagEnum, PanoTagStyleEnum, PanoTagData, PanoEffectEnum, PanoEffectData,
   InfoPanelTypeEnum, InfoPanelStyleEnum, InfoPanelData, VideoEffectData, CustomData,
 } from '../resources/typings/VreoUnit'
+
+export type { AudioLike, AudioLikeEvent } from '../resources/shared-utils/AduioLike'

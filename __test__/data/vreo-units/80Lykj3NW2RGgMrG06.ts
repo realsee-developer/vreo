@@ -6,7 +6,7 @@ export const data = {
   "video": {
     "duration": 249000,
     "start": 0,
-    "end": 106278,
+    "end": 249000,
     "url": "//vrlab-public.ljcdn.com/vrframework/release/audio_merged/Llk9Mhep/aitalk_text/merged.mp4"
   },
   "keyframes": [

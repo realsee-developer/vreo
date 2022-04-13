@@ -33,6 +33,8 @@ export class VideoAgentScene {
   run = () => {
     const domElement = this.renderer.domElement
 
+    // console.log('renderder', this.videoAgentMesh.paused, this.videoAgentMesh.freeze)
+
     // 视频开始 1s 不渲染：规避某些设备黑屏闪烁问题。视频前 2s 是最好是静默的。
     if (!(this.videoAgentMesh.paused || this.videoAgentMesh.freeze) && this.videoAgentMesh.currentTime > 1000) {
       this.renderer.render(this.scene, this.camera)

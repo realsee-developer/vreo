@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import AudioLike from '../../../shared-utils/AduioLike';
 export interface VideoAgentMeshOptions {
     videoInstance?: HTMLVideoElement;
     audioInstance?: HTMLAudioElement;
@@ -12,8 +13,9 @@ export declare class VideoAgentMesh extends THREE.Mesh {
     freeze: boolean;
     paused: boolean;
     audioInstance: HTMLAudioElement;
+    audioLikeInstance: AudioLike;
     $removeEventListener: () => void;
-    get videoInstance(): HTMLAudioElement;
+    get videoInstance(): HTMLAudioElement | AudioLike;
     /**
      *
      * @param width
@@ -24,7 +26,7 @@ export declare class VideoAgentMesh extends THREE.Mesh {
      */
     constructor(width: number, height: number, widthSegments: number, heightSegments: number, options?: VideoAgentMeshOptions);
     private update;
-    play(videoUrl?: string, currentTime?: number): Promise<unknown>;
+    play(videoUrl?: string, currentTime?: number, duration?: number): Promise<unknown>;
     /**
      * 转成毫秒，保障精准度
      */

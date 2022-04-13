@@ -31,7 +31,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     get ready(): boolean;
     get currentTime(): number;
     get currentKeyframes(): VreoKeyframe[];
-    get videoInstance(): HTMLAudioElement | undefined;
+    get videoInstance(): HTMLAudioElement | import("../shared-utils/AduioLike").AudioLike | undefined;
     /**
      * 逐帧任务
      */

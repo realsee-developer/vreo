@@ -30,6 +30,27 @@ export function App() {
       >
         {paused ? '播放' : '暂停'}
       </button>
+
+      {/* <button
+        onClick={async () => {
+          if (!paused) {
+            pause()
+            hide()
+            return
+          }
+          show()
+          if (!loaded.current) {
+            loaded.current = true
+            const silenceData = JSON.parse(JSON.stringify(data)) as VreoUnit
+            silenceData.video.url = ''
+            load(silenceData)
+          } else {
+            play()
+          }
+        }}
+      >
+        {paused ? '播放--静默' : '暂停--静默'}
+      </button> */}
     </div>
   )
 }
