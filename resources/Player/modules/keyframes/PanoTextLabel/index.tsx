@@ -6,17 +6,31 @@ import { CSS3DRenderPlugin } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
 import ReactDOM from 'react-dom'
 import * as THREE from 'three'
 
+// let _point: THREE.Points
+
 // 通过传入中心点确定矩形框架容器的四个点：
 //  1.已知矩形长宽和中心点
 //  2.借助planeGeometry生成垂直相机视角的平面上的四个点
 //  3.通过向量相加，平行四边形法则获取到移动position后的面上四个点
-const calcPoints = (centerPoint: Vector3, cameraPosition: THREE.Vector3, wrapperLength: number, wrapperWidth: number) => {
+const calcPoints = (centerPoint: Vector3, normal: THREE.Vector3 | undefined, wrapperLength: number, wrapperWidth: number) => {
   // 375px对应1m
   const length = wrapperLength / 375
   const width = wrapperWidth / 375
 
   const geometry = new THREE.PlaneGeometry(length, width)
-  geometry.lookAt(cameraPosition)
+  if (normal) {
+    const lookPoint = new THREE.Vector3(normal.x+centerPoint.x, normal.y+centerPoint.y, normal.z+centerPoint.z)
+    geometry.lookAt(lookPoint)
+    console.log('here')
+  }
+  // const pointgeometry = new THREE.Geometry()
+  // pointgeometry.vertices.push(cameraPosition)
+  // const pointmaterial = new THREE.PointsMaterial({
+  //   color: 0xffffff,
+  //   size: 0.4,
+  // })
+  // _point = new THREE.Points(pointgeometry, pointmaterial)
+  // console.log(cameraPosition)
   const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide})
   const plane = new THREE.Mesh(geometry, material)
   const v0 = centerPoint.clone()
@@ -50,10 +64,12 @@ export function PanoTextLabel() {
 
       const {x, y, z} = panoTextLabelData.vertex
       const centerPoint = new Vector3(x, y, z)
+      const normal = new Vector3(panoTextLabelData.normal?.x, panoTextLabelData.normal?.y, panoTextLabelData.normal?.z)
       // 生成传入的四个点，将文本框最大宽度定在200px，最高高度在30px
       const wrapperLength = 200
       const wrapperWidth = 30
-      const points = calcPoints(centerPoint, five.camera.position, wrapperLength, wrapperWidth)
+      const points = calcPoints(centerPoint, panoTextLabelData.normal && normal, wrapperLength, wrapperWidth)
+      // five.scene.add(_point)
 
       if (!ref.current) ref.current = CSS3DRenderPlugin(five)
       const container = ref.current.create3DDomContainer(points)

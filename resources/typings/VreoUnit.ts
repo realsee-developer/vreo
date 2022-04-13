@@ -207,6 +207,7 @@ export type Quaternion = {
 export type PanoTextLabelData = {
   text: string
   vertex: Vertex
+  normal?: Vertex
   quaternion?: Quaternion
   fontSize?: number
 }
