@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
+import AudioLike from '../../../shared-utils/AduioLike'
 
 const vertexShader = `
 varying vec2 vUv;
@@ -76,14 +77,21 @@ export class VideoAgentMesh extends THREE.Mesh {
   freeze: boolean
   paused: boolean
   audioInstance: HTMLAudioElement
+  audioLikeInstance: AudioLike
   $removeEventListener: () => void
 
-  get videoInstance(): HTMLAudioElement {
+  get videoInstance(): HTMLAudioElement | AudioLike {
+    if (!this.videoUrl) {
+      return this.audioLikeInstance
+    }
+
     if (this.videoUrl?.endsWith('mp3')) {
       return this.audioInstance
     }
+
     const uniforms = (this.material as THREE.ShaderMaterial).uniforms
     const videoInstance = uniforms.map.value.image as HTMLVideoElement
+
     return videoInstance
   }
 
@@ -155,23 +163,33 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.audioInstance = options.audioInstance
     }
 
+    this.audioLikeInstance = new AudioLike()
+
     makeObservable(this, { paused: observable })
 
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
     const onPause = () => updatePaused(true)
     const onPlay = () => updatePaused(false)
 
-    this.videoInstance.addEventListener('pause', onPause)
-    this.videoInstance.addEventListener('play', onPlay)
+    this.audioInstance.addEventListener('pause', onPause)
+    this.audioInstance.addEventListener('play', onPlay)
+    this.options.videoInstance?.addEventListener('pause', onPause)
+    this.options.videoInstance?.addEventListener('play', onPlay)
+    this.audioLikeInstance.addEventListener('pause', onPause)
+    this.audioLikeInstance.addEventListener('play', onPlay)
 
     this.$removeEventListener = () => {
-      this.videoInstance.removeEventListener('pause', onPause)
-      this.videoInstance.removeEventListener('play', onPlay)
+      this.audioInstance.removeEventListener('pause', onPause)
+      this.audioInstance.removeEventListener('play', onPlay)
+      this.options.videoInstance?.removeEventListener('pause', onPause)
+      this.options.videoInstance?.removeEventListener('play', onPlay)
+      this.audioLikeInstance.removeEventListener('pause', onPause)
+      this.audioLikeInstance.removeEventListener('play', onPlay)
     }
   }
 
-
   private async update(videoUrl: string) {
+
     if (this.videoUrl === videoUrl) {
       return
     }
@@ -191,19 +209,31 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.videoInstance.muted = false
       uniforms.enable.value = this.videoUrl?.endsWith('.mp4') ? 1 : 0
       this.videoInstance.removeEventListener('timeupdate', onStart, false)
+
     }
 
     this.videoInstance.addEventListener('timeupdate', onStart, false)
   }
 
-  async play(videoUrl = '', currentTime = 0) {
+  async play(videoUrl = '', currentTime = 0, duration?: number) {
     videoUrl = videoUrl || ''
+    if (duration && !videoUrl) {
+      if (this.currentTime) {
+        this.videoInstance.currentTime = currentTime
+      }
+      (this.videoInstance as AudioLike).duration = duration
+      this.videoUrl = ''
+      this.videoInstance.play()
+      return true
+    }
+
     if (!videoUrl) {
       if (this.videoUrl) await this.videoInstance.play()
       else console.warn('警告：视频资源未初始化。')
       return true
     }
 
+    console.log('play', videoUrl, this.videoUrl)
     if (videoUrl === this.videoUrl) {
       this.videoInstance.currentTime = currentTime
       await this.videoInstance.play()
