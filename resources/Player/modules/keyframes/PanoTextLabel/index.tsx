@@ -1,42 +1,88 @@
-import classNames from 'classnames'
 import * as React from 'react'
-import { Vector3 } from 'three'
+import { Vector3, Quaternion } from 'three'
 import { PanoTextLabelData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
-import { useController, useFiveProject2d } from '../../../hooks'
+import { useController, useFiveInstance } from '../../../hooks'
+import { CSS3DRenderPlugin } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
+import ReactDOM from 'react-dom'
+import * as THREE from 'three'
+import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer'
 
-interface PanoTextLabelState {
-  text: string
-  left: number
-  top: number
-  fontSize: number
-}
 
 export function PanoTextLabel() {
-  const [state, setState] = React.useState<PanoTextLabelState | null>(null)
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
   const controller = useController()
-  const project2d = useFiveProject2d()
+  const five = useFiveInstance()
+  const ref = React.useRef<ReturnType<typeof CSS3DRenderPlugin>>()
+
+  // 通过传入中心点确定矩形框架容器的四个点：
+  //  1.已知矩形长宽和中心点
+  //  2.借助planeGeometry生成垂直相机视角的平面上的四个点
+  //  3.通过向量相加，平行四边形法则获取到移动position后的面上四个点
+  const calcPoints = (centerPoint: Vector3, wrapperLength: number, wrapperWidth: number) => {
+    // 375px对应1m
+    const length = wrapperLength / 375
+    const width = wrapperWidth / 375
+
+    const geometry = new THREE.PlaneGeometry(length, width)
+    geometry.lookAt(five.camera.position)
+    const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide})
+    const plane = new THREE.Mesh(geometry, material)
+    const v0 = centerPoint.clone()
+    plane.position.copy(v0)
+    // 计算传入的四个点的坐标
+    const [v1, v2, v3, v4] = plane.geometry.vertices
+    const downLeft = v0.clone().add(v4)
+    const downRight = v0.clone().add(v3)
+    const upLeft = v0.clone().add(v2)
+    const upRight = v0.clone().add(v1)
+
+    // 插件使用要求：矩形四个点位数据，顺序为**必须**为左下、右下、右上、左上
+    return [downLeft, downRight, upRight, upLeft]
+  }
 
   React.useEffect(() => {
     if (controller.configs?.keyframeMap.PanoTextLabel === false) {
       return
     }
     const callback = (keyframe: VreoKeyframe) => {
-      const { start, end, data } = keyframe
+      const {start, end, data} = keyframe
       const panoTextLabelData = data as PanoTextLabelData
-      const { x, y, z } = panoTextLabelData.vertex
+      // 增加无文本情况的判断
+      if (data.text === '') return
 
-      const res = project2d(new Vector3(x, y, z))
-      if (!res) return
-      const { x: left, y: top } = res
+      const {x, y, z} = panoTextLabelData.vertex
+      const centerPoint = new Vector3(x, y, z)
+      // 生成传入的四个点，将文本框最大宽度定在200px，最高高度在30px
+      const wrapperLength = 200
+      const wrapperWidth = 30
+      const points = calcPoints(centerPoint, wrapperLength, wrapperWidth)
+      let container: void | { container: HTMLElement; dispose: () => void; css3DObject: CSS3DObject; render?: (() => void) | undefined }
 
-      // Object.assign(window, { $PanoTextLabel: { setState } })
-      setState({ left, top, text: data.text || '', fontSize: data.fontSize || 16 })
-      timeoutRef.current = setTimeout(() => setState(null), end - start)
+      if (!ref.current) ref.current = CSS3DRenderPlugin(five)
+      container = ref.current.create3DDomContainer(points)
+      const css3DObject = container?.css3DObject
+      // 将获取的mesh进行旋转操作，根据欧拉角去进行mesh的变换
+      if(data.quaternion) {
+        const quaternion = new Quaternion(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w)
+        css3DObject?.quaternion.copy(quaternion)
+      }
+      if(container?.container)
+        ReactDOM.render(
+          <div className='PanoTextLabel PanoTextLabel--notHidden'>
+            <div className="PanoTextLabel-wrapper">
+              <div style={{ fontSize: `${data.fontSize || 16}px` }} className="PanoText-innerText">
+                {data.text || ''}
+              </div>
+             </div>
+          </div>, container?.container
+        )
+
+      timeoutRef.current = setTimeout(() => {
+        ref.current?.disposeAll()
+      }, end - start)
     }
     controller.on(VreoKeyframeEnum.PanoTextLabel, callback)
 
-    // Object.assign(window, { $panoTextLabel: { setState } })
     return () => {
       controller.off(VreoKeyframeEnum.PanoTextLabel, callback)
       if (timeoutRef.current) {
@@ -46,20 +92,6 @@ export function PanoTextLabel() {
   }, [controller])
 
   return (
-    <div
-      className={classNames('PanoTextLabel', {
-        'PanoTextLabel--notHidden': state,
-      })}
-      style={{
-        left: (state?.left || 0) + 'px',
-        top: (state?.top || 0) + 'px',
-      }}
-    >
-      <div className="PanoTextLabel-wrapper">
-        <div style={{ fontSize: `${state?.fontSize || 16}px` }} className="PanoText-innerText">
-          {state?.text || ''}
-        </div>
-      </div>
-    </div>
+    <></>
   )
 }
