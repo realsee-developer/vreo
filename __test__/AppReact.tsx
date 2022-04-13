@@ -31,7 +31,7 @@ export function App() {
         {paused ? '播放' : '暂停'}
       </button>
 
-      <button
+      {/* <button
         onClick={async () => {
           if (!paused) {
             pause()
@@ -50,7 +50,7 @@ export function App() {
         }}
       >
         {paused ? '播放--静默' : '暂停--静默'}
-      </button>
+      </button> */}
     </div>
   )
 }

@@ -126,7 +126,7 @@ ReactDOM.render(<App></App>, document.getElementById('app'))
     "duration": 106278,
     "start": 0,
     "end": 106278,
-    "url": "//url-host/***/xxx.mp4"
+    "url": "//url-host/***/xxx.mp4" // "url" 如果是空字符串，则以 `AudioLike` 的逻辑进行执行。
   },
   "keyframes": [
     {

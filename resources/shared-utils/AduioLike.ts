@@ -1,6 +1,9 @@
 import { Subscribe } from '@realsee/five'
 import { requestAnimationFrameInterval } from './animationFrame'
 
+/**
+ * 模拟 `<Audio>` 事件。
+ */
 export type AudioLikeEvent = {
   // 播放
   play: () => void
@@ -14,7 +17,7 @@ export type AudioLikeEvent = {
 
 
 /**
- * 模拟 `<Audio>` 功能
+ * 模拟 `<Audio>` 功能：没有音频，但执行逻辑跟 `<Audio>` 相似。
  */
 export class AudioLike extends Subscribe<AudioLikeEvent> {
   private $timestamp = 0
@@ -25,7 +28,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   src = ''
 
   setAttribute(name: string, value: string) {
-
+    // nothing todo
   }
 
   constructor({ duration }: { duration?: number } = {}) {

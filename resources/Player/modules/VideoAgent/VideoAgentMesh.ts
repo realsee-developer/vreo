@@ -171,15 +171,22 @@ export class VideoAgentMesh extends THREE.Mesh {
     const onPause = () => updatePaused(true)
     const onPlay = () => updatePaused(false)
 
-    this.videoInstance.addEventListener('pause', onPause)
-    this.videoInstance.addEventListener('play', onPlay)
+    this.audioInstance.addEventListener('pause', onPause)
+    this.audioInstance.addEventListener('play', onPlay)
+    this.options.videoInstance?.addEventListener('pause', onPause)
+    this.options.videoInstance?.addEventListener('play', onPlay)
+    this.audioLikeInstance.addEventListener('pause', onPause)
+    this.audioLikeInstance.addEventListener('play', onPlay)
 
     this.$removeEventListener = () => {
-      this.videoInstance.removeEventListener('pause', onPause)
-      this.videoInstance.removeEventListener('play', onPlay)
+      this.audioInstance.removeEventListener('pause', onPause)
+      this.audioInstance.removeEventListener('play', onPlay)
+      this.options.videoInstance?.removeEventListener('pause', onPause)
+      this.options.videoInstance?.removeEventListener('play', onPlay)
+      this.audioLikeInstance.removeEventListener('pause', onPause)
+      this.audioLikeInstance.removeEventListener('play', onPlay)
     }
   }
-
 
   private async update(videoUrl: string) {
 
@@ -202,6 +209,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.videoInstance.muted = false
       uniforms.enable.value = this.videoUrl?.endsWith('.mp4') ? 1 : 0
       this.videoInstance.removeEventListener('timeupdate', onStart, false)
+
     }
 
     this.videoInstance.addEventListener('timeupdate', onStart, false)
@@ -225,6 +233,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       return true
     }
 
+    console.log('play', videoUrl, this.videoUrl)
     if (videoUrl === this.videoUrl) {
       this.videoInstance.currentTime = currentTime
       await this.videoInstance.play()
