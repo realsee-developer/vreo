@@ -173,11 +173,22 @@ export declare type ModelVideoData = {
     matrixWorld?: number[];
 };
 /**
+ * 四元数
+ */
+export declare type Quaternion = {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+};
+/**
  * 全景文本标签
  */
 export declare type PanoTextLabelData = {
     text: string;
     vertex: Vertex;
+    normal?: Vertex;
+    quaternion?: Quaternion;
     fontSize?: number;
 };
 /**

@@ -430,7 +430,11 @@
   transform-style: preserve-3d;
   pointer-events: none;
   z-index: 999999;
-  transform: translate(-50%, -50%);
+}
+.__Dnalogel-plugin--CSS3DRenderPlugin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes straightPopPTL {
