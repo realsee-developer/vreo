@@ -192,11 +192,23 @@ export type ModelVideoData = {
 }
 
 /**
+ * 四元数
+ */
+export type Quaternion = {
+  x: number,
+  y: number,
+  z: number,
+  w: number
+}
+
+/**
  * 全景文本标签
  */
 export type PanoTextLabelData = {
   text: string
   vertex: Vertex
+  normal?: Vertex
+  quaternion?: Quaternion
   fontSize?: number
 }
 
