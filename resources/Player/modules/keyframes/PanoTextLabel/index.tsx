@@ -1,27 +1,32 @@
 import * as React from 'react'
-import { Vector3, Quaternion } from 'three'
-import { PanoTextLabelData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
-import { useController, useFiveInstance } from '../../../hooks'
-import { CSS3DRenderPlugin } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
-import ReactDOM from 'react-dom'
 import * as THREE from 'three'
+import ReactDOM from 'react-dom'
+import { Vector3, Quaternion } from 'three'
 
-// let _point: THREE.Points
+import { useController, useFiveInstance } from '../../../hooks'
+import { CSS3DRenderPlugin } from '../../../../fivePlugins/CSS3DRenderPlugin'
+import { PanoTextLabelData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 
-// 通过传入中心点确定矩形框架容器的四个点：
-//  1.已知矩形长宽和中心点
-//  2.借助planeGeometry生成垂直相机视角的平面上的四个点
-//  3.通过向量相加，平行四边形法则获取到移动position后的面上四个点
-const calcPoints = (centerPoint: Vector3, normal: THREE.Vector3 | undefined, wrapperLength: number, wrapperWidth: number) => {
-  // 375px对应1m
+/**
+ * 通过传入中心点确定矩形框架容器的四个点：
+ *  1. 已知矩形长宽和中心点
+ *  2. 借助planeGeometry生成垂直相机视角的平面上的四个点
+ *  3. 通过向量相加，平行四边形法则获取到移动position后的面上四个点
+ */
+const calcPoints = (
+  centerPoint: Vector3,
+  normal: THREE.Vector3 | undefined,
+  wrapperLength: number,
+  wrapperWidth: number
+) => {
+  // 375px 对应 1m
   const length = wrapperLength / 375
   const width = wrapperWidth / 375
 
   const geometry = new THREE.PlaneGeometry(length, width)
   if (normal) {
-    const lookPoint = new THREE.Vector3(normal.x+centerPoint.x, normal.y+centerPoint.y, normal.z+centerPoint.z)
+    const lookPoint = new THREE.Vector3(normal.x + centerPoint.x, normal.y + centerPoint.y, normal.z + centerPoint.z)
     geometry.lookAt(lookPoint)
-    console.log('here')
   }
   // const pointgeometry = new THREE.Geometry()
   // pointgeometry.vertices.push(cameraPosition)
@@ -31,10 +36,12 @@ const calcPoints = (centerPoint: Vector3, normal: THREE.Vector3 | undefined, wra
   // })
   // _point = new THREE.Points(pointgeometry, pointmaterial)
   // console.log(cameraPosition)
-  const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide})
+
+  const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide })
   const plane = new THREE.Mesh(geometry, material)
   const v0 = centerPoint.clone()
   plane.position.copy(v0)
+
   // 计算传入的四个点的坐标
   const [v1, v2, v3, v4] = plane.geometry.vertices
   const downLeft = v0.clone().add(v4)
@@ -46,6 +53,9 @@ const calcPoints = (centerPoint: Vector3, normal: THREE.Vector3 | undefined, wra
   return [downLeft, downRight, upRight, upLeft]
 }
 
+/**
+ * 空间文本标签。
+ */
 export function PanoTextLabel() {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
   const controller = useController()
@@ -57,37 +67,37 @@ export function PanoTextLabel() {
       return
     }
     const callback = (keyframe: VreoKeyframe) => {
-      const {start, end, data} = keyframe
+      const { start, end, data } = keyframe
       const panoTextLabelData = data as PanoTextLabelData
       // 增加无文本情况的判断
       if (data.text === '') return
 
-      const {x, y, z} = panoTextLabelData.vertex
+      const { x, y, z } = panoTextLabelData.vertex
       const centerPoint = new Vector3(x, y, z)
       const normal = new Vector3(panoTextLabelData.normal?.x, panoTextLabelData.normal?.y, panoTextLabelData.normal?.z)
       // 生成传入的四个点，将文本框最大宽度定在200px，最高高度在30px
       const wrapperLength = 200
       const wrapperWidth = 30
       const points = calcPoints(centerPoint, panoTextLabelData.normal && normal, wrapperLength, wrapperWidth)
-      // five.scene.add(_point)
 
       if (!ref.current) ref.current = CSS3DRenderPlugin(five)
       const container = ref.current.create3DDomContainer(points)
       const css3DObject = container?.css3DObject
       // 将获取的mesh进行旋转操作，根据欧拉角去进行mesh的变换
-      if(data.quaternion) {
+      if (data.quaternion) {
         const quaternion = new Quaternion(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w)
         css3DObject?.quaternion.copy(quaternion)
       }
-      if(container?.container)
+      if (container?.container)
         ReactDOM.render(
-          <div className='PanoTextLabel PanoTextLabel--notHidden'>
+          <div className="PanoTextLabel PanoTextLabel--notHidden">
             <div className="PanoTextLabel-wrapper">
               <div style={{ fontSize: `${data.fontSize || 16}px` }} className="PanoText-innerText">
                 {data.text || ''}
               </div>
-             </div>
-          </div>, container?.container
+            </div>
+          </div>,
+          container?.container
         )
 
       timeoutRef.current = setTimeout(() => {
@@ -104,7 +114,5 @@ export function PanoTextLabel() {
     }
   }, [controller])
 
-  return (
-    <></>
-  )
+  return <></>
 }

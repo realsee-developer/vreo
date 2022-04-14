@@ -7,7 +7,7 @@ export type {
   VreoKeyframeEnum, VreoKeyframe, VreoVideo, VreoUnit,
   VreoKeyframeConfigMap as VreoKeyframeMap, VreoKeyframeEvent, CameraMovementData,
   PrompterData, UpdateVRPanoramaData, Vertex, Vertexs,
-  QuadrangleVertexs, ModelVideoData, PanoTextLabelData,
+  QuadrangleVertexs, ModelVideoData, PanoTextLabelData, Quaternion,
   PanoTagEnum, PanoTagStyleEnum, PanoTagData, PanoEffectEnum, PanoEffectData,
   InfoPanelTypeEnum, InfoPanelStyleEnum, InfoPanelData, VideoEffectData, CustomData,
 } from '../resources/typings/VreoUnit'
