@@ -1,10 +1,9 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { Five } from '@realsee/five'
-import * as THREE from 'three'
-import { Object3D, Raycaster, Vector3 } from 'three'
-import { tweenProgress } from '@realsee/dnalogel/shared-utils/animationFrame/BetterTween'
-import { CSS3DRenderPlugin, CSS3DRenderPluginExportType } from '@realsee/dnalogel/plugins/CSS3DRenderPlugin'
+import { Raycaster, Vector3 } from 'three'
+import { tweenProgress } from '../../../shared-utils/animationFrame/BetterTween'
+import { CSS3DRenderPlugin, CSS3DRenderPluginExportType } from '../../../fivePlugins/CSS3DRenderPlugin'
 
 import { VreoKeyframe, VreoKeyframeEnum } from '../../../typings/VreoUnit'
 import { CustomVreoKeyframeProps } from '../../typings'
@@ -33,6 +32,7 @@ import { CustomVreoKeyframeProps } from '../../typings'
 //   "temperature": "27",
 //   "title": "沉浸式回家"
 // }
+
 export interface SpatialScenePanelData {
   customType: 'SpatialScenePanel'
   title: string
