@@ -408,6 +408,17 @@ type VideoEffectData = {
 }
 ```
 
+#### 背景音乐
+
+**背景音乐** 给剧本添加一段背景音乐（背景音乐会与讲稿音频并行播放）。
+
+```ts
+export type BgMusicData = {
+  url: string // .mp3 背景音乐 CDN 地址
+}
+```
+
+
 ### 自定义剧本帧行为
 
 **Vreo** 中的剧本帧行为是内置的，但如果您有强烈的诸如统一 UI 风格类的诉求，不想使用内置剧本逻辑，也可以通过 `new Player(five, {keyframeMap: {PanoTag: false}})` 来禁用内置剧本帧解析，然后通过监听剧本帧触发事件来补充您自己的剧本 UI 行为。
