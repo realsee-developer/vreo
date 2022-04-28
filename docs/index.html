@@ -179,6 +179,13 @@
 <pre><code class="hljs language-ts"><span class="hl-3">type</span><span class="hl-0"> </span><span class="hl-8">VideoEffectData</span><span class="hl-0"> = {</span><br/><span class="hl-0">  </span><span class="hl-4">videoSrc</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0"> </span><span class="hl-1">// 视频地址</span><br/><span class="hl-0">  </span><span class="hl-4">panoIndex</span><span class="hl-0">: </span><span class="hl-8">number</span><span class="hl-0"> </span><span class="hl-1">// 所处点位</span><br/><span class="hl-0">  </span><span class="hl-4">fov</span><span class="hl-0">: </span><span class="hl-8">number</span><span class="hl-0"> </span><span class="hl-1">// 镜头远近</span><br/><span class="hl-0">  </span><span class="hl-4">direction</span><span class="hl-0">?: </span><span class="hl-8">Vertex</span><span class="hl-0"> </span><span class="hl-1">// 方向向量: {x, y, z} 形式</span><br/><span class="hl-0">  </span><span class="hl-4">vector</span><span class="hl-0">?: </span><span class="hl-8">Pick</span><span class="hl-0">&lt;</span><span class="hl-8">Pose</span><span class="hl-0">, </span><span class="hl-5">&#39;longitude&#39;</span><span class="hl-0"> | </span><span class="hl-5">&#39;latitude&#39;</span><span class="hl-0">&gt; </span><span class="hl-1">// 方向向量: 向量坐标</span><br/><span class="hl-0">}</span>
 </code></pre>
 
+<a href="#背景音乐" id="背景音乐" style="color: inherit; text-decoration: none;">
+  <h4>背景音乐</h4>
+</a>
+<p><strong>背景音乐</strong> 给剧本添加一段背景音乐（背景音乐会与讲稿音频并行播放）。</p>
+<pre><code class="hljs language-ts"><span class="hl-2">export</span><span class="hl-0"> </span><span class="hl-3">type</span><span class="hl-0"> </span><span class="hl-8">BgMusicData</span><span class="hl-0"> = {</span><br/><span class="hl-0">  </span><span class="hl-4">url</span><span class="hl-0">: </span><span class="hl-8">string</span><span class="hl-0"> </span><span class="hl-1">// .mp3 背景音乐 CDN 地址</span><br/><span class="hl-0">}</span>
+</code></pre>
+
 <a href="#自定义剧本帧行为" id="自定义剧本帧行为" style="color: inherit; text-decoration: none;">
   <h3>自定义剧本帧行为</h3>
 </a>
