@@ -229,6 +229,65 @@ export const VideoEffectData: VreoUnit = {
   ]
 } as VreoUnit;
 
+export const BgMusicData: VreoUnit = {
+  categoryId: "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",
+  categoryText: "b4aff456-9a94-46c8-6e15-13cfa540aed8",
+  frontRequestId: "ffc05d41-e588-48dc-adb7-d20d350ea1b4",
+  index: 0,
+  video: {
+    duration: 0,
+    start: 8000,
+    end: 8000,
+    url:
+        "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+  },
+  keyframes: [
+    {
+      uuid: "76bfd9cf-aa4e-4179-fa7c-1be191683228",
+      type: "CameraMovement",
+      start: 0,
+      end: 3000,
+      parsed: false,
+      data: {
+        effect: "Move",
+        panoIndex: 7,
+        fov: 80,
+        mode: "Panorama",
+        latitude: 0.013645838060373412,
+        longitude: 6.277908413120661
+      }
+    },
+    {
+      uuid: "ff0ec7f3-06da-43ca-d0f1-f47c8d5a5745",
+      type: "VideoEffect",
+      start: 3000,
+      end: 8000,
+      parsed: false,
+      data: {
+        videoSrc:
+            "http://vrlab-public.ljcdn.com/release/seesay/tools/fridge6snew___7feaf5b4b3ff7622ee5c398e66d0b3dc.mp4",
+        panoIndex: 7,
+        direction: {
+          x: 0,
+          y: 0,
+          z: -1
+        },
+        fov: 80
+      }
+    },
+    {
+      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c123",
+      "type": "BgMusic",
+      "start": 2000,
+      "end": 46000,
+      "parsed": false,
+      "data": {
+        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+      }
+    }
+  ]
+} as VreoUnit;
+
 export const Data: VreoUnit = {
   categoryId: "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",
   categoryText: "b4aff456-9a94-46c8-6e15-13cfa540aed8",
