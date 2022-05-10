@@ -41,7 +41,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     ReactDOM.render(
       <ControllerContext.Provider value={this.controller}>
-        <App></App>
+        <App />
         <Drawer />
         <PopUp />
         {this.configs.customKeyframes &&
