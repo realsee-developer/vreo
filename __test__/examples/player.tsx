@@ -2,13 +2,14 @@ import { unsafe__useFiveInstance } from '@realsee/five/react'
 import { Player } from '../../resources/Player'
 import { VreoKeyframeEnum } from '../../resources/typings/VreoUnit'
 import * as React from 'react'
-import { CameraMovementData, PanoTagData, ModelVideoData, VideoEffectData } from './data'
+import { CameraMovementData, PanoTagData, ModelVideoData, VideoEffectData, BgMusicData } from './data'
 
 const funcList = [
   { id: 'camera_movement', name: '相机运镜', data: CameraMovementData },
   { id: 'pano_tag', name: '全景标签', data: PanoTagData },
   { id: 'model_video', name: '视频投放', data: ModelVideoData },
   { id: 'video_effect', name: '视频特效', data: VideoEffectData },
+  { id: 'bgm', name: '背景音乐', data: BgMusicData },
 ]
 
 enum PlayerState {
