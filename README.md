@@ -513,7 +513,7 @@ document.addEventListener(
     videoEffect.play()
     modelTVVideo.play()
     videoInstance.play()
-    audioInstance.play
+    audioInstance.play()
   },
   false
 )
@@ -546,7 +546,7 @@ const vreoplayer = new Player(five, {
 const vreoplayer = new Player(five, { imageOptions: { size: 1024 } })
 ```
 
-#### 自动预载
+#### 提前预载
 
 如果网络不稳定，可以提前预载静态资源，这样播放过程中不会卡顿：
 
