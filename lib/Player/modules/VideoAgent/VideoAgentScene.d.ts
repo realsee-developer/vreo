@@ -9,6 +9,7 @@ export declare class VideoAgentScene {
     constructor(container: HTMLElement, needRender?: boolean, options?: {
         videoInstance?: HTMLVideoElement;
         audioInstance?: HTMLAudioElement;
+        preload?: boolean;
     });
     run: () => void;
     dispose: () => void;

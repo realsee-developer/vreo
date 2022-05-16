@@ -9,7 +9,7 @@ export class VideoAgentScene {
   renderer = new THREE.WebGLRenderer({ alpha: true })
   container: HTMLElement
 
-  constructor(container: HTMLElement, needRender = true, options: { videoInstance?: HTMLVideoElement, audioInstance?: HTMLAudioElement } = {}) {
+  constructor(container: HTMLElement, needRender = true, options: { videoInstance?: HTMLVideoElement, audioInstance?: HTMLAudioElement, preload?: boolean } = {}) {
     this.container = container
     this.camera.position.set(0, 0, 10)
     this.camera.lookAt(0, 0, 0)
@@ -33,13 +33,11 @@ export class VideoAgentScene {
   run = () => {
     const domElement = this.renderer.domElement
 
-    // console.log('renderder', this.videoAgentMesh.paused, this.videoAgentMesh.freeze)
-
     // 视频开始 1s 不渲染：规避某些设备黑屏闪烁问题。视频前 2s 是最好是静默的。
     if (!(this.videoAgentMesh.paused || this.videoAgentMesh.freeze) && this.videoAgentMesh.currentTime > 1000) {
       this.renderer.render(this.scene, this.camera)
     }
-
+    
     // 兼容非视频场景
     if (!this.videoAgentMesh.videoUrl?.endsWith('.mp4')) {
       if (domElement.style.display !== 'none') domElement.style.display = 'none'
