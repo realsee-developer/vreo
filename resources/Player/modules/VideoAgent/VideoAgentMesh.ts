@@ -64,8 +64,20 @@ const cacheInstance: {
 } = {}
 
 export interface VideoAgentMeshOptions {
+  /**
+   * 自定义视频实例。
+   */
   videoInstance?: HTMLVideoElement
+  /**
+   * 自定义音频实例。
+   */
   audioInstance?: HTMLAudioElement
+  /**
+   * 是否开启音视频预载能力。
+   * 
+   * @description 开启预载能力后会通过 `Fetch/XHR` 方式将音视频文件下载下载转成二进制 [`Blob`](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 提供给多媒体实例。这样的好处是 **能够保障音视频播放过程中不卡顿**。 但在部分 iOS 系统中会存在兼容问题——播 25s 之后会静音（`muted` 为 `false`，但是没有声音）。
+   */
+  preload?: boolean
 }
 
 /**
@@ -108,7 +120,9 @@ export class VideoAgentMesh extends THREE.Mesh {
     height: number,
     widthSegments: number,
     heightSegments: number,
-    options: VideoAgentMeshOptions = {},
+    options: VideoAgentMeshOptions = {
+      preload: true
+    },
   ) {
     if (!options.videoInstance) {
       if (cacheInstance.videoInstance) {
@@ -200,7 +214,8 @@ export class VideoAgentMesh extends THREE.Mesh {
 
     const uniforms = (this.material as THREE.ShaderMaterial).uniforms
     this.videoInstance.muted = true
-    this.videoInstance.src = await URL.createObjectURL((await Preloader.blob(this.videoUrl)) as unknown as Blob)
+
+    this.videoInstance.src = this.options.preload ? await URL.createObjectURL((await Preloader.blob(this.videoUrl)) as unknown as Blob) : this.videoUrl
     this.videoInstance.setAttribute('data-src', this.videoUrl)
 
     const onStart = () => {
