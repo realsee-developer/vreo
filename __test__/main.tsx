@@ -27,13 +27,10 @@ const FiveProvider = createFiveProvider(defaultInitArgs)
 
 ReactDOM.render(
   <React.StrictMode>
-    <div style={{position: "relative", top: 20, left: 10, width: 100, height: 100, backgroundColor: 'red'}}>222</div>
-    <div style={{position: "absolute", top: 150, left: 0, backgroundColor: 'blue'}}>
       <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
-        <ResponsiveFullScreenFiveCanvas />
-        <App />
+          <ResponsiveFullScreenFiveCanvas />
+          <App />
       </FiveProvider>
-    </div>
   </React.StrictMode>,
   document.getElementById('root')
 )
