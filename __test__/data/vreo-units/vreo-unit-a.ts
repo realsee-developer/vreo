@@ -70,6 +70,93 @@ export const data =
     //     matrixWorld: [0, 0, -0.0085, 0, 0, 0.0085, 0, 0, 0.009998, 0, 0, 0, -3.198884, 0.714578, 3.027274, 1]
     //   }
     // },
+    {
+      "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
+      "type": "InfoPanel",
+      "start": 2632,
+      "end": 500632,
+      "data": {
+        "style": "PopUp",
+        "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
+        "type": "Image",
+        "title": "测试面板问题",
+        "subTitle": "测试题目"
+      }
+    },
+  ]
+}
+export const data1 =
+{
+  "categoryId": "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",
+  "categoryText": "b4aff456-9a94-46c8-6e15-13cfa540aed8",
+  "frontRequestId": "ffc05d41-e588-48dc-adb7-d20d350ea1b4",
+  "index": 0,
+  "video": {
+    "duration": 80525,
+    "start": 0,
+    "end": 106278,
+    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+  },
+  "keyframes": [
+    {
+      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c1ba",
+      "type": "Prompter",
+      "start": 0,
+      "end": 3000,
+      "parsed": false,
+      "data": {
+        "text": "您好，我是您的智慧家庭设计师"
+      }
+    },
+    // {
+    //   "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c1bc",
+    //   "type": "ModelVideo",
+    //   "start": 200,
+    //   "end": 90000,
+    //   "parsed": false,
+    //   "data": {
+    //     videoSrc: 'https://vrlab-public.ljcdn.com/release/web/videos/tv_ads/360/015.mp4',
+    //     videoPosterSrc: 'https://vrlab-public.ljcdn.com/release/web/videos/posters/007.8da451c7.jpg',
+    //     vertexs: [
+    //       {
+    //         x: -71.21522521972656,
+    //         y: 90.1897964477539,
+    //         z: 2.6043999195098877,
+    //       },
+    //       {
+    //         x: 70.53837585449219,
+    //         y: 89.9391860961914,
+    //         z: 2.6043999195098877,
+    //       },
+    //       {
+    //         x: 70.69109344482422,
+    //         y: 6.653824329376221,
+    //         z: 2.6043999195098877,
+    //       },
+    //       {
+    //         x: 70.98055267333984,
+    //         y: 5.813893795013428,
+    //         z: 2.6043999195098877,
+    //       },
+    //       {
+    //         x: 70.98055267333984,
+    //         y: 5.813893795013428,
+    //         z: 2.6043999195098877,
+    //       },
+    //       {
+    //         x: -71.78878784179688,
+    //         y: 5.651362895965576,
+    //         z: 2.8449466228485107,
+    //       },
+    //       {
+    //         x: -71.37337493896484,
+    //         y: 90.24034118652344,
+    //         z: 2.6043999195098877,
+    //       },
+    //     ],
+    //     matrixWorld: [0, 0, -0.0085, 0, 0, 0.0085, 0, 0, 0.009998, 0, 0, 0, -3.198884, 0.714578, 3.027274, 1]
+    //   }
+    // },
 
     {
       "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c123",

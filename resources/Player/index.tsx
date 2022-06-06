@@ -21,11 +21,19 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     this.$five = this.controller.$five = five
 
     if (!configs.containter) {
-      const containter = document.querySelector('#vreo-app') || document.createElement('div')
+      const containter = document.getElementById('vreo-app') || document.createElement('div')
+      // const containter = document.querySelector('#vreo-app-a') || document.createElement('div')
       ReactDOM.unmountComponentAtNode(containter)
       containter.setAttribute('id', 'vreo-app')
       configs.containter = containter
-      document.body.append(containter)
+      const fiveCanvasDomParent = five.getElement()?.parentNode
+      if (fiveCanvasDomParent) {
+        fiveCanvasDomParent.append(containter)
+      }
+      else {
+        document.body.append(containter)
+      }
+      // document.body.append(containter)
     }
 
     this.configs = Object.freeze(
