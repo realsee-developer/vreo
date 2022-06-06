@@ -1,4 +1,4 @@
-export const data =
+export const data1 = // debug popup image
 {
   "categoryId": "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",
   "categoryText": "b4aff456-9a94-46c8-6e15-13cfa540aed8",
@@ -85,7 +85,7 @@ export const data =
     },
   ]
 }
-export const data1 =
+export const data =
 {
   "categoryId": "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",
   "categoryText": "b4aff456-9a94-46c8-6e15-13cfa540aed8",
