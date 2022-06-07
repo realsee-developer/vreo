@@ -85,6 +85,7 @@ export const data1 = // debug popup image
     },
   ]
 }
+
 export const data =
 {
   "categoryId": "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",

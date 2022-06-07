@@ -22,7 +22,6 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     if (!configs.containter) {
       const containter = document.getElementById('vreo-app') || document.createElement('div')
-      // const containter = document.querySelector('#vreo-app-a') || document.createElement('div')
       ReactDOM.unmountComponentAtNode(containter)
       containter.setAttribute('id', 'vreo-app')
       configs.containter = containter
