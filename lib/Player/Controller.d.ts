@@ -13,6 +13,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     vreoUnit?: VreoUnit;
     stopInterval?: () => void;
     playing: boolean;
+    ended: boolean;
     visible: boolean;
     get isAudio(): boolean;
     popUp: string | JSX.Element | null;
@@ -23,6 +24,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     } | null;
     setVisible(v: boolean): void;
     setPlaying(playing: boolean): void;
+    setEnded(ended: boolean): void;
     openDrawer(drawerConfig?: false | {
         content: string | JSX.Element;
         height?: number | string;

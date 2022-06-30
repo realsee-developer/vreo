@@ -109,6 +109,8 @@ export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyf
   playing: () => void
   // 未知的 剧本帧类型
   unknownKeyframeType: (keyframe: Record<string, any>) => void
+  // 一次播放完成（试用，只抛事件不做任何额外的逻辑处理）
+  ended: () => void
 }
 
 /**
