@@ -74,7 +74,7 @@ export interface VideoAgentMeshOptions {
   audioInstance?: HTMLAudioElement
   /**
    * 是否开启音频预载能力。**仅对`.mp3`有效**。
-   * 
+   *
    * @description 开启预载能力后会通过 `Fetch/XHR` 方式将音频文件下载转成二进制 [`Blob`](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 提供给多媒体实例。这样的好处是 **能够保障音视频播放过程中不卡顿**。 但在部分 iOS 系统中会存在兼容问题——播 25s 之后会静音（`muted` 为 `false`，但是没有声音）。
    */
   preload?: boolean
@@ -184,6 +184,9 @@ export class VideoAgentMesh extends THREE.Mesh {
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
     const onPause = () => updatePaused(true)
     const onPlay = () => updatePaused(false)
+    const onEnded = () => {
+      console.log('vreo: video 播放结束')
+    }
 
     this.audioInstance.addEventListener('pause', onPause)
     this.audioInstance.addEventListener('play', onPlay)
@@ -191,6 +194,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.options.videoInstance?.addEventListener('play', onPlay)
     this.audioLikeInstance.addEventListener('pause', onPause)
     this.audioLikeInstance.addEventListener('play', onPlay)
+    this.options.videoInstance?.addEventListener('ended', onEnded)
 
     this.$removeEventListener = () => {
       this.audioInstance.removeEventListener('pause', onPause)
@@ -199,6 +203,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.options.videoInstance?.removeEventListener('play', onPlay)
       this.audioLikeInstance.removeEventListener('pause', onPause)
       this.audioLikeInstance.removeEventListener('play', onPlay)
+      this.options.videoInstance?.removeEventListener('ended', onEnded)
     }
   }
 
