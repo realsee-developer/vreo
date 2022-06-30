@@ -12,5 +12,6 @@ export declare class Player extends Subscribe<VreoKeyframeEvent> {
     pause(): void;
     show(): void;
     hide(): void;
+    getCurrentTime(): number;
     dispose(): void;
 }

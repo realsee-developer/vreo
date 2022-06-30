@@ -98,6 +98,7 @@ export declare type VreoKeyframeEvent = {
     paused: (ended?: boolean) => void;
     playing: () => void;
     unknownKeyframeType: (keyframe: Record<string, any>) => void;
+    ended: () => void;
 };
 /**
  * 相机运动

@@ -238,8 +238,7 @@ export const BgMusicData: VreoUnit = {
     duration: 0,
     start: 8000,
     end: 8000,
-    url:
-        "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    url: "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
