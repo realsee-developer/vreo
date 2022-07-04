@@ -68,11 +68,18 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
         // 监听播放情况：抛出触发时机
         reaction(
-            () => [this.controller.playing, this.controller.ended],
-            ([playing, ended]) => {
+            () => this.controller.ended,
+            (ended) => {
                 if (ended) {
                     this.emit('paused', true)
-                } else {
+                }
+            }
+        )
+
+        reaction(
+            () => this.controller.playing,
+            (playing) => {
+                if (!this.controller.ended) {
                     this.emit(playing ? 'playing' : 'paused')
                 }
             }
