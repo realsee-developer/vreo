@@ -1,5 +1,8 @@
 # CHANGELOG
 
+#0.2.0-alpha.21
+- fix: 修复运镜时在非 Loop 场景下读取旋转速度问题。
+
 #0.2.0-alpha.20
 - fix: 修复 `paused` 事件抛出 `ended` 回调带来的重复抛出事件问题。
 
