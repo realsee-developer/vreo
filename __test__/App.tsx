@@ -38,7 +38,7 @@ export function App() {
         onClick={async () => {
           if (state === PlayerState.ready) {
             ref.current?.show()
-            await ref.current?.load(data as VreoUnit, 17000)
+            await ref.current?.load(data as VreoUnit)
           }
           if (state !== PlayerState.playing) {
             ref.current?.play()
