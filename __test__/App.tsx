@@ -6,7 +6,7 @@ import { data } from './data/vreo-units/vreo-unit-a'
 
 // 无视频版本
 // import { data } from './data/vreo-units/vreo-unit-b'
-// 
+//
 // import { data } from './data/vreo-units/vreo-unit-tmp'
 
 
@@ -38,7 +38,7 @@ export function App() {
         onClick={async () => {
           if (state === PlayerState.ready) {
             ref.current?.show()
-            await ref.current?.load(data as VreoUnit)
+            await ref.current?.load(data as VreoUnit, 17000)
           }
           if (state !== PlayerState.playing) {
             ref.current?.play()

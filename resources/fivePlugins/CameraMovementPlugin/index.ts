@@ -20,7 +20,8 @@ function formatLatitude(rad: number) {
   return rad % PI_2
 }
 function formatLongitude(rad: number) {
-  return ((rad % PI_2) + PI_2) % PI_2
+  // return ((rad % PI_2) + PI_2) % PI_2
+  return rad % PI_2
 }
 
 const getLongitudeParams = (from: number, to: number, rotation: Rotation): { from: number; to: number } => {
@@ -29,9 +30,19 @@ const getLongitudeParams = (from: number, to: number, rotation: Rotation): { fro
   from = formatLongitude(from)
   to = formatLongitude(to)
   // 逆时针旋转，初始值必须是较大的值
-  if (rotation === Rotation.Anticlockwise && from < to) from += PI_2
+  // if (rotation === Rotation.Anticlockwise && from < to) from += PI_2
+  if (rotation === Rotation.Anticlockwise) {
+    if (from > to) {
+      from += PI_2
+    }
+  }
   // 顺时针旋转，结束值必须是较大值
-  if (rotation === Rotation.Clockwise && to < from) to += PI_2
+  // if (rotation === Rotation.Clockwise && to < from) to += PI_2
+  if (rotation === Rotation.Clockwise) {
+    if (to > from) {
+      to += PI_2
+    }
+  }
   // Loop 旋转，找锐角旋转
   // 如果 to 比 from 大 180°，逆时针转
   // 如果 from 比 to 大 180°，顺时针转
@@ -177,7 +188,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
     return await new Promise<boolean>((resolve, reject) => {
       const onUpdate = ({ progress }: { progress: number }) => {
         const state: Record<string, number> = {}
-        state.longitude = progressNumber(from.longitude, to.longitude, progress)
+        state.longitude = progressNumber(from.longitude, to.longitude, progress) % PI_2
         state.latitude = progressNumber(from.latitude, to.latitude, progress)
         state.fov = progressNumber(from.fov, to.fov, progress)
         five.setState(state, true)
