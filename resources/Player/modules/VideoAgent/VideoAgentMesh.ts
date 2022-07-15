@@ -238,6 +238,7 @@ export class VideoAgentMesh extends THREE.Mesh {
 
   async play(videoUrl = '', currentTime = 0, duration?: number) {
     videoUrl = videoUrl || ''
+
     if (duration && !videoUrl) {
       if (this.currentTime) {
         this.videoInstance.currentTime = currentTime
