@@ -195,9 +195,13 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
         resolve(false)
       }
 
-      const animeDuration = args.rotateSpeed
-        ? Math.ceil((Math.abs(to.longitude - from.longitude) / args.rotateSpeed) * 1000)
-        : duration
+      let animeDuration = duration
+
+      if (args.rotation === Rotation.Loop) {
+        animeDuration = args.rotateSpeed
+            ? Math.ceil((Math.abs(to.longitude - from.longitude) / args.rotateSpeed) * 1000)
+            : duration
+      }
 
       type _Tween = TWEEN.Tween<{ progress: number }> & { onDestroy: (p: any) => _Tween; destroy: () => void }
 
