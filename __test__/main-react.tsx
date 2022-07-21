@@ -31,6 +31,8 @@ const defaultInitArgs: FiveInitArgs = {
 
 const FiveProvider = createFiveProvider(defaultInitArgs)
 
+console.log(11111)
+
 ReactDOM.render(
   <React.StrictMode>
     <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
