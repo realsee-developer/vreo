@@ -1,5 +1,9 @@
 # CHANGELOG
 
+#0.2.0-alpha.24
+- fix: 修复 CSS3DRender 与插件库样式冲突问题。
+- fix: 修复示例 wrapper 定位问题。
+
 #0.2.0-alpha.23
 - fix: 修复21版本针对非旋转运镜使用了旋转速度问题修复的代码丢失问题。
 
