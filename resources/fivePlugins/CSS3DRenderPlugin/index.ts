@@ -85,7 +85,7 @@ export const CSS3DRenderPlugin: FivePlugin<CSS3DRenderPluginParameterType, CSS3D
     const autoRender = config?.autoRender ?? true
     const behindFiveContainer = config?.behindFiveContainer || fiveElement.parentElement || document.body
     const container = config?.container || document.createElement('div')
-    container.classList.add('__Dnalogel-plugin--CSS3DRenderPlugin')
+    container.classList.add('__Vreo-plugin--CSS3DRenderPlugin')
 
     // 获取css3DObject, 如果mode为behind的话，一起获取mesh
     const { css3DObject, mesh } = createObject(points, { ratio, dpr, container, mode })
