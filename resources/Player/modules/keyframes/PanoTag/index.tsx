@@ -74,10 +74,10 @@ export function PanoTag() {
       const { x: left, y: top } = res
       setPos({ left, top })
     }
-    five.on('stateChange', callback)
+    five.on('currentStateChange', callback)
 
     return () => {
-      five.off('stateChange', callback)
+      five.off('currentStateChange', callback)
     }
   }, [state?.vertex])
 
