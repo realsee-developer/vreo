@@ -1,5 +1,8 @@
 # CHANGELOG
 
+#0.2.0-alpha.25
+- feat: rotate 不指定顺时针或者逆时针，则按照锐角交互。
+
 #0.2.0-alpha.24
 - fix: 修复 CSS3DRender 与插件库样式冲突问题。
 - fix: 修复示例 wrapper 定位问题。
