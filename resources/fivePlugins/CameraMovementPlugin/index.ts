@@ -27,17 +27,18 @@ function formatLongitude(rad: number) {
 const getLongitudeParams = (from: number, to: number, rotation: Rotation): { from: number; to: number } => {
   from = formatLongitude(from)
   to = formatLongitude(to)
+
   // 逆时针旋转，初始值必须是较大的值
   if (rotation === Rotation.Anticlockwise && from > to) to += PI_2
 
   // 顺时针旋转，结束值必须是较大值
-  if (rotation === Rotation.Clockwise && to > from) from += PI_2
+  else if (rotation === Rotation.Clockwise && to > from) from += PI_2
 
   // Loop 旋转，找锐角旋转
   // 如果 to 比 from 大 180°，逆时针转
   // 如果 from 比 to 大 180°，顺时针转
-  if (rotation === Rotation.Loop && to - from > PI) return getLongitudeParams(from, to, Rotation.Anticlockwise)
-  if (rotation === Rotation.Loop && from - to > PI) return getLongitudeParams(from, to, Rotation.Clockwise)
+  else if (rotation !== Rotation.Anticlockwise && rotation !== Rotation.Clockwise && to - from > PI) return getLongitudeParams(from, to, Rotation.Clockwise)
+  else if (rotation !== Rotation.Anticlockwise && rotation !== Rotation.Clockwise && from - to > PI) return getLongitudeParams(from, to, Rotation.Anticlockwise)
   return { from, to }
 }
 
