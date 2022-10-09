@@ -222,7 +222,7 @@ const Panel = React.forwardRef(
         <div className="SpatialScenePanel-body">
           {props.data?.stateList?.map((state, index) => (
             <div key={`scene-${state.text}`} className={`SpatialScenePanel-item index_${index}`}>
-              <img className="SpatialScenePanel-icon" src={state.icon}></img>
+              <img className="SpatialScenePanel-icon" src={state.icon} alt={`${state.text}`}></img>
               <div className="SpatialScenePanel-text">{state.text}</div>
               <div className="SpatialScenePanel-dot"></div>
             </div>

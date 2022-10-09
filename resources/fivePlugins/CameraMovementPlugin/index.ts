@@ -177,14 +177,12 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
     }
 
     const { from, to } = getAnimeParams(args)
-    // console.log(from, to)
     return await new Promise<boolean>((resolve, reject) => {
       const onUpdate = ({ progress }: { progress: number }) => {
         const state: Record<string, number> = {}
         state.longitude = progressNumber(from.longitude, to.longitude, progress) % PI_2
         state.latitude = progressNumber(from.latitude, to.latitude, progress)
         state.fov = progressNumber(from.fov, to.fov, progress)
-        // console.log(state.longitude)
         five.setState(state, true)
       }
 

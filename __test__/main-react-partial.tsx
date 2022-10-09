@@ -48,7 +48,7 @@ function PartialVreoProvider() {
         <VreoProvider
           configs={{
             customKeyframes: [SpatialScenePanel],
-            containter: ref.current!
+            container: ref.current!
           }}
         >
           <App />

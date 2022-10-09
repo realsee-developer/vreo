@@ -1,4 +1,10 @@
 # CHANGELOG
+#1.0.0
+- feat: 适配 手机横竖屏, pad, pc
+- feat: 新增两种波浪风格 'wave' | 'solid'
+- fix: 修复无音频版本中途播放会从头开始的问题
+- fix: 图片/视频 弹窗UI问题
+- feat: 标签
 
 #0.2.0-alpha.25
 - feat: rotate 不指定顺时针或者逆时针，则按照锐角交互。

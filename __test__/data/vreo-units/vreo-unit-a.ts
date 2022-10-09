@@ -74,13 +74,16 @@ export const data1 = // debug popup image
       "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
       "type": "InfoPanel",
       "start": 2632,
-      "end": 500632,
+      // "end": 500632,
+      "end": 50000632,
       "data": {
         "style": "PopUp",
         "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
-        "type": "Image",
+        "type": "Image",                                                                                                                                                      
+        // "url": "https:////test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+        // "type": "Video",   
         "title": "测试面板问题",
-        "subTitle": "测试题目"
+        // "subTitle": "测试题目"
       }
     },
   ]
@@ -209,17 +212,17 @@ export const data =
         "imgUrl": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_run___92807913661bbb40d0bb9a801b582a07.gif"
       }
     },
-    {
-      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
-      "type": "InfoPanel",
-      "start": 3783,
-      "end": 6700,
-      "parsed": false,
-      "data": {
-        "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
-        "type": "Image"
-      }
-    },
+    // {
+    //   "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+    //   "type": "InfoPanel",
+    //   "start": 3783,
+    //   "end": 6700,
+    //   "parsed": false,
+    //   "data": {
+    //     "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
+    //     "type": "Image"
+    //   }
+    // },
 
     {
       "uuid": "e3a3d9fe-9ae7-43e0-f0e2-bedd35aa2d19",

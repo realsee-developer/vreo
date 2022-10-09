@@ -3,7 +3,11 @@ import { Subscribe, Five } from '@realsee/five';
 import { VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit';
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 export interface PlayerConfigs {
+    /**
+     * @deprecated rename to container
+     */
     containter?: ReactDOM.Container;
+    container?: ReactDOM.Container;
     keyframeMap: VreoKeyframeConfigMap;
     /**
      * 微信端自动播放功能实现需要提前初始化 Video 实例。

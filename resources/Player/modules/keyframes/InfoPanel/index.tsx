@@ -11,19 +11,31 @@ import { useController } from '../../../hooks'
 
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
   return (
-    <div className="vreo-infoPanel vreo-infoPanel--img">
-      {children}
-      <div className="vreo-infoPanelImg" style={{ backgroundImage: `url(${url})` }}></div>
+    <div className="vreo-infoPanel-container">
+      <div className="vreo-infoPanel vreo-infoPanel--img">
+        <div className="ratio-4-5 vreo-infoPanel-wrapper">
+          <div className="vreo-infoPanel-inner">
+            {children}
+            <img className="vreo-infoPanelImg" src={url}></img>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
 
 function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }) {
   return (
-    <div className="vreo-infoPanel vreo-infoPanel--video">
-      {children}
-      <div className="vreo-infoPanelWrapper">
-        <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />
+    <div className="vreo-infoPanel-container">
+      <div className="vreo-infoPanel vreo-infoPanel--video">
+        <div className="ratio-4-5 vreo-infoPanel-wrapper">
+          <div className="vreo-infoPanel-inner">
+            {children}
+            <div className="vreo-infoPanelVideo">
+              <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -40,10 +52,13 @@ const Title = (props: TitleProps) => {
   }
 
   return (
-    <div className="vreo-infoPanel-title">
-      <div className="vreo-infoPanel-t1">{props.title}</div>
-      <div className="vreo-infoPanel-t2">{props.subTitle}</div>
-    </div>
+    <>
+      <div className="vreo-infoPanel-title-shadow"></div>
+      <div className="vreo-infoPanel-title">
+        <div className="vreo-infoPanel-t1">{props.title}</div>
+        <div className="vreo-infoPanel-t2">{props.subTitle}</div>
+      </div>
+    </>
   )
 }
 
