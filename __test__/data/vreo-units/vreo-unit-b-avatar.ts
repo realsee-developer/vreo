@@ -10,6 +10,10 @@ export const data: VreoUnit = {
     "start": 0,
     "end": 106278,
     "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/hxjHhG5N/aitalk_text/merged.wav",
+    "avatar": {
+      url: "//vrlab-static.ljcdn.com/release/web/avatar2.6ab7080c.png",
+      force: true,
+    }
   },
   "keyframes": [
     {

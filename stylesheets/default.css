@@ -1,3 +1,23 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+  font-family: PingFangSC-Regular;
+}
+
+.resizeObserver-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  background: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .vreo-drawer {
   position: fixed;
   top: 0;
@@ -32,13 +52,23 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 150px;
   color: white;
   transition: transform 0.5s;
   pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.vreo-app .vreo-panel,
+.vreo-app[data-size="S"] .vreo-panel,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-panel {
+  height: 130px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-panel,
+.vreo-app[data-size="L"] .vreo-panel,
+.vreo-app[data-size="XL"] .vreo-panel {
+  height: 160px;
 }
 
 .vreo-panel::before {
@@ -57,44 +87,149 @@
 }
 
 .vreo-panel-inner {
-  max-width: 375px;
   height: 100%;
   width: 100%;
   position: relative;
 }
 
-@keyframes panel-sprites-animation {
+.vreo-app .vreo-panel-inner,
+.vreo-app[data-size="S"] .vreo-panel-inner,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-panel-inner {
+  max-width: 375px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-panel-inner,
+.vreo-app[data-size="L"] .vreo-panel-inner {
+  max-width: 462px;
+}
+.vreo-app[data-size="XL"] .vreo-panel-inner {
+  max-width: 500px;
+}
+
+.vreo-wave {
+  position: absolute;
+  bottom: 0;
+}
+
+/* @keyframes panel-sprites-animation {
   0% {
     background-position: 0 0;
   }
   100% {
     background-position: -17625px 0;
   }
-}
+} */
 
-.vreo-panel-inner::before {
+/* .vreo-panel-inner::after {
   content: '';
   background-image: url('//vrlab-static.ljcdn.com/release/web/spritesheets/imgs/playing.d2312f22.png');
   height: 30px;
-  width: 375px;
+  width: 100%;
   background-size: 18000px 30px;
   background-repeat: no-repeat;
   animation: panel-sprites-animation 2.5s 0s steps(47) infinite normal;
   position: absolute;
   left: 0;
   bottom: 0;
-}
+} */
 
-.VideoAgent {
+.VideoAgent,
+.Avatar {
   position: absolute;
-  left: -80px;
-  top: -30px;
-  width: 288px;
-  height: 162px;
   cursor: pointer;
 }
 
-.VideoAgent::after {
+.VideoAgent {
+  height: 100%;
+}
+
+.VideoAgent.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vreo-app .Avatar,
+.vreo-app[data-size="S"] .Avatar,
+.vreo-app[data-size="M"][data-orientation="landscape"] .Avatar {
+  width: 48px;
+  left: 30px;
+  bottom: 36px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .Avatar,
+.vreo-app[data-size="L"] .Avatar {
+  width: 56px;
+  left: 31px;
+  bottom: 42px;
+}
+.vreo-app[data-size="XL"] .Avatar {
+  width: 60px;
+  left: 32px;
+  bottom: 46px;
+}
+
+.vreo-app .VideoAgent,
+.vreo-app[data-size="S"] .VideoAgent,
+.vreo-app[data-size="M"][data-orientation="landscape"] .VideoAgent {
+  width: 250px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .VideoAgent,
+.vreo-app[data-size="L"] .VideoAgent,
+.vreo-app[data-size="XL"] .VideoAgent {
+  width: 300px;
+}
+
+.VideoAgent-container {
+  position: absolute;
+  left: -28%;
+  width: 100%;
+  height: 100%;
+}
+
+.VideoAgent-wrapper {
+  bottom: 0px;
+}
+
+.Avatar-wrapper {
+  bottom: 0px;
+}
+
+.ratio-16-9 {
+  position: absolute;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.ratio-4-5 {
+  position: absolute;
+  width: 100%;
+  padding-top: 125%;
+}
+
+.ratio-1-1 {
+  position: absolute;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.VideoAgent-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.Avatar-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
+  pointer-events: all;
+}
+
+/* .VideoAgent::after {
   content: '';
   position: absolute;
   left: 0;
@@ -104,7 +239,7 @@
   mask: linear-gradient(0deg, transparent 0%, #000 5%);
   -webkit-mask: linear-gradient(0deg, transparent 0%, #000 5%);
   pointer-events: none;
-}
+} */
 
 .VideoAgent-canvas {
   outline: none;
@@ -116,41 +251,101 @@
   position: absolute;
   top: 0;
   left: 50%;
+  transform: translate(-50%, 0);
   width: 50%;
   height: 100%;
   pointer-events: all;
   cursor: pointer;
   opacity: 0;
-  transform: translate(-50%, 0);
+}
+
+.VideoAgent.hide .VideoAgent-play {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .vreo-prompter {
-  position: absolute;
-  top: 54px;
-  left: 120px;
-  width: 250px;
-  font-size: 14px;
+  top: 64px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
   opacity: 1;
   transition: opacity 0.1s;
 }
 
-.vreo-prompter--audio {
-  top: 72px;
-  left: 64px;
+.vreo-app .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text,
+.vreo-app[data-size="S"] .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text {
+  left: 130px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text,
+.vreo-app[data-size="L"] .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text,
+.vreo-app[data-size="XL"] .vreo-prompter.vreo-prompter-left--video .vreo-prompter-text {
+  left: 160px;
+}
+
+.vreo-app .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text 
+.vreo-app[data-size="S"] .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text {
+  left: 102px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text,
+.vreo-app[data-size="L"] .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text {
+  left: 119px;
+}
+.vreo-app[data-size="XL"] .vreo-prompter.vreo-prompter-left--avatar .vreo-prompter-text {
+  left: 132px;
+}
+
+.vreo-prompter.vreo-prompter-left--none .vreo-prompter-text {
+  text-align: center;
+}
+
+.vreo-prompter-text {
+  position: absolute;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vreo-app .vreo-prompter-text,
+.vreo-app[data-size="S"] .vreo-prompter-text,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-prompter-text {
+  width: 194px;
+  bottom: 60px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-prompter-text,
+.vreo-app[data-size="L"] .vreo-prompter-text {
+  width: 253px;
+  bottom: 70px;
+}
+.vreo-app[data-size="XL"] .vreo-prompter-text {
+  width: 272px;
+  bottom: 76px;
 }
 
 .vreo-prompter-innerText {
   position: absolute;
-  left: 0;
-  top: 0;
-  padding-right: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  word-break: break-all;
 }
 
-.vreo-prompter--audio .vreo-prompter-innerText {
-  padding-right: 0;
-  text-align: center;
-  width: 100%;
+.vreo-app .vreo-prompter-innerText,
+.vreo-app[data-size="S"] .vreo-prompter-innerText,
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-prompter-innerText {
+  font-size: 14px;
 }
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-prompter-innerText,
+.vreo-app[data-size="L"] .vreo-prompter-innerText {
+  font-size: 16px;
+}
+.vreo-app[data-size="XL"] .vreo-prompter-innerText {
+  font-size: 18px;
+}
+
 .vreo-prompter--hidden {
   opacity: 0;
 }
@@ -186,6 +381,7 @@
 .VideoEffect--visible {
   display: flex;
 }
+
 .VideoEffect-video {
   height: 100%;
 }
@@ -518,35 +714,57 @@
   display: block;
 }
 
-.vreo-infoPanelWrapper {
-  flex: 1;
+.vreo-infoPanel-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 68px);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.vreo-infoPanel {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.75);
-  flex-direction: column;
+.vreo-infoPanel-wrapper {
+  position: relative;
 }
 
-.vreo-infoPanel::after {
-  content: '';
-  display: block;
+.vreo-infoPanel-inner {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: 20px;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.vreo-infoPanel {
+  position: relative;
+}
+
+.vreo-app .vreo-infoPanel,
+.vreo-app[data-size="S"] .vreo-infoPanel {
+  width: 327px;
+}
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-infoPanel {
+  width: 192px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-infoPanel,
+.vreo-app[data-size="L"] .vreo-infoPanel {
+  width: 319px;
+}
+.vreo-app[data-size="XL"] .vreo-infoPanel {
+  width: 384px;
 }
 
 .vreo-infoPanel-title {
-  height: 64px;
   width: 100%;
   color: white;
   display: flex;
   align-items: center;
+  word-break: break-all;
 }
 
 .vreo-infoPanel-t1 {
@@ -556,6 +774,8 @@
 }
 
 .vreo-infoPanel-t2 {
+  position: absolute;
+  top: 100%;
   font-size: 12px;
   opacity: 0.6;
   padding-right: 26px;
@@ -565,15 +785,11 @@
 
 .vreo-infoPanelImg,
 .vreo-infoPanelVideo {
-  flex: 1;
-  background-size: contain;
+  position: absolute;
   width: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-
-.vreo-infoPanelVideo {
-  max-width: 412px;
+  height: 100%;
+  object-position: center center;
+  object-fit: contain;
 }
 
 .vreo-panel--hidden .vreo-panel-inner {
@@ -588,9 +804,9 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7) 65%);
   opacity: 0;
-  transition: opacity .45s;
+  transform: translateY(10px);
+  transition: all .45s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -598,52 +814,62 @@
 
 .vreo-PopUp.vreo-PopUp-visible {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: all;
 }
 
 .vreo-PopUp-inner {
-  max-width: 100%;
-  max-height: 100%;
-  width: 339px;
-  height: 425px;
   position: relative;
-}
-
-@media only screen and (min-width: 1080px) {
-  .vreo-PopUp-inner {
-    width: 678px;
-    height: 620px;
-    position: relative;
-  }
-  .vreo-infoPanelVideo {
-    max-width: 100%;
-  }
-  .vreo-infoPanelImg {
-    max-width: 100%;
-  }
-}
-
-.vreo-PopUp-inner .vreo-infoPanel {
-  background-color: initial;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .vreo-PopUp-inner .vreo-infoPanel-title {
   position: absolute;
-  bottom: 32px;
-  left: 0;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 16.5%;
+  bottom: 0;
   z-index: 1;
   flex-direction: column;
-  justify-content: end;
-  height: 200px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+}
+
+.vreo-PopUp-inner .vreo-infoPanel-title-shadow {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 46%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  z-index: 1;
 }
 
 .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
   padding-left: 0;
-  font-size: 20px;
   font-weight: 600;
-  padding-bottom: 14px;
+}
+
+.vreo-app .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1,
+.vreo-app[data-size="S"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
+  font-size: 20px;
+  line-height: 28px;
+}
+.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
+  font-size: 14px;
+  line-height: 20px;
+}
+.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1,
+.vreo-app[data-size="L"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
+  font-size: 16px;
+  line-height: 22px;
+}
+.vreo-app[data-size="XL"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
+  font-size: 20px;
+  line-height: 28px;
 }
 
 .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t2 {

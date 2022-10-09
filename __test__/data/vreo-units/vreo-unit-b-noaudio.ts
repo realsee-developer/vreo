@@ -9,7 +9,7 @@ export const data: VreoUnit = {
     "duration": 26245,
     "start": 0,
     "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/hxjHhG5N/aitalk_text/merged.wav",
+    "url": "",
   },
   "keyframes": [
     {

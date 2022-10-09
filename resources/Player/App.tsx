@@ -2,8 +2,9 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { observer } from 'mobx-react'
 import { Controller } from './Controller'
-import { useController, useFiveInstance } from './hooks'
+import { useController } from './hooks'
 import { CameraMovement } from './modules/keyframes/CameraMovement'
+import { ResizeObserver } from './modules/ResizeObserver'
 import { InfoPanel } from './modules/keyframes/InfoPanel'
 import { ModelVideo } from './modules/keyframes/ModelVideo'
 import { PanoEffect } from './modules/keyframes/PanoEffect'
@@ -14,6 +15,7 @@ import { UpdateVRPanorama } from './modules/keyframes/UpdateVRPanorama'
 import { VideoEffect } from './modules/keyframes/VideoEffect'
 import { VideoAgent } from './modules/VideoAgent'
 import { BgMusic } from './modules/keyframes/BgMusic'
+import { Wave } from './modules/Wave'
 
 const AppView = observer(({ controller }: { controller: Controller }) => {
   
@@ -24,11 +26,9 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
       })}
     >
       <div className="vreo-panel-inner">
+        {controller.waveAppearance && <Wave appearance={controller.waveAppearance}/>}
         <VideoAgent
           onClick={() => {
-            if (controller.isAudio) {
-              return
-            }
             if (controller.playing) {
               controller.setPlaying(false)
             } else {
@@ -49,6 +49,7 @@ export function App() {
   return (
     <>
       <>
+        <ResizeObserver />
         <CameraMovement />
         <ModelVideo />
         <UpdateVRPanorama />
