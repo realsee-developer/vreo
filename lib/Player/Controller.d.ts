@@ -23,7 +23,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     container: Element;
     waveAppearance: WaveAppearance | null;
     appearance: Appearance;
-    avatar?: VreoVideo['avatar'];
+    avatar: VreoVideo['avatar'];
     visible: boolean;
     get agentType(): "none" | "video" | "avatar";
     popUp: string | JSX.Element | null;
