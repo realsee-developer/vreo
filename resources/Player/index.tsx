@@ -1,3 +1,5 @@
+// 下面这一行不能删
+import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Five, Subscribe } from '@realsee/five'
 
