@@ -77,7 +77,7 @@ export interface VreoVideo {
     end: number;
     url: string;
     avatar?: {
-        url: string;
+        url?: string;
         force?: true;
     };
 }

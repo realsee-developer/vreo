@@ -31,7 +31,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     appearance: Appearance = {
         waveStyle: 'solid',
     }
-    avatar?: VreoVideo['avatar']
+    avatar: VreoVideo['avatar'] = {}
 
 
     visible = false
