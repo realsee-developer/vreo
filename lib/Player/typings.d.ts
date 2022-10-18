@@ -6,8 +6,8 @@ export interface PlayerConfigs {
     /**
      * @deprecated rename to container
      */
-    containter?: ReactDOM.Container;
-    container?: ReactDOM.Container;
+    containter?: Element;
+    container?: Element;
     keyframeMap: VreoKeyframeConfigMap;
     /**
      * 微信端自动播放功能实现需要提前初始化 Video 实例。
@@ -28,6 +28,13 @@ export interface PlayerConfigs {
         size: number;
     };
     autoPreload?: boolean;
+    appSize?: AppSize;
+    appearance?: Appearance;
+}
+export declare type AppSize = 'S' | 'M' | 'L' | 'XL';
+export declare type WaveAppearance = 'single' | 'double' | 'solid' | 'swap' | 'expand';
+export interface Appearance {
+    waveStyle?: 'wave' | 'solid';
 }
 export declare type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
 export interface CustomVreoKeyframeProps {

@@ -27,7 +27,7 @@ export declare class VideoAgentMesh extends THREE.Mesh {
     audioInstance: HTMLAudioElement;
     audioLikeInstance: AudioLike;
     $removeEventListener: () => void;
-    get videoInstance(): HTMLAudioElement | AudioLike;
+    get mediaInstance(): HTMLAudioElement | HTMLVideoElement | AudioLike;
     /**
      *
      * @param width

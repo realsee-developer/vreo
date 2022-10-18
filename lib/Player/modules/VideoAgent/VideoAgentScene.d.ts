@@ -1,16 +1,12 @@
 import * as THREE from 'three';
-import { VideoAgentMesh } from './VideoAgentMesh';
+import { VideoAgentMesh, VideoAgentMeshOptions } from './VideoAgentMesh';
 export declare class VideoAgentScene {
     videoAgentMesh: VideoAgentMesh;
     scene: THREE.Scene;
     camera: THREE.OrthographicCamera;
     renderer: THREE.WebGLRenderer;
-    container: HTMLElement;
-    constructor(container: HTMLElement, needRender?: boolean, options?: {
-        videoInstance?: HTMLVideoElement;
-        audioInstance?: HTMLAudioElement;
-        preload?: boolean;
-    });
+    disposers: (() => void)[];
+    constructor(container?: HTMLElement, options?: VideoAgentMeshOptions);
     run: () => void;
     dispose: () => void;
 }

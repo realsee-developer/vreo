@@ -76,6 +76,10 @@ export interface VreoVideo {
     start: number;
     end: number;
     url: string;
+    avatar?: {
+        url: string;
+        force?: true;
+    };
 }
 /**
  * 剧本结构
