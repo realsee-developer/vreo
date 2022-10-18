@@ -15,7 +15,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     playing: boolean;
     ended: boolean;
     loading: boolean | null;
-    containerSize?: {
+    containerSize: {
         width: number;
         height: number;
     };

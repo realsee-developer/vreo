@@ -21,10 +21,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     playing = false
     ended = false
     loading: boolean | null = false // null 表示加载失败
-    containerSize?: {
-        width: number
-        height: number
-    }
+    containerSize: { width: number, height: number } = { width: 0, height: 0 }
     appSize?: 'S' | 'M' | 'L' | 'XL'
     container: Element
     waveAppearance: WaveAppearance | null = null
@@ -164,7 +161,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             reaction(
                 () => this.containerSize,
                 (containerSize) => {
-                    if (!containerSize) return
+                    if (!containerSize?.width) return
                     const width = containerSize.width
                     const height = containerSize.height
                     const size = (() => {
