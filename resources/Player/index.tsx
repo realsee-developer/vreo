@@ -162,7 +162,6 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.play()
 
         this.controller.run((type, keyframe) => this.emit(type, keyframe))
-        console.log('end')
         this.controller.setLoading(false)
         return true
     }

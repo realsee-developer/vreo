@@ -122,6 +122,7 @@ export const data: VreoUnit = {
       "end": 10500,
       "parsed": false,
       "data": {
+        "imgUrl": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
         "text": "12小时保温盘",
         "vertex": { "x": -0.8666686085208133, "y": 0.8402865638657824, "z": -3.817708370830488 },
         "type": "Text"

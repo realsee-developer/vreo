@@ -156,7 +156,6 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
                             break
                     }
                 }
-                console.log(this.waveAppearance)
             }, 
             { fireImmediately: true }
         )

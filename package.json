@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@realsee/dnalogel": "^2.1.0-alpha.15",
+    "@realsee/dnalogel": "^2.1.0-alpha.17",
     "@realsee/five": "5.0.0-alpha.149",
     "@types/offscreencanvas": "^2019.6.4",
     "@types/react": "^17.0.37",
