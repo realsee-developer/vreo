@@ -35,7 +35,7 @@ export function PanoTag() {
 
       const panoTagData = data as PanoTagData
 
-      const id = 'any-id'
+      const id = Date.now().toString()
       const pointType = PointType.PointTag
       const dimensionType = DimensionType.Two
       const position = [panoTagData.vertex.x, panoTagData.vertex.y, panoTagData.vertex.z]
@@ -51,7 +51,6 @@ export function PanoTag() {
       panoTagPlugin.current.load({ tagList: [tag] })
 
       timeoutRef.current = setTimeout(() => {
-        const id = Date.now()
         // clear
         const tag = panoTagPlugin.current.getTagById(id)
         if (tag.state) {
