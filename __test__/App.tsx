@@ -13,11 +13,11 @@ import { VreoUnit } from '../typedoc/Player'
 // import { data } from './data/vreo-units/vreo-unit-tmp'
 
 // 头像音频
-import { data } from './data/vreo-units/vreo-unit-b-avatar'
+// import { data } from './data/vreo-units/vreo-unit-b-avatar'
 
 
 // 啥都没有版本
-// import { data } from './data/vreo-units/vreo-unit-b-noaudio'
+import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
 
 enum PlayerState {
