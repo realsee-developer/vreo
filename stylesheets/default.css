@@ -855,8 +855,8 @@
 
 .vreo-app .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1,
 .vreo-app[data-size="S"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 22px;
 }
 .vreo-app[data-size="M"][data-orientation="landscape"] .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
   font-size: 14px;

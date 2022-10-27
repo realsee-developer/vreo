@@ -26,7 +26,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     container: Element
     waveAppearance: WaveAppearance | null = null
     appearance: Appearance = {
-        waveStyle: 'solid',
+        waveStyle: 'wave',
     }
     avatar: VreoVideo['avatar'] = {}
 
