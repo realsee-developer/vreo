@@ -62,6 +62,10 @@ export function Wave(props?: { appearance?: WaveAppearance }) {
     return WAVES[appearance]
   }, [props?.appearance])
 
+  const heightWidthRatio = React.useMemo(() => {
+    return wave.height / wave.width
+  }, [wave])
+
   let content: ReactNode = null;
   if (isMicroMessenger) {
     content = <KeyframeWaveContent wave={wave} />
@@ -73,7 +77,15 @@ export function Wave(props?: { appearance?: WaveAppearance }) {
     content = <KeyframeWaveContent wave={wave} />
   }
 
-  return <div className="vreo-wave">{content}</div>
+  return (
+    <div className="vreo-wave">
+      <div style={{position: 'relative', width: '100%', paddingTop: `${heightWidthRatio * 100}%`}}>
+        <div style={{position: 'absolute', width: '100%', height: '100%', left: 0, top: 0}}>
+          {content}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const VideoWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; format: 'hevc' | 'vp9' }> = ({
@@ -130,10 +142,10 @@ const KeyframeWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES] }> = ({
       height: "100%",
       backgroundImage: `url(${source})`,
       backgroundSize: "100%",
-      animationName: `keyframes`,
+      animationName: "vreo-wave-keyframes",
       animationTimingFunction: `steps(${wave.frames - 1})`,
       animationDuration: `${wave.frames / 25}s`,
       animationIterationCount: 'infinite',
     }}
-  />;
+  />
 };

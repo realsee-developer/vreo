@@ -106,10 +106,16 @@
 }
 
 .vreo-wave {
+  width: 100%;
   position: absolute;
   background-color: transparent;
   border: none;
   bottom: 0;
+}
+
+@keyframes vreo-wave-keyframes {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
 }
 
 /* @keyframes panel-sprites-animation {
