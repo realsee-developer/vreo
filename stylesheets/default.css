@@ -107,6 +107,8 @@
 
 .vreo-wave {
   position: absolute;
+  background-color: transparent;
+  border: none;
   bottom: 0;
 }
 
