@@ -2,7 +2,7 @@ import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
-// import { data } from './data/vreo-units/vreo-unit-a'
+import { data } from './data/vreo-units/vreo-unit-a'
 
 // 弹层
 // import { data1 as data } from './data/vreo-units/vreo-unit-a'
@@ -17,7 +17,7 @@ import { VreoUnit } from '../typedoc/Player'
 
 
 // 啥都没有版本
-import { data } from './data/vreo-units/vreo-unit-b-noaudio'
+// import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
 
 enum PlayerState {
