@@ -6,7 +6,7 @@ specifiers:
   '@babel/preset-env': ^7.16.4
   '@babel/preset-react': ^7.16.0
   '@babel/preset-typescript': ^7.16.0
-  '@realsee/dnalogel': ^2.1.0-alpha.18
+  '@realsee/dnalogel': ^2.1.0-alpha.29
   '@realsee/five': 5.0.0-alpha.149
   '@tweenjs/tween.js': 18.6.4
   '@types/offscreencanvas': ^2019.6.4
@@ -37,7 +37,7 @@ devDependencies:
   '@babel/preset-env': 7.19.4_@babel+core@7.19.6
   '@babel/preset-react': 7.18.6_@babel+core@7.19.6
   '@babel/preset-typescript': 7.18.6_@babel+core@7.19.6
-  '@realsee/dnalogel': 2.1.0-alpha.18
+  '@realsee/dnalogel': 2.1.0-alpha.29
   '@realsee/five': 5.0.0-alpha.149_g6oyafoa4olingeaz33dmiixsq
   '@types/offscreencanvas': 2019.7.0
   '@types/react': 17.0.50
@@ -1476,14 +1476,14 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: true
 
-  /@realsee/dnalogel/2.1.0-alpha.18:
-    resolution: {integrity: sha512-MvsSDkkX8U/uNUdupPEYkV1XjXxV6CUPUlC1jHnoacMITC5iAmbTMGGaVuBT2YQmNNazMDTEG8hquUrO4yl32Q==}
+  /@realsee/dnalogel/2.1.0-alpha.29:
+    resolution: {integrity: sha512-1Nl5/p4Sr1oKXahMOvPw1jj0qaxFBDnRcbcHoIIPMjHantlLbR4UfAyvpKFeyc9yrphHvuL+3G4WOYoXcdARsw==}
     dependencies:
-      '@tweenjs/tween.js': 18.6.4
       animejs: 3.2.1
       classnames: 2.3.2
       hammerjs: 2.0.8
       object-assign-deep: 0.4.0
+      polyline-normals: 2.0.2
       svelte: 3.52.0
       swiper: 8.4.3
     dev: true
@@ -1527,6 +1527,7 @@ packages:
 
   /@tweenjs/tween.js/18.6.4:
     resolution: {integrity: sha512-lB9lMjuqjtuJrx7/kOkqQBtllspPIN+96OvTCeJ2j5FEzinoAXTdAMFnDAQT1KVPRlnYfBrqxtqP66vDM40xxQ==}
+    dev: false
 
   /@types/long/4.0.2:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
@@ -2263,6 +2264,10 @@ packages:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
     dev: true
 
+  /gl-vec2/1.3.0:
+    resolution: {integrity: sha512-YiqaAuNsheWmUV0Sa8k94kBB0D6RWjwZztyO+trEYS8KzJ6OQB/4686gdrf59wld4hHFIvaxynO3nRxpk1Ij/A==}
+    dev: true
+
   /glob-parent/5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -2655,6 +2660,18 @@ packages:
   /pify/4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    dev: true
+
+  /polyline-miter-util/1.0.1:
+    resolution: {integrity: sha512-/3u91zz6mBerBZo6qnOJOTjv7EfPhKtsV028jMyj86YpzLRNmCCFfrX7IO9tCEQ2W4x45yc+vKOezjf7u2Nd6Q==}
+    dependencies:
+      gl-vec2: 1.3.0
+    dev: true
+
+  /polyline-normals/2.0.2:
+    resolution: {integrity: sha512-dpHrAi61ymhsB4N0XlNb3YpkKJeTFnXBXDWpeH8Ucstq0TUZrCN3YK4Jlgk8ofMWN25lhGC4wnxLMv+TUK8rig==}
+    dependencies:
+      polyline-miter-util: 1.0.1
     dev: true
 
   /postcss/8.4.18:
