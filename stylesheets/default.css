@@ -312,7 +312,7 @@
 
 .vreo-prompter-text {
   position: absolute;
-  height: 0;
+  height: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -335,7 +335,6 @@
 }
 
 .vreo-prompter-innerText {
-  position: absolute;
   font-weight: bold;
   font-size: 14px;
   word-break: break-all;

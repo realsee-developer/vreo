@@ -54,7 +54,6 @@ const isMicroMessenger = /microMessenger/i.test(userAgent);
 const canPlayHevc = isAppleDevice || isSafari;
 const canPlayVp9 = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported("video/webm; codecs=vp9");
 
-
 export function Wave(props?: { appearance?: WaveAppearance }) {
   
   const wave = React.useMemo(() => {
@@ -69,10 +68,10 @@ export function Wave(props?: { appearance?: WaveAppearance }) {
   let content: ReactNode = null;
   if (isMicroMessenger) {
     content = <KeyframeWaveContent wave={wave} />
-  } else if (canPlayVp9) {
-    content = <VideoWaveContent format="vp9" wave={wave} />
   } else if (canPlayHevc) {
     content = <VideoWaveContent format="hevc" wave={wave} />
+  } else if (canPlayVp9) {
+    content = <VideoWaveContent format="vp9" wave={wave} />
   } else {
     content = <KeyframeWaveContent wave={wave} />
   }
