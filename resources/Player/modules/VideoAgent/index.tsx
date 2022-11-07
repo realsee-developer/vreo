@@ -15,7 +15,7 @@ export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMe
   const showVideoAgent = React.useMemo(() => {
     if (showAvatar) return false
     return controller.videoAgentScene?.videoAgentMesh.mediaInstance instanceof HTMLVideoElement
-  }, [controller.videoAgentScene])
+  }, [controller.videoAgentScene, showAvatar])
 
   React.useEffect(() => {
     if (!ref.current) throw new Error('React 渲染异常，请稍后重试 ...')

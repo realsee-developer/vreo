@@ -15,20 +15,36 @@
 
 ## 安装说明
 
-推荐使用 `npm` 或 `yarn` 的方式进行安装。由于 `@realsee/vreo` 依赖 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 [React](https://reactjs.org/) ，请务必同时安装相关依赖：
-
-```bash
-$ npm install @realsee/vreo @realsee/five react react-dom --save
-# or
-$ yarn add @realsee/vreo @realsee/five react react-dom
-```
+ - 由于 `@realsee/vreo` 依赖 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 [React](https://reactjs.org/) ，请务必同时安装相关依赖  
+ - 根据项目的包管理器来安装：
+    ``` bash
+    # pnpm
+    pnpm install @realsee/vreo @realsee/five react react-dom --save
+    # npm
+    npm install @realsee/vreo @realsee/five react react-dom --save
+    # yarn
+    yarn add @realsee/vreo @realsee/five react react-dom
+    ```
 
 ## 快速上手
+引入样式：
 
+```css
+  /* @file xxx.css */
+  @import '@realsee/vreo/stylesheets/default.css';
+```
+或
 ```jsx
+  /* @file xxx.tsx | xxx.jsx */
+  import '@realsee/vreo/stylesheets/default.css';
+```
+examples:
+```tsx
+/* @file index.tsx | index.jsx */
 import * as React from 'react'
 import { Five } from '@realsee/five'
 import { Player } from '@realsee/vreo'
+import '@realsee/vreo/stylesheets/default.css';
 
 // 创建 Five 实例
 const five = new Five({
@@ -36,32 +52,28 @@ const five = new Five({
 })
 
 // 创建 Player 实例
-const vreoplayer = new Player(five)
+const vreoPlayer = new Player(five)
 
 // 异步请求剧本数据
 const vreoUnit = await fetch('api/**/**')
 
 // 加载剧本数据（剧本数据见下文）
-vreoplayer.load(vreoUnit)
+vreoPlayer.load(vreoUnit)
 
 // 播放
-vreoplayer.play()
+vreoPlayer.play()
 
 // 暂停
-vreoplayer.pause()
-```
-
-引入样式：
-
-```css
-@import '@realsee/vreo/stylesheets/default.css';
+vreoPlayer.pause()
 ```
 
 ## React Context & Hooks 模式使用
 
 **Vreo** 支持 [React Context](https://reactjs.org/docs/context.html) 与 [Hooks](https://reactjs.org/docs/hooks-intro.html) 相配合的模式使用，简单样例如下：
 
-```jsx
+```tsx
+/* @file App.tsx */
+
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Five, Work, parseWork } from '@realsee/five'
@@ -78,20 +90,21 @@ const PlayButton: React.FC = () => {
   const { load, play, pause } = useVreoAction()
 
   return (
-    <button
-      onClick={async () => {
-        // 获取讲房数据
-        const vreoUnit = await fetch('api/**/**')
-        // 载入数据
-        await load(vreoUnit)
-        // 播放
-        play()
-        // 暂停
-        pause()
-      }}
-    >
-      讲解
-    </button>
+    <>
+      <button
+        onClick={async () => {
+          // 获取讲房数据
+          const vreoUnit = await fetch('api/**/**')
+          // 载入数据
+          await load(vreoUnit)
+          // 播放
+          play()
+        }}
+      >
+        讲解
+      </button>
+      <button onClick={() => pause()}>暂停</button>
+    </>
   )
 }
 
@@ -559,7 +572,4 @@ vreoplayer.load(vreoUnit, 0, true)
 
 ```
 
-
-## API 文档
-
-详细的 API 文档请参考：[Vreo API](https://realsee.js.org/vreo/index.html) 。
+Enjoy it!
