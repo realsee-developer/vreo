@@ -2,7 +2,9 @@ import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
-import { data } from './data/vreo-units/vreo-unit-a'
+// import { data } from './data/vreo-units/vreo-unit-a'
+
+import { data } from './data/vreo-units/vreo-unit-test-video'
 
 // 弹层
 // import { data1 as data } from './data/vreo-units/vreo-unit-a'
