@@ -110,7 +110,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             playing: observable,
             setPlaying: action,
             loading: observable,
-            videoAgentScene: observable.ref,
+            // videoAgentScene: observable.ref,
             setLoading: action,
             popUp: observable.ref,
             openPopUp: action,
