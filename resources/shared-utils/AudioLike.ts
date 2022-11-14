@@ -43,7 +43,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
       this.$currentTime = 0
     }
     if (this.$timestamp === null) {
-      this.$timestamp = performance.now() - this.$currentTime
+      this.$timestamp = performance.now()
     }
     this.stopInterval = requestAnimationFrameInterval(() => this.requestAnimationFrameLoop())
     this.emit('play')
@@ -61,7 +61,8 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   requestAnimationFrameLoop() {
     if (this.$timestamp === null) return
     const now = performance.now()
-    this.$currentTime = now - this.$timestamp
+    this.$currentTime += (now - this.$timestamp)
+    this.$timestamp = now
     this.emit('timeupdate')
     if (this.$currentTime >= this.$duration - 10) {
       this.$currentTime = this.$duration
@@ -75,7 +76,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   set currentTime(time: number) {
-    this.$currentTime = time
+    this.$currentTime = time * 1000
   }
 
   get duration() {
@@ -83,10 +84,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   set duration(duration: number) {
-    this.pause()
     this.$duration = duration
-    this.$timestamp = null
-    this.$currentTime = 0
   }
 
   get ended() {

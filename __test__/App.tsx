@@ -4,7 +4,7 @@ import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
 // import { data } from './data/vreo-units/vreo-unit-a'
 
-import { data } from './data/vreo-units/vreo-unit-test-video'
+// import { data } from './data/vreo-units/vreo-unit-test-video'
 
 // 弹层
 // import { data1 as data } from './data/vreo-units/vreo-unit-a'
@@ -19,7 +19,7 @@ import { data } from './data/vreo-units/vreo-unit-test-video'
 
 
 // 啥都没有版本
-// import { data } from './data/vreo-units/vreo-unit-b-noaudio'
+import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
 
 enum PlayerState {
@@ -50,7 +50,7 @@ export function App() {
         onClick={async () => {
           if (state === PlayerState.ready) {
             ref.current?.show()
-            await ref.current?.load(data as VreoUnit)
+            await ref.current?.load(data as VreoUnit, 4000)
           }
           if (state !== PlayerState.playing) {
             ref.current?.play()

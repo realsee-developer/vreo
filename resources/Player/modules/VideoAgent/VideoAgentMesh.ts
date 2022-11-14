@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
-import AudioLike from '../../../shared-utils/AduioLike'
+import AudioLike from '../../../shared-utils/AudioLike'
 import { getMediaType } from '../../../shared-utils/getMediaInfo'
 
 const vertexShader = `
@@ -280,7 +280,7 @@ export class VideoAgentMesh extends THREE.Mesh {
   }
 
   /**
-   * 转成毫秒，保障精准度
+   * 秒转成毫秒，保障精准度
    */
   get currentTime() {
     return this.mediaInstance.currentTime * 1000

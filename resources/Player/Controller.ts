@@ -231,7 +231,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     /**
      * 逐帧任务
      */
-    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void) {
+    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void) {
         if (this.mediaInstance?.ended) {
             this.setEnded(true)
             this.setPlaying(false)
@@ -255,9 +255,9 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         currentKeyframes.forEach((keyframe) => {
             if (keyframe.parsed) return
             keyframe.parsed = true
-            this.emit(keyframe.type, keyframe)
+            this.emit(keyframe.type, keyframe, this.currentTime)
             if (callback) {
-                callback(keyframe.type, keyframe)
+                callback(keyframe.type, keyframe, this.currentTime)
             }
         })
     }

@@ -18,7 +18,7 @@ import '../stylesheets/custom/SpatialScenePanel.css'
 
 import { VreoProvider } from '../resources/react'
 import { SpatialScenePanel } from '../resources/Player/custom/SpatialScenePanel'
-import AudioLike from '../resources/shared-utils/AduioLike'
+import AudioLike from '../resources/shared-utils/AudioLike'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },

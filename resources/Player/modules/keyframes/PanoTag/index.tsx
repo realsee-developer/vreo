@@ -53,6 +53,7 @@ export function PanoTag() {
       timeoutRef.current = setTimeout(() => {
         // clear
         const tag = panoTagPlugin.current.getTagById(id)
+        if (!tag) return
         if (tag.state) {
           tag.state.unfolded = false
           ;(panoTagPlugin.current as any).updateRenderAllTags()

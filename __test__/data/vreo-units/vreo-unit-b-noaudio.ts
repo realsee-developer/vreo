@@ -43,6 +43,22 @@ export const data: VreoUnit = {
       "parsed": false,
       "data": { "text": "反复烧开的千滚水危害家人健康" }
     },
+    // {
+    //   "uuid": "92a90980-6f5c-4c26-fed4-7fb90ds8691044",
+    //   "type": "BgMusic",
+    //   "start": 5200,
+    //   "end": 9200,
+    //   "parsed": false,
+    //   "data": { "url": "//vrlab-public.ljcdn.com/vrframework/release/audio_merged/O9VpAdkq/aitalk_text/merged.mp3" }
+    // },
+    // {
+    //   "uuid": "92a90980-6f5c-4c26-fed4-7fb90ds8691044",
+    //   "type": "BgMusic",
+    //   "start": 5500,
+    //   "end": 9900,
+    //   "parsed": false,
+    //   "data": { "url": "//vrlab-public.ljcdn.com/vrframework/release/audio_merged/O9VpAdkq/aitalk_text/merged.mp3" }
+    // },
     {
       "uuid": "bcd155a7-cf4f-4bb6-a0f2-739ab522a683",
       "type": "Prompter",
