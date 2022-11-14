@@ -55,7 +55,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     /**
      * 逐帧任务
      */
-    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void): void;
+    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void): void;
     run(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void): void;
     dispose(): void;
 }

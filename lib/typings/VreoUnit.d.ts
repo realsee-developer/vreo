@@ -96,7 +96,7 @@ export interface VreoUnit {
  * 剧本事件
  */
 export declare type VreoKeyframeEvent = {
-    [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void;
+    [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe, currentTime: number) => void;
 } & {
     loaded: (vreoUnit: VreoUnit) => void;
     paused: (ended?: boolean) => void;

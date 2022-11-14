@@ -85,7 +85,7 @@ export class PlayController extends Subscribe<VreoKeyframeEvent> {
       currentKeyframes.forEach((keyframe) => {
         if (keyframe.parsed) return
         keyframe.parsed = true
-        this.emit(keyframe.type, keyframe)
+        this.emit(keyframe.type, keyframe, this.currentTime)
       })
     })
 
