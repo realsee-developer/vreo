@@ -5,7 +5,7 @@ import { useController } from '../../../hooks'
 const audioList: HTMLAudioElement[] = []
 function getAudio(src: string = '', currentTime: number = 0)  {
   const audio = (() => {
-    const audio = audioList.find(audio => audio.src === src)
+    const audio = audioList.find(audio => audio.src === src && audio.paused)
     if (audio) return audio
     else {
       const newAudio = new Audio(src)
@@ -15,7 +15,6 @@ function getAudio(src: string = '', currentTime: number = 0)  {
   })()
   audio.currentTime = currentTime
   audio.setAttribute('playsinline', 'true')
-  audio.loop = true
   return audio
 }
 
@@ -44,10 +43,9 @@ export function BgMusic() {
     
       const cleanAudio = () => {
         console.log('cleanAudio', keyframe.start)
-        audio.pause()
-        audio.src = ''
-        cleanTimeout()
         audio.removeEventListener('canplaythrough', playCallback)
+        audio.pause()
+        cleanTimeout()
       }
   
       const duration = end - start
