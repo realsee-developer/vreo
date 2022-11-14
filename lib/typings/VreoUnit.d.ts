@@ -85,10 +85,10 @@ export interface VreoVideo {
  * 剧本结构
  */
 export interface VreoUnit {
-    categoryId: string;
-    categoryText: string;
-    frontRequestId: string;
-    index: string | number;
+    categoryId?: string;
+    categoryText?: string;
+    frontRequestId?: string;
+    index?: string | number;
     keyframes: VreoKeyframe[];
     video: VreoVideo;
 }

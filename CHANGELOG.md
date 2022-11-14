@@ -1,9 +1,11 @@
 # CHANGELOG
+#1.0.0-alpha.18
+- fix: 修复无音频版本中途播放会从头开始的问题
+
 #1.0.0-alpha.1
 - feat: css样式适配: 手机横竖屏, pad, pc
 - feat: 新增两种波浪风格: 'wave' | 'solid'
 - feat: 标签调用dna插件
-- fix: 修复无音频版本中途播放会从头开始的问题
 - fix: 图片/视频 弹窗UI问题
 
 #0.2.0-alpha.25

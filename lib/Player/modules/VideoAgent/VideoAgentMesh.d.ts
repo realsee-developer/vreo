@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import AudioLike from '../../../shared-utils/AduioLike';
+import AudioLike from '../../../shared-utils/AudioLike';
 export interface VideoAgentMeshOptions {
     /**
      * 自定义视频实例。
@@ -40,7 +40,7 @@ export declare class VideoAgentMesh extends THREE.Mesh {
     private update;
     play(videoUrl?: string, currentTime?: number, duration?: number): Promise<unknown>;
     /**
-     * 转成毫秒，保障精准度
+     * 秒转成毫秒，保障精准度
      */
     get currentTime(): number;
     dispose(): void;

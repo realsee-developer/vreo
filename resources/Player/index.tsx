@@ -163,7 +163,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.controller.setEnded(false)
         this.play()
 
-        this.controller.run((type, keyframe) => this.emit(type, keyframe))
+        this.controller.run((type, keyframe) => this.emit(type, keyframe, this.controller.currentTime))
         this.controller.setLoading(false)
         return true
     }
