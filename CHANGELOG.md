@@ -1,4 +1,7 @@
 # CHANGELOG
+#1.0.0-alpha.19
+- fix: 多段BgMusic可以重复播放
+
 #1.0.0-alpha.18
 - fix: 修复无音频版本中途播放会从头开始的问题
 
