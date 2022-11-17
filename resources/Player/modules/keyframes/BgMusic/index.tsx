@@ -1,20 +1,11 @@
 import * as React from 'react'
-import { BgMusicData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
+import { VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
-const audioList: HTMLAudioElement[] = []
 function getAudio(src: string = '', currentTime: number = 0)  {
-  const audio = (() => {
-    const audio = audioList.find(audio => audio.src === src && audio.paused)
-    if (audio) return audio
-    else {
-      const newAudio = new Audio(src)
-      audioList.push(newAudio)
-      return newAudio
-    }
-  })()
+  const audio = new Audio()
+  audio.src = src
   audio.currentTime = currentTime
-  audio.setAttribute('playsinline', 'true')
   return audio
 }
 
@@ -29,20 +20,18 @@ export function BgMusic() {
   }, [])
 
   React.useEffect(() => {
-    const callback = (keyframe: VreoKeyframe, currentTime: number) => {
-      console.log({currentTime})
+    const callback = async (keyframe: VreoKeyframe, currentTime: number) => {
       const { start, end } = keyframe
-      const audio = getAudio(keyframe.data.url, Math.max(currentTime - start, 0))
+      const audio = getAudio(keyframe.data.url, Math.max((currentTime - start) / 1000, 0))
       const playCallback = () => {
         audio.play()
       }
-  
+
       audio.addEventListener('canplaythrough', playCallback)
 
       cleanTimeout()
     
       const cleanAudio = () => {
-        console.log('cleanAudio', keyframe.start)
         audio.removeEventListener('canplaythrough', playCallback)
         audio.pause()
         cleanTimeout()
@@ -51,7 +40,6 @@ export function BgMusic() {
       const duration = end - start
     
       timeoutIdRef.current = setTimeout(() => {
-        console.log('timeout', duration)
         cleanAudio()
       }, duration)
 
@@ -64,6 +52,7 @@ export function BgMusic() {
     controller.on(VreoKeyframeEnum.BgMusic, callback)
 
     return () => {
+      console.log('off')
       controller.off(VreoKeyframeEnum.BgMusic, callback)
       cleanTimeout()
     }

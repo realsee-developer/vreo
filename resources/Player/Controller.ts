@@ -232,10 +232,13 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * 逐帧任务
      */
     requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void) {
-        if (this.mediaInstance?.ended) {
+        if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
+            if (this.ended) return
+            this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
             this.setEnded(true)
             this.setPlaying(false)
             this.mediaInstance.pause()
+            this.mediaInstance.currentTime = 0
             return
         }
 
@@ -249,7 +252,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         if (this.mediaInstance?.paused && this.playing) {
             this.mediaInstance.play()
         }
-
+        
         const currentKeyframes = this.currentKeyframes
 
         currentKeyframes.forEach((keyframe) => {
@@ -270,22 +273,19 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     dispose() {
         this.setPlaying(false)
 
-        if (this.currentKeyframes) {
-            this.currentKeyframes.forEach((keyframe) => (keyframe.parsed = false))
-        }
+        this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
 
         /**
          * 清理掉数据
          */
         this.vreoUnit = undefined
         if (this.mediaInstance) {
+            this.mediaInstance.pause()
             this.mediaInstance.currentTime = 0
         }
 
-        if (this.stopInterval) {
-            this.stopInterval()
-            this.stopInterval = undefined
-        }
+        this.stopInterval?.()
+        this.stopInterval = undefined
     }
 }
 
