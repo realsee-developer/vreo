@@ -178,7 +178,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
             this.controller.mediaInstance.currentTime = currentTime / 1000
         }
         Object.assign(window, { $vreoController: this.controller })
-
+        this.controller.setEnded(false)
         this.controller.setPlaying(true)
         return true
     }
