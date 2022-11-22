@@ -12,8 +12,6 @@
   "private": false,
   "files": [
     "lib",
-    "resources",
-    "docs",
     "stylesheets",
     "LICENSE",
     "CHANGELOG.md"
