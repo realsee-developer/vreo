@@ -38,10 +38,12 @@ export function BgMusic() {
       }
   
       const duration = end - start
-    
-      timeoutIdRef.current = setTimeout(() => {
-        cleanAudio()
-      }, duration)
+
+      audio.addEventListener('ended', cleanAudio)
+      // 音频加载会有时间，所以不通过这种方式停止，而是等播完停止
+      // timeoutIdRef.current = setTimeout(() => {
+      //   cleanAudio()
+      // }, duration)
 
       controller.once('paused', () => {
         cleanAudio()
