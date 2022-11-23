@@ -1,4 +1,5 @@
 import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
+import eruda from 'eruda'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
@@ -21,8 +22,9 @@ import { VreoUnit } from '../typedoc/Player'
 // 啥都没有版本
 // import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
-import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
+// import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
 
+import  {data}  from './data/vreo-units/vreo-unit-kalaok'
 
 
 
@@ -33,12 +35,15 @@ enum PlayerState {
   playing = 'playing',
 }
 
+eruda.init()
+
 export function App() {
   const ref = React.useRef<Player>()
   const five = unsafe__useFiveInstance()
   const [state, setState] = React.useState(PlayerState.notReady)
 
   React.useEffect(() => {
+    console.log('useEffect')
     if (ref.current) return
     const player = new Player(five)
     ref.current = player
