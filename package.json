@@ -52,7 +52,6 @@
     "@realsee/dnalogel": "^2.1.0-alpha.29",
     "@tweenjs/tween.js": "18.6.4",
     "classnames": "^2.3.1",
-    "eruda": "^2.5.0",
     "mobx": "^6.3.7",
     "mobx-react": "^7.2.1"
   }

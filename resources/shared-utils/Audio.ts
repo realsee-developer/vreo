@@ -49,7 +49,7 @@ class IAudio extends Audio {
 
     this.addEventListener('end', () => (this.src = ''))
 
-    const init = this.init.bind(this)
+    const init = () => this.init()
 
     document.addEventListener('click', init)
     document.addEventListener('touchstart', init)
@@ -60,6 +60,7 @@ class IAudio extends Audio {
   }
 
   private init() {
+    console.log('init')
     if (this.inited) return
     if (this.src) {
       this.inited = true
