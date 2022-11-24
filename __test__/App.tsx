@@ -1,5 +1,4 @@
 import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
-import eruda from 'eruda'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
@@ -35,7 +34,6 @@ enum PlayerState {
   playing = 'playing',
 }
 
-eruda.init()
 
 export function App() {
   const ref = React.useRef<Player>()
