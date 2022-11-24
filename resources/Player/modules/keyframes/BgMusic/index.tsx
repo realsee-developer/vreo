@@ -3,7 +3,9 @@ import { generateBlankAudio, getAudio } from '../../../../shared-utils/Audio'
 import { VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
-const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? 5)
+const DefaultAudioCacheLength = 3
+
+const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
 
 generateBlankAudio(audioCacheLength)
 
@@ -16,7 +18,7 @@ export function BgMusic() {
 
       const audio = getAudio(keyframe.data.url)
       audio.currentTime = Math.max((currentTime - start) / 1000, 0)
-      
+      console.log('play', audio.src)
       // const play = () => audio.play()
 
       audio.play()

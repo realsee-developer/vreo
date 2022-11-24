@@ -10,6 +10,7 @@ import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
 import { PopUp } from './modules/PopUp'
+import { waitForBlankAudioGenerated } from '../shared-utils/Audio'
 
 export class Player extends Subscribe<VreoKeyframeEvent> {
     $five: Five
@@ -154,11 +155,14 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
         this.controller.setAvatar(vreoUnit.video.avatar)
 
+        await waitForBlankAudioGenerated()
+
         await this.controller.videoAgentScene?.videoAgentMesh.play(
             vreoUnit.video.url,
             currentTime / 1000,
             vreoUnit.video.duration
         )
+
 
         this.controller.setEnded(false)
         this.play()
@@ -214,14 +218,12 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 }
 
 console.log(`
-
-┏━━━┓━━━━━━━━━┏┓━━━━━━━━━━━━━
-┃┏━┓┃━━━━━━━━━┃┃━━━━━━━━━━━━━
-┃┗━┛┃┏━━┓┏━━┓━┃┃━┏━━┓┏━━┓┏━━┓
-┃┏┓┏┛┃┏┓┃┗━┓┃━┃┃━┃━━┫┃┏┓┃┃┏┓┃
-┃┃┃┗┓┃┃━┫┃┗┛┗┓┃┗┓┣━━┃┃┃━┫┃┃━┫
-┗┛┗━┛┗━━┛┗━━━┛┗━┛┗━━┛┗━━┛┗━━┛
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+    ┏━━━┓━━━━━━━━━┏┓━━━━━━━━━━━━━
+    ┃┏━┓┃━━━━━━━━━┃┃━━━━━━━━━━━━━
+    ┃┗━┛┃┏━━┓┏━━┓━┃┃━┏━━┓┏━━┓┏━━┓
+    ┃┏┓┏┛┃┏┓┃┗━┓┃━┃┃━┃━━┫┃┏┓┃┃┏┓┃
+    ┃┃┃┗┓┃┃━┫┃┗┛┗┓┃┗┓┣━━┃┃┃━┫┃┃━┫
+    ┗┛┗━┛┗━━┛┗━━━┛┗━┛┗━━┛┗━━┛┗━━┛
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `)
