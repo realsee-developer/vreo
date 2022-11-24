@@ -9,13 +9,6 @@ generateBlankAudio(audioCacheLength)
 
 export function BgMusic() {
   const controller = useController()
-  const timeoutIdRef = React.useRef<NodeJS.Timeout | null>(null)
-  const cleanTimeout = React.useCallback( () => {
-    if (timeoutIdRef.current) {
-      clearTimeout(timeoutIdRef.current)
-      timeoutIdRef.current = null
-    }
-  }, [])
 
   React.useEffect(() => {
     const callback = async (keyframe: VreoKeyframe, currentTime: number) => {
@@ -24,30 +17,22 @@ export function BgMusic() {
       const audio = getAudio(keyframe.data.url)
       audio.currentTime = Math.max((currentTime - start) / 1000, 0)
       
+      // const play = () => audio.play()
+
       audio.play()
 
-      const play = () => audio.play()
-      audio.addEventListener('canplaythrough', play)
+      const cleanAudio = () => {
+        console.log('clean audio')
+        // audio.removeEventListener('canplaythrough', play)
+        audio.pause()
+        // cleanTimeout()
+      }
+
+      // audio.addEventListener('canplaythrough', play)
 
       audio.addEventListener('ended', () => {
-        audio.src = ''
+        cleanAudio()
       })
-
-      cleanTimeout()
-    
-      const cleanAudio = () => {
-        audio.removeEventListener('canplaythrough', play)
-        audio.pause()
-        cleanTimeout()
-      }
-  
-      // const duration = end - start
-
-      // audio.addEventListener('ended', cleanAudio)
-      // 音频加载会有时间，所以不通过这种方式停止，而是等播完停止
-      // timeoutIdRef.current = setTimeout(() => {
-      //   cleanAudio()
-      // }, duration)
 
       controller.once('paused', () => {
         cleanAudio()
@@ -59,7 +44,6 @@ export function BgMusic() {
 
     return () => {
       controller.off(VreoKeyframeEnum.BgMusic, callback)
-      cleanTimeout()
     }
   })
 

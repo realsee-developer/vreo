@@ -7,7 +7,7 @@ declare class IAudio extends Audio {
     realSrc: string;
     private inited;
     private removeDocumentEventListener;
-    constructor(src?: string);
     private init;
+    constructor(src?: string);
 }
 export {};
