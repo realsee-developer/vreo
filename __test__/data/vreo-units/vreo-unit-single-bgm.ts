@@ -12,9 +12,18 @@ export const vreoUnitNoVideo: VreoUnit = {
     "duration": 25990,
     "start": 0,
     "end": 25990,
-    "url": "//vrlab-static.ljcdn.com/release/web/washer.02228ca8.mp3"
+    "url": ""
   },
   "keyframes": [
+    {
+      "uuid": "80166a98-ee7a-4b9c-18bf-b735b0163c24",
+      "type": "BgMusic",
+      "start": 0,
+      "end": 25990,
+      "data": {
+        "url": "https://vrlab-static.ljcdn.com/release/web/washer.02228ca8.mp3"
+      }
+    },
     {
       "uuid": "5da0e640-c5b8-4e69-9ef6-a7aefdc1701b",
       "type": "CameraMovement",

@@ -8,7 +8,7 @@ export const data1 = // debug popup image
     "duration": 80525,
     "start": 0,
     "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   "keyframes": [
     {
@@ -80,7 +80,7 @@ export const data1 = // debug popup image
         "style": "PopUp",
         "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
         "type": "Image",                                                                                                                                                      
-        // "url": "https:////test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+        // "url": "https:////test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
         // "type": "Video",   
         "title": "测试面板问题",
         // "subTitle": "测试题目"
@@ -99,7 +99,7 @@ export const data =
     "duration": 80525,
     "start": 0,
     "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
     // "url": ""
   },
   "keyframes": [

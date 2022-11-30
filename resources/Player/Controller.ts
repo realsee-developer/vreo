@@ -219,6 +219,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         // 没有被解析过且开始时间低于当前时间戳 100ms
         return keyframes.filter((keyframe: VreoKeyframe) => {
             if (keyframe.parsed) return false
+            if (keyframe.type === VreoKeyframeEnum.BgMusic) return true
             const dur = this.currentTime - keyframe.start
             return dur <= 100 && dur >= 0
         })
@@ -254,7 +255,6 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         }
         
         const currentKeyframes = this.currentKeyframes
-
         currentKeyframes.forEach((keyframe) => {
             if (keyframe.parsed) return
             keyframe.parsed = true

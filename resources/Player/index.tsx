@@ -184,6 +184,11 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         Object.assign(window, { $vreoController: this.controller })
         this.controller.setEnded(false)
         this.controller.setPlaying(true)
+        this.controller.vreoUnit?.keyframes.forEach((keyframe) => {
+            if (keyframe.type === VreoKeyframeEnum.BgMusic) {
+                keyframe.parsed = false
+            }
+        })
         return true
     }
 

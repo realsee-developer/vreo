@@ -10,7 +10,7 @@ export const vreoUnitD: VreoUnit = {
     "duration": 81200,
     "start": 0,
     "end": 81200,
-    "url": "https://test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/LEJhnm1R/aitalk_text/merged.mp4"
+    "url": "https://test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/LEJhnm1R/aitalk_text/merged.mp4"
   },
   "keyframes": [
     {

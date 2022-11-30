@@ -23,7 +23,7 @@ import { VreoUnit } from '../typedoc/Player'
 
 // import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
 
-import  {data}  from './data/vreo-units/vreo-unit-kalaok'
+import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
 
 
 
