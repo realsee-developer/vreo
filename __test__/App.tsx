@@ -21,9 +21,9 @@ import { VreoUnit } from '../typedoc/Player'
 // 啥都没有版本
 // import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
-// import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
+import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
 
-import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
+// import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
 
 
 
