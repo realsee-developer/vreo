@@ -221,7 +221,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             if (keyframe.parsed) return false
             // 检测结束时间
             if (keyframe.end < this.currentTime) return false
+            // 检测开始时间
+            if (keyframe.start > this.currentTime ) return false
             if (keyframe.type === VreoKeyframeEnum.BgMusic) return true
+            // 开始时间低于当前时间戳 100ms
             const dur = this.currentTime - keyframe.start
             return dur <= 100 && dur >= 0
         })

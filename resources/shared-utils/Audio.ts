@@ -10,13 +10,12 @@ export function getAudio(src?: string) {
     return !audio.realSrc || audio.realSrc === blankAudioSrc
   })
   if (!audio) {
-    console.warn('未找到缓存音频，已新建')
+    console.warn('未找到缓存音频，已新建', audioList)
+    debugger
     audio = new IAudio(blankAudioSrc)
     audioList.push(audio)
   }
   if (src) {
-    console.log('set src: ' + src)
-    // audio.pause()
     audio.src = src
   }
   return audio
@@ -30,13 +29,10 @@ export async function waitForBlankAudioGenerated(checkInterval = 100, timeout = 
   while (audioList.some((audio) => !audio.ended && (audio.src === blankAudioSrc)) && !isTimedOut) {
     if (Date.now() - startTime > timeout) {
       isTimedOut = true
-      console.log('time out')
       return Promise.resolve()
     }
-    console.log('check', audioList.map((audio) => audio.ended))
     await new Promise((resolve) => setTimeout(resolve, checkInterval))
   }
-  console.log('audio init scuess!')
 }
 
 export function generateBlankAudio(length: number) {
@@ -49,7 +45,6 @@ export function generateBlankAudio(length: number) {
 }
 
 function initAudio(audio: IAudio) {
-  console.log('init audio')
   if (audio.inited) return
   if (audio.src) {
     audio.inited = true
@@ -82,10 +77,8 @@ class IAudio extends Audio {
     super(src)
     this.realSrc = src ?? ''
 
-    console.log('create audio', src)
 
     super.addEventListener('ended', () => {
-      console.log('ended', this.realSrc, Date.now())
       this.src = ''
     })
 
@@ -97,6 +90,7 @@ class IAudio extends Audio {
       document.removeEventListener('click', init)
       document.removeEventListener('touchstart', init)
     }
+
   }
 }
 
