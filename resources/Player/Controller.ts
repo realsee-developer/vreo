@@ -275,7 +275,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.stopInterval = requestAnimationFrameInterval(() => this.requestAnimationFrameLoop(callback))
     }
 
-    dispose() {
+    clear() {
         this.setPlaying(false)
 
         this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
@@ -291,6 +291,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
         this.stopInterval?.()
         this.stopInterval = undefined
+    }
+
+    dispose() {
+        this.clear()
     }
 }
 

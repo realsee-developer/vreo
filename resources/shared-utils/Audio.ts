@@ -22,7 +22,7 @@ export function getAudio(src?: string) {
 }
 
 export async function waitForBlankAudioGenerated(checkInterval = 100, timeout = 2000) {
-  console.log('waitForBlankAudioGenerated', audioList.some((audio) => !audio.ended && audio.src === blankAudioSrc))
+  console.log('waitForBlankAudioGenerated, needGenerate: ', audioList.some((audio) => !audio.ended && audio.src === blankAudioSrc))
   // while any audioList not ended
   const startTime = Date.now()
   let isTimedOut = false
