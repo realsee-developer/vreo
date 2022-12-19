@@ -1,6 +1,6 @@
 {
   "name": "@realsee/vreo",
-  "version": "1.0.0-alpha.30",
+  "version": "1.0.0-alpha.31",
   "description": "Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 用户界面构建库 React 实现的如视 3D 空间剧本播放器。",
   "keywords": [
     "realsee",
