@@ -57,6 +57,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
      */
     requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void): void;
     run(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void): void;
+    clear(): void;
     dispose(): void;
 }
 declare const ControllerContext: React.Context<Controller | null>;
