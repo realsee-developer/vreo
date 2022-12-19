@@ -87,6 +87,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     }
 
     async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false) {
+        this.controller.clear()
         this.controller.setLoading(true)
         if (force) {
             vreoUnit = JSON.parse(JSON.stringify(vreoUnit))
@@ -105,7 +106,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         }
 
         this.controller.vreoUnit = vreoUnit
+
+
         this.controller.mediaInstance?.pause()
+        
 
         // 预载逻辑
         // 是否降低图片分辨率
@@ -213,7 +217,6 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     }
 
     dispose() {
-        this.pause()
         this.controller.dispose()
 
         if (this.configs.container) {

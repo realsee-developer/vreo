@@ -183,7 +183,6 @@ export class VideoAgentMesh extends THREE.Mesh {
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
     const onPause = () => updatePaused(true)
     const onPlay = () => updatePaused(false)
-    const onEnded = () => console.log('vreo: video 播放结束')
 
     this.audioInstance.addEventListener('pause', onPause)
     this.audioInstance.addEventListener('play', onPlay)
@@ -191,7 +190,6 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.options.videoInstance?.addEventListener('play', onPlay)
     this.audioLikeInstance.addEventListener('pause', onPause)
     this.audioLikeInstance.addEventListener('play', onPlay)
-    this.options.videoInstance?.addEventListener('ended', onEnded)
 
     this.$removeEventListener = () => {
       this.audioInstance.removeEventListener('pause', onPause)
@@ -200,7 +198,6 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.options.videoInstance?.removeEventListener('play', onPlay)
       this.audioLikeInstance.removeEventListener('pause', onPause)
       this.audioLikeInstance.removeEventListener('play', onPlay)
-      this.options.videoInstance?.removeEventListener('ended', onEnded)
     }
   }
 

@@ -21,7 +21,9 @@ import { VreoUnit } from '../typedoc/Player'
 // 啥都没有版本
 // import { data } from './data/vreo-units/vreo-unit-b-noaudio'
 
-import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
+// import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
+
+import  {data}  from './data/vreo-units/vreo-unit-taibao'
 
 // import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
 
@@ -46,6 +48,7 @@ export function App() {
     const player = new Player(five)
     ref.current = player
     setState(PlayerState.ready)
+    player.on('loaded', () => console.log('loaded'))
     player.on('paused', () => setState(PlayerState.paused))
     player.on('playing', () => setState(PlayerState.playing))
     player.on('ended', () => console.log('ended'))
