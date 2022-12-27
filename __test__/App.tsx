@@ -2,7 +2,7 @@ import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
-// import { data } from './data/vreo-units/vreo-unit-a'
+import { data } from './data/vreo-units/vreo-unit-a'
 
 // import { data } from './data/vreo-units/vreo-unit-test-video'
 
@@ -23,7 +23,7 @@ import { VreoUnit } from '../typedoc/Player'
 
 // import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
 
-import  {data}  from './data/vreo-units/vreo-unit-taibao'
+// import  {data}  from './data/vreo-units/vreo-unit-taibao'
 
 // import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
 
@@ -43,7 +43,6 @@ export function App() {
   const [state, setState] = React.useState(PlayerState.notReady)
 
   React.useEffect(() => {
-    console.log('useEffect')
     if (ref.current) return
     const player = new Player(five)
     ref.current = player

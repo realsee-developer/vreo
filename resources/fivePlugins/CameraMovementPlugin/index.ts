@@ -1,6 +1,7 @@
 import { Five, MovePanoOptions } from '@realsee/five'
 import type { FivePlugin } from '@realsee/five'
-import * as TWEEN from '@tweenjs/tween.js'
+import type { Tween } from '@tweenjs/tween.js'
+import { Easing } from '@tweenjs/tween.js'
 
 import {
   CameraMovementPluginParameterType,
@@ -12,7 +13,7 @@ import {
   Rotation,
 } from './typings'
 
-import { Easing, tweenProgress } from '../../shared-utils/animationFrame/tween'
+import { tweenProgress } from '../../shared-utils/animationFrame/tween'
 
 const PI = Math.PI
 const PI_2 = PI * 2
@@ -202,7 +203,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
             : duration
       }
 
-      type _Tween = TWEEN.Tween<{ progress: number }> & { onDestroy: (p: any) => _Tween; destroy: () => void }
+      type _Tween = Tween<{ progress: number }> & { onDestroy: (p: any) => _Tween; destroy: () => void }
 
       const tween = (tweenProgress(animeDuration, Easing.Linear.None) as _Tween)
         .onUpdate(onUpdate)

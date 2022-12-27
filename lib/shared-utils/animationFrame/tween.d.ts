@@ -1,61 +1,6 @@
-import * as TWEEN from '@tweenjs/tween.js';
-export declare const Easing: {
-    Linear: {
-        None: (amount: number) => number;
-    };
-    Quadratic: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Cubic: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Quartic: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Quintic: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Sinusoidal: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Exponential: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Circular: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Elastic: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Back: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-    Bounce: {
-        In: (amount: number) => number;
-        Out: (amount: number) => number;
-        InOut: (amount: number) => number;
-    };
-};
-interface ITween<T> extends TWEEN.Tween<T> {
-    onDestroy: (fn: () => void) => TWEEN.Tween<T>;
+import { Tween, Easing } from '@tweenjs/tween.js';
+interface ITween<T> extends Tween<T> {
+    onDestroy: (fn: () => void) => Tween<T>;
     destroy: () => void;
 }
 /**
