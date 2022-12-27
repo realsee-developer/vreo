@@ -26,6 +26,7 @@
   "peerDependencies": {
     "@realsee/five": "^5.0.0",
     "@realsee/dnalogel": "^2.3.3",
+    "three": ">=0.115.0 <=0.117.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
