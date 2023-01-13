@@ -11,7 +11,6 @@ export function getAudio(src?: string) {
   })
   if (!audio) {
     console.warn('未找到缓存音频，已新建', audioList)
-    debugger
     audio = new IAudio(blankAudioSrc)
     audioList.push(audio)
   }
