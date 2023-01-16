@@ -26,9 +26,14 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
       })}
     >
       <div className="vreo-panel-inner">
-        {controller.waveAppearance && <Wave appearance={controller.waveAppearance}/>}
+        <Wave onClick={controller.configs?.onWaveClick} appearance={controller.waveAppearance ?? 'single'}/>
         <VideoAgent
           onClick={() => {
+            if (controller.configs?.onAvatarClick) {
+              controller.configs.onAvatarClick()
+              return
+            }
+            // 默认点击逻辑
             if (controller.playing) {
               controller.setPlaying(false)
             } else {

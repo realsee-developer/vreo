@@ -10,7 +10,12 @@ import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
 import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
 import { PopUp } from './modules/PopUp'
-import { waitForBlankAudioGenerated } from '../shared-utils/Audio'
+import { generateBlankAudio, waitForBlankAudioGenerated } from '../shared-utils/Audio'
+
+
+const DefaultAudioCacheLength = 3
+
+const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
 
 export class Player extends Subscribe<VreoKeyframeEvent> {
     $five: Five
@@ -21,6 +26,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         super()
         this.$five = five
 
+        generateBlankAudio(audioCacheLength)
 
         if (!configs.container) {
             configs.container = configs.containter

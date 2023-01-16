@@ -89,6 +89,9 @@ export interface VreoUnit {
     categoryText?: string;
     frontRequestId?: string;
     index?: string | number;
+    configure?: {
+        pageTitle?: string;
+    };
     keyframes: VreoKeyframe[];
     video: VreoVideo;
 }
