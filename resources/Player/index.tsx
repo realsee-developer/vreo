@@ -98,13 +98,13 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         if (force) {
             vreoUnit = JSON.parse(JSON.stringify(vreoUnit))
         }
-        if (!this.controller.visible) {
-            this.controller.setVisible(true)
-            // 延迟 500ms 规避跟 DOM 动画冲突
-            await new Promise((resolve) => {
-                setTimeout(() => resolve(true), 500)
-            })
-        }
+        // if (!this.controller.visible) {
+        //     this.controller.setVisible(true)
+        //     // 延迟 500ms 规避跟 DOM 动画冲突
+        //     await new Promise((resolve) => {
+        //         setTimeout(() => resolve(true), 500)
+        //     })
+        // }
 
         if (this.controller.stopInterval) {
             this.controller.stopInterval()
