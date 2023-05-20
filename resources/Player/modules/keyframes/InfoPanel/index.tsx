@@ -9,6 +9,16 @@ import {
 } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
+
+export const isWX = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+
+const videoElement = document.createElement('video')
+if (isWX) {
+  videoElement.playsInline = true
+  videoElement.classList.add('vreo-infoPanelVideo')
+  document.body.addEventListener('click', () => videoElement.play(), {once:true})
+}
+
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
   return (
     <div className="vreo-infoPanel-container">
@@ -25,14 +35,26 @@ function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) 
 }
 
 function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }) {
+  const videoWrapperRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!isWX) return
+    if (!videoWrapperRef.current) return
+    videoElement.src = url
+    if (!videoWrapperRef.current.contains(videoElement)) {
+      videoWrapperRef.current.appendChild(videoElement)
+    }
+    videoElement.play()
+  }, [videoWrapperRef.current])
+
   return (
     <div className="vreo-infoPanel-container">
       <div className="vreo-infoPanel vreo-infoPanel--video">
         <div className="ratio-4-5 vreo-infoPanel-wrapper">
           <div className="vreo-infoPanel-inner">
             {children}
-            <div className="vreo-infoPanelVideo">
-              <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />
+            <div className="vreo-infoPanelVideo" ref={videoWrapperRef}>
+              {!isWX && <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />}
             </div>
           </div>
         </div>
