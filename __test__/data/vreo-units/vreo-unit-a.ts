@@ -8,17 +8,18 @@ export const data1 = // debug popup image
     "duration": 80525,
     "start": 0,
     "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    "url": '',
+    // "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   "keyframes": [
     {
-      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c1ba",
-      "type": "Prompter",
-      "start": 0,
-      "end": 3000,
+      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c123",
+      "type": "BgMusic",
+      "start": 2000,
+      "end": 46000,
       "parsed": false,
       "data": {
-        "text": "您好，我是您的智慧家庭设计师"
+        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
       }
     },
     // {
@@ -73,15 +74,31 @@ export const data1 = // debug popup image
     {
       "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
       "type": "InfoPanel",
-      "start": 2632,
-      // "end": 500632,
-      "end": 50000632,
+      "start": 5632,
+      "end": 10632,
+      // "end": 50000632,
       "data": {
         "style": "PopUp",
-        "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
-        "type": "Image",                                                                                                                                                      
-        // "url": "https:////test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
-        // "type": "Video",   
+        // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
+        // "type": "Image",                                                                                                                                                      
+        "url": "https:////test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+        "type": "Video",   
+        "title": "测试面板问题",
+        // "subTitle": "测试题目"
+      }
+    },
+    {
+      "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
+      "type": "InfoPanel",
+      "start": 12000,
+      "end": 20000,
+      // "end": 50000632,
+      "data": {
+        "style": "PopUp",
+        // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
+        // "type": "Image",                                                                                                                                                      
+        "url": "https:////test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+        "type": "Video",   
         "title": "测试面板问题",
         // "subTitle": "测试题目"
       }
