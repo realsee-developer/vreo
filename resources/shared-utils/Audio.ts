@@ -10,7 +10,7 @@ export function getAudio(src?: string) {
     return !audio.realSrc || audio.realSrc === blankAudioSrc
   })
   if (!audio) {
-    console.warn('未找到缓存音频，已新建', audioList)
+    // console.warn('未找到缓存音频，已新建', audioList)
     audio = new IAudio(blankAudioSrc)
     audioList.push(audio)
   }
@@ -84,10 +84,10 @@ class IAudio extends Audio {
     const init = () => initAudio(this)
 
     document.addEventListener('click', init)
-    document.addEventListener('touchstart', init)
+    document.addEventListener('touchend', init)
     this.removeDocumentEventListener = () => {
       document.removeEventListener('click', init)
-      document.removeEventListener('touchstart', init)
+      document.removeEventListener('touchend', init)
     }
 
   }

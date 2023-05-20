@@ -31,6 +31,8 @@ export interface PlayerConfigs {
   autoPreload?: boolean
   appSize?: AppSize
   appearance?: Appearance
+  onAvatarClick?: () => any
+  onWaveClick?: () => any
 }
 
 export type AppSize = 'S' | 'M' | 'L' | 'XL'
