@@ -30,6 +30,8 @@ export interface PlayerConfigs {
     autoPreload?: boolean;
     appSize?: AppSize;
     appearance?: Appearance;
+    onAvatarClick?: () => any;
+    onWaveClick?: () => any;
 }
 export declare type AppSize = 'S' | 'M' | 'L' | 'XL';
 export declare type WaveAppearance = 'single' | 'double' | 'solid' | 'swap' | 'expand';

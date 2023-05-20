@@ -54,7 +54,7 @@ const isMicroMessenger = /microMessenger/i.test(userAgent);
 const canPlayHevc = isAppleDevice || isSafari;
 const canPlayVp9 = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported("video/webm; codecs=vp9");
 
-export function Wave(props?: { appearance?: WaveAppearance }) {
+export function Wave(props?: { appearance?: WaveAppearance, onClick?: () => void}) {
   
   const wave = React.useMemo(() => {
     const appearance = props?.appearance ?? 'solid'
@@ -77,7 +77,7 @@ export function Wave(props?: { appearance?: WaveAppearance }) {
   }
 
   return (
-    <div className="vreo-wave">
+    <div className="vreo-wave" onClick={props?.onClick}>
       <div style={{position: 'relative', width: '100%', paddingTop: `${heightWidthRatio * 100}%`}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', left: 0, top: 0}}>
           {content}

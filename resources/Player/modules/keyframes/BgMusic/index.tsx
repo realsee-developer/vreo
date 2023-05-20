@@ -3,12 +3,6 @@ import { generateBlankAudio, getAudio } from '../../../../shared-utils/Audio'
 import { VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
-const DefaultAudioCacheLength = 3
-
-const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
-
-generateBlankAudio(audioCacheLength)
-
 export function BgMusic() {
   const controller = useController()
 
