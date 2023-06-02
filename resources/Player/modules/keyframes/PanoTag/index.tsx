@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useController, useFiveInstance } from '../../../hooks'
 import { PanoTagData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 
-import { ContentType, DimensionType, PanoTagPlugin, PointType, Tag } from '@realsee/dnalogel'
+import { PanoTagPlugin, Tag } from '@realsee/dnalogel'
 
 export function PanoTag() {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
@@ -36,14 +36,14 @@ export function PanoTag() {
       const panoTagData = data as PanoTagData
 
       const id = Date.now().toString()
-      const pointType = PointType.PointTag
-      const dimensionType = DimensionType.Two
+      const pointType = 'PointTag'
+      const dimensionType = '2D'
       const position = [panoTagData.vertex.x, panoTagData.vertex.y, panoTagData.vertex.z]
       const tag: Tag = (() => {
         if (panoTagData.imgUrl) {
-          return { id, pointType, position, dimensionType, contentType: ContentType.ImageText, data: { text: panoTagData.text, mediaData: [{ type: 'Image',  url: panoTagData.imgUrl }] }}
+          return { id, pointType, position, dimensionType, contentType: 'ImageText', data: { text: panoTagData.text, mediaData: [{ type: 'Image',  url: panoTagData.imgUrl }] }}
         } else {
-          return { id, pointType, position, dimensionType, contentType: ContentType.Text, data: { text: panoTagData.text }}
+          return { id, pointType, position, dimensionType, contentType: 'Text', data: { text: panoTagData.text }}
         }
       })()
 
