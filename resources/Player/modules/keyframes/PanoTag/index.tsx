@@ -15,9 +15,7 @@ export function PanoTag() {
           keep: 'visible'
         },
         unfoldedConfig: {
-          autoUnfold: {
-            strategy: 'MinimumDistance'
-          },
+          autoUnfold: false,
           unfoldDistance: { max: 100 }
         }
       }
@@ -41,14 +39,20 @@ export function PanoTag() {
       const position = [panoTagData.vertex.x, panoTagData.vertex.y, panoTagData.vertex.z]
       const tag: Tag = (() => {
         if (panoTagData.imgUrl) {
-          return { id, pointType, position, dimensionType, contentType: 'ImageText', data: { text: panoTagData.text, mediaData: [{ type: 'Image',  url: panoTagData.imgUrl }] }}
+          return { id, pointType, position, dimensionType, contentType: 'ImageText', stickType: '2DPoint', data: { text: panoTagData.text, mediaData: [{ type: 'Image',  url: panoTagData.imgUrl }] }}
         } else {
-          return { id, pointType, position, dimensionType, contentType: 'Text', data: { text: panoTagData.text }}
+          return { id, pointType, position, dimensionType, contentType: 'Text', stickType: '2DPoint', data: { text: panoTagData.text }}
         }
       })()
 
       // show
       panoTagPlugin.current.load({ tagList: [tag] })
+
+      const tagInstance = panoTagPlugin.current.getTagById(id)
+      if (tagInstance) {
+        tagInstance.state.unfolded = true
+        ;(panoTagPlugin.current as any).updateRenderAllTags()
+      }
 
       timeoutRef.current = setTimeout(() => {
         // clear
