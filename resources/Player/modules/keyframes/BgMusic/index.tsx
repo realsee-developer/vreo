@@ -18,7 +18,7 @@ export function BgMusic() {
 
       const audio = getAudio(keyframe.data.url)
       audio.currentTime = Math.max(0, _currentTime)
-      console.log('play', audio.src)
+      // console.log('play', audio.src)
       // const play = () => audio.play()
 
       audio.play()
