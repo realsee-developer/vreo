@@ -22,13 +22,9 @@ if (isWX) {
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
   return (
     <div className="vreo-infoPanel-container">
-      <div className="vreo-infoPanel vreo-infoPanel--img">
-        <div className="ratio-4-5 vreo-infoPanel-wrapper">
-          <div className="vreo-infoPanel-inner">
-            {children}
-            <img className="vreo-infoPanelImg" src={url}></img>
-          </div>
-        </div>
+      <div className="vreo-infoPanel">
+        {children}
+        <img src={url}></img>
       </div>
     </div>
   )
@@ -49,14 +45,10 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
 
   return (
     <div className="vreo-infoPanel-container">
-      <div className="vreo-infoPanel vreo-infoPanel--video">
-        <div className="ratio-4-5 vreo-infoPanel-wrapper">
-          <div className="vreo-infoPanel-inner">
-            {children}
-            <div className="vreo-infoPanelVideo" ref={videoWrapperRef}>
-              {!isWX && <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />}
-            </div>
-          </div>
+      <div className='vreo-infoPanel'>
+        {children}
+        <div className='vreo-infoPanel-inner' ref={videoWrapperRef}>
+          {!isWX && <video playsInline autoPlay src={url} />}
         </div>
       </div>
     </div>
@@ -75,7 +67,7 @@ const Title = (props: TitleProps) => {
 
   return (
     <>
-      <div className="vreo-infoPanel-title-shadow"></div>
+      {/* <div className="vreo-infoPanel-title-shadow"></div> */}
       <div className="vreo-infoPanel-title">
         <div className="vreo-infoPanel-t1">{props.title}</div>
         <div className="vreo-infoPanel-t2">{props.subTitle}</div>

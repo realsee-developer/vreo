@@ -732,38 +732,35 @@
   align-items: center;
 }
 
-.vreo-infoPanel-wrapper {
+.vreo-infoPanel {
   position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 70%;
+  max-width: 80%;
+  min-height: 30%;
+  max-height: 60%;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .vreo-infoPanel-inner {
-  position: absolute;
-  left: 0;
-  top: 0;
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+.vreo-infoPanel video,
+.vreo-infoPanel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   border-radius: 4px;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 1);
-}
-
-.vreo-infoPanel {
-  position: relative;
-}
-
-.vreo-app .vreo-infoPanel,
-.vreo-app[data-size="S"] .vreo-infoPanel {
-  width: 327px;
-}
-.vreo-app[data-size="M"][data-orientation="landscape"] .vreo-infoPanel {
-  width: 192px;
-}
-.vreo-app[data-size="M"][data-orientation="portrait"] .vreo-infoPanel,
-.vreo-app[data-size="L"] .vreo-infoPanel {
-  width: 319px;
-}
-.vreo-app[data-size="XL"] .vreo-infoPanel {
-  width: 384px;
 }
 
 .vreo-infoPanel-title {
@@ -788,15 +785,6 @@
   padding-right: 26px;
   padding-left: 8px;
   padding-top: 6px;
-}
-
-.vreo-infoPanelImg,
-.vreo-infoPanelVideo {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-position: center center;
-  object-fit: contain;
 }
 
 .vreo-panel--hidden .vreo-panel-inner {
@@ -839,7 +827,7 @@
   box-sizing: border-box;
   padding-left: 16px;
   padding-right: 16px;
-  margin-bottom: 16.5%;
+  margin-bottom: 30px;
   bottom: 0;
   z-index: 1;
   flex-direction: column;
@@ -853,6 +841,11 @@
   height: 46%;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
   z-index: 1;
+}
+
+.vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1,
+.vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t2 {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
 }
 
 .vreo-PopUp-inner .vreo-infoPanel-title .vreo-infoPanel-t1 {
