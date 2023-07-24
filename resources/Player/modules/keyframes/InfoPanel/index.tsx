@@ -136,36 +136,13 @@ export function InfoPanel() {
     }
     controller.on(VreoKeyframeEnum.InfoPanel, callback)
 
-    // Object.assign(window, {
-    //   $setInfoPanel: () => {
-    //     controller.openPopUp(
-    //       // <InfoPanelImg url='//vrlab-static.ljcdn.com/release/web/psq/a.8e868cb2.gif' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/b.f9a1ed52.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/c.4f88c112.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif' />
-    //       <InfoPanelImg url="http://vrlab-public.ljcdn.com/common/images/web/d94e1bd7-0311-4b20-9c41-a1294fe43554.png">
-    //         <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       </InfoPanelImg>
-    //       // <InfoPanelVideo url="//vrlab-public.ljcdn.com/release/seesay/tools/2022011713142___b320f74a5e1b5ad4bb46b4dc69d73ecc.mp4">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelVideo>
-    //     )
-    //   },
-    //   $setInfoPanel2: () => {
-    //     controller.openPopUp(
-    //       <InfoPanelImg url='//vrlab-static.ljcdn.com/release/web/psq/a.8e868cb2.gif' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/b.f9a1ed52.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/c.4f88c112.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif' />
-    //       // <InfoPanelImg url="http://vrlab-public.ljcdn.com/common/images/web/d94e1bd7-0311-4b20-9c41-a1294fe43554.png">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelImg>
-    //       // <InfoPanelVideo url="//vrlab-public.ljcdn.com/release/seesay/tools/2022011713142___b320f74a5e1b5ad4bb46b4dc69d73ecc.mp4">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelVideo>
-    //     )
-    //   },
-    // })
+    controller.on('ended', () => {
+      controller.openPopUp(false)
+    })
+
+    controller.on('paused', () => {
+      controller.openPopUp(false)
+    })
 
     return () => {
       controller.off(VreoKeyframeEnum.InfoPanel, callback)

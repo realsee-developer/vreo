@@ -75,9 +75,9 @@ export const data1 = // debug popup image
     {
       "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
       "type": "InfoPanel",
-      "start": 5632,
-      // "end": 10632,
-      "end": 50000632,
+      "start": 3000,
+      "end": 15632,
+      // "end": 50000632,
       "data": {
         "style": "PopUp",
         // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
