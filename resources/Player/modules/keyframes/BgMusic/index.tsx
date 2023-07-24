@@ -36,6 +36,13 @@ export function BgMusic() {
         cleanAudio()
       })
 
+      audio.addEventListener('pause', () => {
+        if (audio.realSrc === keyframe.data.url) {
+          // 有可能会被其他音轨打断
+          audio.play()
+        }
+      })
+
       controller.once('paused', () => {
         cleanAudio()
       })
