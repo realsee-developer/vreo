@@ -10,10 +10,14 @@ import {
 import { useController } from '../../../hooks'
 
 
-export const isWX = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+const isWX = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+const isIOS = navigator.userAgent.toLowerCase().indexOf('iphone') !== -1
+
+const isIOSorWX = isIOS || isWX
+
 
 const videoElement = document.createElement('video')
-if (isWX) {
+if (isIOSorWX) {
   videoElement.playsInline = true
   videoElement.classList.add('vreo-infoPanelVideo')
   document.body.addEventListener('click', () => videoElement.play(), {once:true})
@@ -34,7 +38,7 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
   const videoWrapperRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    if (!isWX) return
+    if (!isIOSorWX) return
     if (!videoWrapperRef.current) return
     videoElement.src = url
     if (!videoWrapperRef.current.contains(videoElement)) {
@@ -48,7 +52,7 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
       <div className='vreo-infoPanel'>
         {children}
         <div className='vreo-infoPanel-inner' ref={videoWrapperRef}>
-          {!isWX && <video playsInline autoPlay src={url} />}
+          {!isIOSorWX && <video playsInline autoPlay src={url} />}
         </div>
       </div>
     </div>
