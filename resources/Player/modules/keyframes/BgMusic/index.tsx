@@ -25,6 +25,7 @@ export function BgMusic() {
 
       const cleanAudio = () => {
         // audio.removeEventListener('canplaythrough', play)
+        audio.removeEventListener('pause', play)
         audio.pause()
         audio.src = ''
         // cleanTimeout()
@@ -36,12 +37,14 @@ export function BgMusic() {
         cleanAudio()
       })
 
-      audio.addEventListener('pause', () => {
+      const play = () => {
         if (audio.realSrc === keyframe.data.url) {
           // 有可能会被其他音轨打断
           audio.play()
         }
-      })
+      }
+
+      audio.addEventListener('pause', play)
 
       controller.once('paused', () => {
         cleanAudio()
