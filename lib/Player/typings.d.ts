@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Subscribe, Five } from '@realsee/five';
-import { VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit';
+import { VreoKeyframe, VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit';
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 export interface PlayerConfigs {
     /**
@@ -41,7 +41,7 @@ export interface Appearance {
 export declare type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
 export interface CustomVreoKeyframeProps {
     subscribe: Pick<Subscribe<{
-        [key: string]: (data: any, currentTime: number) => any;
+        [key: string]: (data: VreoKeyframe, currentTime: number) => any;
     }>, 'on' | 'once' | 'off'>;
     five: Five;
 }
