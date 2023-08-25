@@ -60,9 +60,9 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                     <CustomCmpt
                         key={key}
                         subscribe={{
-                            on: (name, callback) => this.on(name, callback),
-                            once: (name, callback) => this.once(name, callback),
-                            off: (name, callback) => this.off(name, callback),
+                            on: (name, callback) => this.on(name as any, callback as any),
+                            once: (name, callback) => this.once(name as any, callback as any),
+                            off: (name, callback) => this.off(name as any, callback as any),
                         }}
                         five={five}
                     />
