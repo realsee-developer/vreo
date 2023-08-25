@@ -40,6 +40,8 @@ export interface Appearance {
 }
 export declare type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
 export interface CustomVreoKeyframeProps {
-    subscribe: VreoSubscribe;
+    subscribe: Pick<Subscribe<{
+        [key: string]: (data: any, currentTime: number) => any;
+    }>, 'on' | 'once' | 'off'>;
     five: Five;
 }
