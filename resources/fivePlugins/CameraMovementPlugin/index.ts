@@ -84,7 +84,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
           moveCancelCallback: () => {
             resolve(true)
           }, // 移动开始
-          // effect: args.transEffect || 'fade',
+          effect: args.transEffect || 'fly',
         })
         await five.moveToPano(
           panoIndex,
