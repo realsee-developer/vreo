@@ -14,6 +14,8 @@ import { generateBlankAudio, waitForBlankAudioGenerated } from '../shared-utils/
 
 const DefaultAudioCacheLength = 3
 
+const id = `vreo-app-dhjskadhksahdjskahdjksa`
+
 const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
 
 export class Player extends Subscribe<VreoKeyframeEvent> {
@@ -31,9 +33,13 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
             configs.container = configs.containter
         }
         if (!configs.container) {
-            const container = document.getElementById('vreo-app') || document.createElement('div')
-            ReactDOM.unmountComponentAtNode(container)
-            container.setAttribute('id', 'vreo-app')
+            const oldElement = document.getElementById(id)
+            if (oldElement) {
+                ReactDOM.unmountComponentAtNode(oldElement)
+                oldElement.remove()
+            }
+            const container = document.createElement('div')
+            container.id = id
             configs.container = container
             const fiveCanvasDomParent = five.getElement()?.parentNode
             if (fiveCanvasDomParent) {
