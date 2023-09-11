@@ -21,7 +21,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "docs": "npx typedoc && yarn run build",
-    "packages": "node ./dev-tools/build-packages.js"
+    "packages": "node ./dev-tools/build-packages.js",
+    "postpublish": "cnpm sync @realsee/vreo"
   },
   "peerDependencies": {
     "@realsee/five": "^5.0.0",
@@ -46,6 +47,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-transition-group": "^4.4.4",
     "@vitejs/plugin-react": "^1.1.0",
+    "cnpm": "^9.2.0",
     "del": "^6.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
