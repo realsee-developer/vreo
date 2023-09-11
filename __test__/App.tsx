@@ -9,7 +9,7 @@ import { VreoUnit } from '../typedoc/Player'
 // import { data } from './data/vreo-units/vreo-unit-test-video'
 
 // 弹层
-import { data1 as data } from './data/vreo-units/vreo-unit-a'
+// import { data1 as data } from './data/vreo-units/vreo-unit-a'
 
 // 无视频版本
 // import { data } from './data/vreo-units/vreo-unit-b'
@@ -28,6 +28,9 @@ import { data1 as data } from './data/vreo-units/vreo-unit-a'
 // import  {data}  from './data/vreo-units/vreo-unit-taibao'
 
 // import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
+
+// video effect
+import  {data}  from './data/vreo-units/vreo-unit-videoEffect'
 
 
 
