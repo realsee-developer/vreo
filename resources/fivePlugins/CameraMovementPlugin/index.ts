@@ -78,7 +78,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
       if (panoIndex !== undefined) {
         const start = performance.now()
         await five.ready()
-        const movePanoOptions: MovePanoOptions = Object.assign(args, {
+        const movePanoOptions: MovePanoOptions = Object.assign({}, args, {
           duration: duration - (performance.now() - start), // 移动耗时
           moveEndCallback: () => resolve(true), // 移动结束
           moveCancelCallback: () => {
