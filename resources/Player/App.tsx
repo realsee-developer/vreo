@@ -26,7 +26,7 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
       })}
     >
       <div className="vreo-panel-inner">
-        <Wave onClick={controller.configs?.onWaveClick} appearance={controller.waveAppearance ?? 'single'} />
+        <Wave onClick={controller.configs?.onWaveClick} appearance={controller.waveAppearance ?? 'single'} staticPrefix={controller.configs.waveStaticPrefix} />
         <VideoAgent
           onClick={() => {
             if (controller.configs?.onAvatarClick) {

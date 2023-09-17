@@ -32,6 +32,10 @@ export interface PlayerConfigs {
   autoPreload?: boolean
   appSize?: AppSize
   appearance?: Appearance
+  /**
+   * @description: 波浪UI 静态资源前缀
+   */
+  waveStaticPrefix?: string
   onAvatarClick?: () => any
   onWaveClick?: () => any
 }

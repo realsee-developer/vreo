@@ -2,7 +2,7 @@ import { WaveAppearance } from '../../typings'
 import React, { FC, useState, useCallback, useRef, useEffect, ReactNode } from 'react';
 
 
-const prefix = 'https://vr-public.realsee-cdn.cn/release/static/image/release/'
+const defaultPrefix = 'https://vr-public.realsee-cdn.cn/release/static/image/release/'
 
 const WAVES = {
   single: {
@@ -54,8 +54,7 @@ const isMicroMessenger = /microMessenger/i.test(userAgent);
 const canPlayHevc = isAppleDevice || isSafari;
 const canPlayVp9 = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported("video/webm; codecs=vp9");
 
-export function Wave(props?: { appearance?: WaveAppearance, onClick?: () => void}) {
-  
+export function Wave(props?: { appearance?: WaveAppearance, onClick?: () => void, staticPrefix?: string}) {
   const wave = React.useMemo(() => {
     const appearance = props?.appearance ?? 'solid'
     return WAVES[appearance]
@@ -67,13 +66,13 @@ export function Wave(props?: { appearance?: WaveAppearance, onClick?: () => void
 
   let content: ReactNode = null;
   if (isMicroMessenger) {
-    content = <KeyframeWaveContent wave={wave} />
+    content = <KeyframeWaveContent wave={wave} prefix={props?.staticPrefix} />
   } else if (canPlayHevc) {
-    content = <VideoWaveContent format="hevc" wave={wave} />
+    content = <VideoWaveContent format="hevc" wave={wave} prefix={props?.staticPrefix} />
   } else if (canPlayVp9) {
-    content = <VideoWaveContent format="vp9" wave={wave} />
+    content = <VideoWaveContent format="vp9" wave={wave} prefix={props?.staticPrefix} />
   } else {
-    content = <KeyframeWaveContent wave={wave} />
+    content = <KeyframeWaveContent wave={wave} prefix={props?.staticPrefix} />
   }
 
   return (
@@ -87,9 +86,10 @@ export function Wave(props?: { appearance?: WaveAppearance, onClick?: () => void
   )
 }
 
-const VideoWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; format: 'hevc' | 'vp9' }> = ({
+const VideoWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; format: 'hevc' | 'vp9'; prefix?: string }> = ({
   wave,
   format,
+  prefix = defaultPrefix,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [canPlay, setCanPlay] = useState(false);
@@ -131,8 +131,9 @@ const VideoWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; format: 'he
   />;
 };
 
-const KeyframeWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES] }> = ({
+const KeyframeWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; prefix?: string }> = ({
   wave,
+  prefix = defaultPrefix,
 }) => {
   const source = prefix + wave.png;
   return <div
