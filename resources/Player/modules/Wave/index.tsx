@@ -112,7 +112,7 @@ const VideoWaveContent: FC<{ wave: typeof WAVES[keyof typeof WAVES]; format: 'he
   }, []);
 
   if (errored) {
-    return <KeyframeWaveContent wave={wave} />;
+    return <KeyframeWaveContent wave={wave} prefix={prefix} />;
   }
 
   return <video
