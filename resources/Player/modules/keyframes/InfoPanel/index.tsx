@@ -22,7 +22,7 @@ videoElement.setAttribute('webkit-playsinline', 'true')
 
 if (isIOSorWX) {
   if (videoElement.paused) {
-    document.body.addEventListener('click', () => videoElement.play(), {once:true})
+    videoElement.addEventListener('click', () => videoElement.play(), {once:true})
   }
 }
 
