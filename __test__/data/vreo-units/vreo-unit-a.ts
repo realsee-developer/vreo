@@ -76,7 +76,7 @@ export const data1 = // debug popup image
       "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
       "type": "InfoPanel",
       "start": 3000,
-      "end": 15632,
+      "end": 156320,
       // "end": 50000632,
       "data": {
         "style": "PopUp",

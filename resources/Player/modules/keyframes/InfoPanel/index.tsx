@@ -17,10 +17,13 @@ const isIOSorWX = isIOS || isWX
 
 
 const videoElement = document.createElement('video')
+videoElement.setAttribute('playsinline', 'true')
+videoElement.setAttribute('webkit-playsinline', 'true')
+
 if (isIOSorWX) {
-  videoElement.playsInline = true
-  videoElement.classList.add('vreo-infoPanelVideo')
-  document.body.addEventListener('click', () => videoElement.play(), {once:true})
+  if (videoElement.paused) {
+    document.body.addEventListener('click', () => videoElement.play(), {once:true})
+  }
 }
 
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
@@ -38,13 +41,28 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
   const videoWrapperRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    if (!isIOSorWX) return
+    // if (!isIOSorWX) return
     if (!videoWrapperRef.current) return
     videoElement.src = url
     if (!videoWrapperRef.current.contains(videoElement)) {
       videoWrapperRef.current.appendChild(videoElement)
     }
-    videoElement.play()
+
+    const canplaythrough = () => {
+      videoElement.removeEventListener('canplaythrough', canplaythrough)
+      try {
+        videoElement.play()
+      } catch (error) {}
+    }
+    videoElement.addEventListener('canplaythrough', canplaythrough)
+    videoElement.load()
+    // videoElement.play()
+    return () => {
+      videoElement.pause()
+      if (videoWrapperRef.current?.contains(videoElement)) {
+        videoWrapperRef.current.removeChild(videoElement)
+      }
+    }
   }, [videoWrapperRef.current])
 
   return (
@@ -52,7 +70,7 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
       <div className='vreo-infoPanel'>
         {children}
         <div className='vreo-infoPanel-inner' ref={videoWrapperRef}>
-          {!isIOSorWX && <video playsInline autoPlay src={url} />}
+          {/* {!isIOSorWX && <video playsInline webkit-playsinline="true" autoPlay src={url} />} */}
         </div>
       </div>
     </div>
