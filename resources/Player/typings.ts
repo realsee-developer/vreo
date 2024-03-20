@@ -20,6 +20,7 @@ export interface PlayerConfigs {
   videos?: {
     videoEffect?: HTMLVideoElement
     modelTVVideo?: HTMLVideoElement
+    videoPanel?: HTMLVideoElement
   }
 
   videoAgentMeshOptions?: VideoAgentMeshOptions
