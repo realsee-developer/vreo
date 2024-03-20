@@ -16,13 +16,13 @@ const isIOS = navigator.userAgent.toLowerCase().indexOf('iphone') !== -1
 const isIOSorWX = isIOS || isWX
 
 
-const videoElement = document.createElement('video')
-videoElement.setAttribute('playsinline', 'true')
-videoElement.setAttribute('webkit-playsinline', 'true')
+const _videoElement = document.createElement('video')
+_videoElement.setAttribute('playsinline', 'true')
+_videoElement.setAttribute('webkit-playsinline', 'true')
 
 if (isIOSorWX) {
-  if (videoElement.paused) {
-    videoElement.addEventListener('click', () => videoElement.play(), {once:true})
+  if (_videoElement.paused) {
+    _videoElement.addEventListener('click', () => _videoElement.play(), {once:true})
   }
 }
 
@@ -39,28 +39,31 @@ function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) 
 
 function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }) {
   const videoWrapperRef = React.useRef<HTMLDivElement>(null)
+  const controller = useController()
 
   React.useEffect(() => {
     // if (!isIOSorWX) return
+    const video = controller.configs?.videos?.videoPanel || _videoElement
     if (!videoWrapperRef.current) return
-    videoElement.src = url
-    if (!videoWrapperRef.current.contains(videoElement)) {
-      videoWrapperRef.current.appendChild(videoElement)
+    video.src = url
+    if (!videoWrapperRef.current.contains(video)) {
+      videoWrapperRef.current.appendChild(video)
     }
 
     const canplaythrough = () => {
-      videoElement.removeEventListener('canplaythrough', canplaythrough)
+      video.removeEventListener('canplaythrough', canplaythrough)
       try {
-        videoElement.play()
+        video.play()
       } catch (error) {}
     }
-    videoElement.addEventListener('canplaythrough', canplaythrough)
-    videoElement.load()
-    // videoElement.play()
+    video.addEventListener('canplaythrough', canplaythrough)
+    video.load()
+    // video.play()
+
     return () => {
-      videoElement.pause()
-      if (videoWrapperRef.current?.contains(videoElement)) {
-        videoWrapperRef.current.removeChild(videoElement)
+      video.pause()
+      if (videoWrapperRef.current?.contains(video)) {
+        videoWrapperRef.current.removeChild(video)
       }
     }
   }, [videoWrapperRef.current])
