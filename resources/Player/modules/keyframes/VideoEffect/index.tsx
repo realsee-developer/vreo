@@ -59,15 +59,26 @@ export function VideoEffect() {
       setVisible(true)
 
       timeoutRef.current = setTimeout(() => {
-        if (!videoRef.current?.paused) {
-          videoRef.current?.pause()
-        }
+        videoRef.current?.pause()
         setVisible(false)
         setBlobSrc('')
       }, end - start)
     }
 
     controller.on(VreoKeyframeEnum.VideoEffect, callback)
+
+    const destroy = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      videoRef.current?.pause()
+      setVisible(false)
+      setBlobSrc('')
+    }
+
+    controller.on('paused', () => destroy())
+    controller.on('ended', () => destroy())
+
     return () => {
       controller.off(VreoKeyframeEnum.VideoEffect, callback)
       if (timeoutRef.current) {

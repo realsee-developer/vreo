@@ -1,4 +1,4 @@
-const _requestAnimationFrame = window.requestAnimationFrame || ((fn) => setTimeout(fn, 16))
+const _requestAnimationFrame = window.requestAnimationFrame || ((fn) => setTimeout(() => fn(performance.now()), 16))
 
 const _cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout
 

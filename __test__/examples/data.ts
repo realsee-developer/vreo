@@ -10,7 +10,7 @@ export const CameraMovementData: VreoUnit = {
     start: 7000,
     end: 7000,
     url:
-      "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+      "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
@@ -58,7 +58,7 @@ export const PanoTagData: VreoUnit = {
     start: 6000,
     end: 6000,
     url:
-      "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+      "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
@@ -107,7 +107,7 @@ export const ModelVideoData: VreoUnit = {
     start: 7000,
     end: 7000,
     url:
-      "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+      "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
@@ -190,7 +190,7 @@ export const VideoEffectData: VreoUnit = {
     start: 8000,
     end: 8000,
     url:
-      "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+      "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
@@ -238,7 +238,7 @@ export const BgMusicData: VreoUnit = {
     duration: 0,
     start: 8000,
     end: 8000,
-    url: "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    url: "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {
@@ -297,7 +297,7 @@ export const Data: VreoUnit = {
     start: 0,
     end: 106278,
     url:
-      "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+      "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   keyframes: [
     {

@@ -7,7 +7,7 @@ export const vreoUnit = {
     "duration": 34525,
     "start": 0,
     "end": 34525,
-    "url": "http://test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/doFNNdbM/aitalk_text/merged.mp3"
+    "url": "http://test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/doFNNdbM/aitalk_text/merged.mp3"
   },
   "keyframes": [
     {
@@ -109,12 +109,12 @@ export const vreoUnit = {
         "dynamic_scene": {
           "images": {
             "index": 0,
-            "right": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_r.jpg",
-            "left": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_l.jpg",
-            "up": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_u.jpg",
-            "down": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_d.jpg",
-            "front": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_f.jpg",
-            "back": "https://test-vr-public.realsee-cdn.com/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_b.jpg"
+            "right": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_r.jpg",
+            "left": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_l.jpg",
+            "up": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_u.jpg",
+            "down": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_d.jpg",
+            "front": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_f.jpg",
+            "back": "https://test-vr-public.realsee-cdn.cn/test/ue4/137ef26ab0294681caf81be2b2b36b29/ue4_result/DynamicScenes/retain_freshness_scene/cube_2048/0/0_b.jpg"
           }
         }
       },

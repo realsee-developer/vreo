@@ -81,16 +81,21 @@ export interface VreoVideo {
   start: number
   end: number
   url: string
+  avatar?: {
+    url?: string
+    force?: true
+  }
 }
 
 /**
  * 剧本结构
  */
 export interface VreoUnit {
-  categoryId: string
-  categoryText: string
-  frontRequestId: string
-  index: string | number
+  categoryId?: string
+  categoryText?: string
+  frontRequestId?: string
+  index?: string | number
+  configure?: { pageTitle?: string }
   keyframes: VreoKeyframe[]
   video: VreoVideo
 }
@@ -100,7 +105,7 @@ export interface VreoUnit {
 /**
  * 剧本事件
  */
-export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void } & {
+export type VreoKeyframeEvent = { [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe, currentTime: number) => void } & {
   // 新数据载入完成
   loaded: (vreoUnit: VreoUnit) => void
   // 语音状态 播放 -> 暂停

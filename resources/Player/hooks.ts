@@ -2,8 +2,6 @@ import React from 'react'
 import { Vector3 } from 'three'
 import { ControllerContext } from './Controller'
 
-
-
 export function useController() {
   const controller = React.useContext(ControllerContext)
   if (!controller) {
@@ -15,11 +13,11 @@ export function useController() {
 
 export function useFiveInstance() {
   const controller = useController()
-  if (!controller.$five) {
+  if (!controller.five) {
     throw new Error('没有找到 "five" 实例')
   }
 
-  return controller.$five
+  return controller.five
 }
 
 export function useFiveProject2d() {

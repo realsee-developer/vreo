@@ -39,10 +39,10 @@ export interface VreoActionCallbacks {
     dispose: () => void;
 }
 export declare function useVreoAction(): {
-    load: (vreoUnit: VreoUnit, currentTime?: number | undefined) => Promise<boolean>;
+    load: (vreoUnit: VreoUnit, currentTime?: number) => Promise<boolean>;
     pause: () => void;
     show: () => void;
-    play: (currentTime?: number | undefined) => boolean;
+    play: (currentTime?: number) => boolean;
     hide: () => void;
     dispose: () => void;
 };

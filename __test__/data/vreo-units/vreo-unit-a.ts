@@ -7,18 +7,20 @@ export const data1 = // debug popup image
   "video": {
     "duration": 80525,
     "start": 0,
-    "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    // "end": 106278,
+    "end": 99999999,
+    "url": '',
+    // "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
   },
   "keyframes": [
     {
-      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c1ba",
-      "type": "Prompter",
-      "start": 0,
-      "end": 3000,
+      "uuid": "daf3e3a8-7b48-4df3-eec5-bdc2a1a1c123",
+      "type": "BgMusic",
+      "start": 2000,
+      "end": 46000,
       "parsed": false,
       "data": {
-        "text": "您好，我是您的智慧家庭设计师"
+        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
       }
     },
     // {
@@ -73,16 +75,36 @@ export const data1 = // debug popup image
     {
       "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
       "type": "InfoPanel",
-      "start": 2632,
-      "end": 500632,
+      "start": 3000,
+      "end": 156320,
+      // "end": 50000632,
       "data": {
         "style": "PopUp",
-        "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
-        "type": "Image",
+        // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
+        // "type": "Image",    
+        // "url": "https://vrlab-static.ljcdn.com/release/web/jsl/test.69dacffb.mp4",
+        "url": "https://test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+        "type": "Video",
         "title": "测试面板问题",
-        "subTitle": "测试题目"
+        // "subTitle": "测试题目"
       }
     },
+    // {
+    //   "uuid": "9616775c-3e96-415a-27fd-1c1ad5db00df",
+    //   "type": "InfoPanel",
+    //   "start": 12000,
+    //   "end": 20000,
+    //   // "end": 50000632,
+    //   "data": {
+    //     "style": "PopUp",
+    //     // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
+    //     // "type": "Image",                                                                                                                                                      
+    //     "url": "https:////test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
+    //     "type": "Video",   
+    //     "title": "测试面板问题",
+    //     // "subTitle": "测试题目"
+    //   }
+    // },
   ]
 }
 
@@ -96,7 +118,8 @@ export const data =
     "duration": 80525,
     "start": 0,
     "end": 106278,
-    "url": "//test-vr-public.realsee-cdn.com/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4"
+    // "url": ""
   },
   "keyframes": [
     {
@@ -209,17 +232,17 @@ export const data =
         "imgUrl": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_run___92807913661bbb40d0bb9a801b582a07.gif"
       }
     },
-    {
-      "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
-      "type": "InfoPanel",
-      "start": 3783,
-      "end": 6700,
-      "parsed": false,
-      "data": {
-        "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
-        "type": "Image"
-      }
-    },
+    // {
+    //   "uuid": "94a3e6c6-096c-46b6-9713-5f635f679a04",
+    //   "type": "InfoPanel",
+    //   "start": 3783,
+    //   "end": 6700,
+    //   "parsed": false,
+    //   "data": {
+    //     "url": "//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif",
+    //     "type": "Image"
+    //   }
+    // },
 
     {
       "uuid": "e3a3d9fe-9ae7-43e0-f0e2-bedd35aa2d19",

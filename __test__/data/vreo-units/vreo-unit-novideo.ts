@@ -116,3 +116,6 @@ export const vreoUnitNoVideo: VreoUnit = {
     }
   ]
 } as VreoUnit
+
+
+export const data = vreoUnitNoVideo

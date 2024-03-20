@@ -4,6 +4,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { ResponsiveFullScreenFiveCanvas } from '../components/ResponsiveFullScreenFiveCanvas'
 import work from './work.json'
+// import work from '../data/works/XQeernmw.json'
 
 import '../index.css'
 import { App } from './App'
