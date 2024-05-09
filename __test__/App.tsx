@@ -9,7 +9,9 @@ import { VreoUnit } from '../typedoc/Player'
 // import { data } from './data/vreo-units/vreo-unit-test-video'
 
 // 弹层视频
-import { data1 as data } from './data/vreo-units/vreo-unit-a'
+// import { data1 as data } from './data/vreo-units/vreo-unit-a'
+
+import { data } from './data/vreo-units/vreo-unit-PjVVGxn2'
 
 // 无视频版本
 // import { data } from './data/vreo-units/vreo-unit-b'
@@ -68,6 +70,7 @@ export function App() {
     <div className="btns">
       <button
         onClick={async () => {
+          console.log(1, Date.now())
           if (state === PlayerState.ready) {
             ref.current?.show()
             await ref.current?.load(data as VreoUnit)
