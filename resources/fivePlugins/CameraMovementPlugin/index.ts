@@ -13,6 +13,7 @@ import {
 
 const PI = Math.PI
 const PI_2 = PI * 2
+let moving = false // five 6 神秘bug， move 的时候不能 setState
 
 function progressNumber(from: number, to: number, pst: number) {
   if (from === to) return from
@@ -38,7 +39,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
 
   const move = (args: Partial<MoveArgs>, duration: number, opts: MoveOpts = { preload: true }) => {
     return new Promise<boolean>(async (resolve, reject) => {
-
+      moving = true
       if (opts.asyncStartCallback) {
         opts.asyncStartCallback()
       }
@@ -97,6 +98,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
   }
 
   const rotate = async (args: RotateArgs, duration: number, opts: RotateOpts = {}) => {
+    moving = false
     opts.asyncStartCallback?.()
 
     // 先切换模型再出旋转效果
@@ -144,7 +146,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
     }
 
     const onFiveRenderFrame = () => {
-      if (timeEnd) {
+      if (timeEnd || moving) {
         five.off('renderFrame', onFiveRenderFrame)
         return
       }
@@ -173,7 +175,7 @@ export const CameraMovementPlugin: FivePlugin<CameraMovementPluginParameterType,
 
       five.setState(targetState, true)
     }
-
+    
     five.on('renderFrame', onFiveRenderFrame)
 
     return await new Promise<boolean>((resolve) => {
