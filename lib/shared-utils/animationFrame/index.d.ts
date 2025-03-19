@@ -1,4 +1,5 @@
-declare const _requestAnimationFrame: ((callback: FrameRequestCallback) => number) & typeof requestAnimationFrame;
+/// <reference types="node" />
+declare const _requestAnimationFrame: (((callback: FrameRequestCallback) => number) & typeof requestAnimationFrame) | ((fn: FrameRequestCallback) => NodeJS.Timeout);
 export default _requestAnimationFrame;
 export declare function nextFrame(fn: FrameRequestCallback, delay?: number): void;
 /**

@@ -51,7 +51,7 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     get ready(): boolean;
     get currentTime(): number;
     get currentKeyframes(): VreoKeyframe[];
-    get mediaInstance(): HTMLVideoElement | HTMLAudioElement | import("../shared-utils/AudioLike").AudioLike | undefined;
+    get mediaInstance(): HTMLVideoElement | HTMLAudioElement | import("../shared-utils/AudioLike").AudioLike;
     /**
      * 逐帧任务
      */
@@ -60,5 +60,5 @@ export declare class Controller extends Subscribe<VreoKeyframeEvent> {
     clear(): void;
     dispose(): void;
 }
-declare const ControllerContext: React.Context<Controller | null>;
+declare const ControllerContext: React.Context<Controller>;
 export { ControllerContext };

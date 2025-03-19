@@ -1,1 +1,1 @@
-export declare function PanoTag(): null;
+export declare function PanoTag(): any;
