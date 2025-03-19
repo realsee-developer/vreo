@@ -5,5 +5,5 @@ export default function getMediaInfo(fileUrl: string): Promise<{
 }>;
 export declare function getMediaType(url?: string): "audio" | "video" | "image" | "unknown";
 export declare function getMediaTypeByExpandedName(fileExpandedName?: string | null): "audio" | "video" | "image" | "unknown";
-export declare function getMediaTypeByUrl(fileUrl?: string | null): "audio" | "video" | "image" | "unknown" | undefined;
+export declare function getMediaTypeByUrl(fileUrl?: string | null): "audio" | "video" | "image" | "unknown";
 export declare function getFileName(fileUrl?: string): string;
