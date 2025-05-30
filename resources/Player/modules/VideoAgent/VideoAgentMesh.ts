@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
 import AudioLike from '../../../shared-utils/AduioLike'
+import { getMediaType } from '../../../shared-utils/getMediaInfo'
 
 const vertexShader = `
 varying vec2 vUv;
@@ -86,18 +87,18 @@ export interface VideoAgentMeshOptions {
 export class VideoAgentMesh extends THREE.Mesh {
   options: VideoAgentMeshOptions
   videoUrl?: string
-  freeze: boolean
+  freeze: boolean 
   paused: boolean
   audioInstance: HTMLAudioElement
   audioLikeInstance: AudioLike
   $removeEventListener: () => void
 
-  get videoInstance(): HTMLAudioElement | AudioLike {
+  get mediaInstance(): HTMLAudioElement | HTMLVideoElement | AudioLike {
     if (!this.videoUrl) {
       return this.audioLikeInstance
     }
 
-    if (this.videoUrl?.endsWith('mp3')) {
+    if (getMediaType(this.videoUrl) === 'audio') {
       return this.audioInstance
     }
 
@@ -130,6 +131,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       } else {
         const videoInstance = document.createElement('video')
         videoInstance.style.opacity = '0'
+        videoInstance.style.pointerEvents = 'none'
         videoInstance.style.display = 'none'
         document.body.append(videoInstance)
         options.videoInstance = videoInstance
@@ -137,7 +139,6 @@ export class VideoAgentMesh extends THREE.Mesh {
         videoInstance.playsInline = true
         videoInstance.controls = false
       }
-
     }
 
     const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments)
@@ -165,10 +166,8 @@ export class VideoAgentMesh extends THREE.Mesh {
         audioInstance.crossOrigin = ''
         // videoInstance.muted = true
         audioInstance.muted = false
-        audioInstance.setAttribute('playsinline', 'true')
-        audioInstance.setAttribute('webkit-playsinline', 'true')
-        audioInstance.setAttribute('autoplay', 'false')
-        audioInstance.setAttribute('style', 'display: none;')
+        audioInstance.autoplay = false
+        audioInstance.style.display = 'none'
         document.body.appendChild(audioInstance)
         this.audioInstance = audioInstance
         cacheInstance.audioInstance = audioInstance
@@ -184,9 +183,6 @@ export class VideoAgentMesh extends THREE.Mesh {
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
     const onPause = () => updatePaused(true)
     const onPlay = () => updatePaused(false)
-    const onEnded = () => {
-      console.log('vreo: video 播放结束')
-    }
 
     this.audioInstance.addEventListener('pause', onPause)
     this.audioInstance.addEventListener('play', onPlay)
@@ -194,7 +190,6 @@ export class VideoAgentMesh extends THREE.Mesh {
     this.options.videoInstance?.addEventListener('play', onPlay)
     this.audioLikeInstance.addEventListener('pause', onPause)
     this.audioLikeInstance.addEventListener('play', onPlay)
-    this.options.videoInstance?.addEventListener('ended', onEnded)
 
     this.$removeEventListener = () => {
       this.audioInstance.removeEventListener('pause', onPause)
@@ -203,7 +198,6 @@ export class VideoAgentMesh extends THREE.Mesh {
       this.options.videoInstance?.removeEventListener('play', onPlay)
       this.audioLikeInstance.removeEventListener('pause', onPause)
       this.audioLikeInstance.removeEventListener('play', onPlay)
-      this.options.videoInstance?.removeEventListener('ended', onEnded)
     }
   }
 
@@ -214,26 +208,34 @@ export class VideoAgentMesh extends THREE.Mesh {
     }
 
     this.videoUrl = videoUrl
+
+    // // 兼容非视频场景
+    // if (this.mediaInstance instanceof HTMLAudioElement) {
+    //   this.mediaInstance.style.display = 'none'
+    // } else if (this.mediaInstance instanceof HTMLVideoElement) {
+    //   this.mediaInstance.style.display = 'block'
+    // }
+
     this.freeze = true
-    await this.videoInstance.pause()
+    await this.mediaInstance.pause()
 
     const uniforms = (this.material as THREE.ShaderMaterial).uniforms
-    this.videoInstance.muted = true
+    this.mediaInstance.muted = true
 
-    this.videoInstance.src = (this.options.preload || this.options.preload === undefined || this.videoUrl.endsWith('.mp4')) ?
+    this.mediaInstance.src = (this.options.preload || this.options.preload === undefined || getMediaType(this.videoUrl) === 'video') ?
       await URL.createObjectURL((await Preloader.blob(this.videoUrl)) as unknown as Blob) : this.videoUrl
-    this.videoInstance.setAttribute('data-src', this.videoUrl)
+    this.mediaInstance.setAttribute('data-src', this.videoUrl)
 
     const onStart = () => {
-      if (this.videoInstance.currentTime === 0) return
+      if (this.mediaInstance.currentTime === 0) return
       this.freeze = false
-      this.videoInstance.muted = false
-      uniforms.enable.value = this.videoUrl?.endsWith('.mp4') ? 1 : 0
-      this.videoInstance.removeEventListener('timeupdate', onStart, false)
+      this.mediaInstance.muted = false
+      uniforms.enable.value = getMediaType(this.videoUrl) ? 1 : 0
+      this.mediaInstance.removeEventListener('timeupdate', onStart, false)
 
     }
 
-    this.videoInstance.addEventListener('timeupdate', onStart, false)
+    this.mediaInstance.addEventListener('timeupdate', onStart, false)
   }
 
   async play(videoUrl = '', currentTime = 0, duration?: number) {
@@ -241,45 +243,44 @@ export class VideoAgentMesh extends THREE.Mesh {
 
     if (duration && !videoUrl) {
       if (this.currentTime) {
-        this.videoInstance.currentTime = currentTime
+        this.mediaInstance.currentTime = currentTime
       }
-      (this.videoInstance as AudioLike).duration = duration
+      (this.mediaInstance as AudioLike).duration = duration
       this.videoUrl = ''
-      this.videoInstance.play()
+      this.mediaInstance.play()
       return true
     }
 
     if (!videoUrl) {
-      if (this.videoUrl) await this.videoInstance.play()
+      if (this.videoUrl) await this.mediaInstance.play()
       else console.warn('警告：视频资源未初始化。')
       return true
     }
 
-    console.log('play', videoUrl, this.videoUrl)
     if (videoUrl === this.videoUrl) {
-      this.videoInstance.currentTime = currentTime
-      await this.videoInstance.play()
+      this.mediaInstance.currentTime = currentTime
+      await this.mediaInstance.play()
       return true
     }
 
     await this.update(videoUrl)
 
-    this.videoInstance.pause()
+    this.mediaInstance.pause()
 
     return await new Promise((resolve) =>
       setTimeout(async () => {
-        this.videoInstance.currentTime = currentTime
-        await this.videoInstance.play()
+        this.mediaInstance.currentTime = currentTime
+        await this.mediaInstance.play()
         resolve(true)
       }, 20),
     )
   }
 
   /**
-   * 转成毫秒，保障精准度
+   * 秒转成毫秒，保障精准度
    */
   get currentTime() {
-    return this.videoInstance.currentTime * 1000
+    return this.mediaInstance.currentTime * 1000
   }
 
   dispose() {

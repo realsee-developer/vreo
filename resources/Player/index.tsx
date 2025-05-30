@@ -1,3 +1,4 @@
+// 下面这一行不能删
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Five, Subscribe } from '@realsee/five'
@@ -7,8 +8,17 @@ import { Controller, ControllerContext } from './Controller'
 import { CameraMovementData, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
 import { reaction } from 'mobx'
 import { Drawer } from './modules/Drawer'
-import { PlayerConfigs } from './typings'
+import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
 import { PopUp } from './modules/PopUp'
+import { generateBlankAudio, waitForBlankAudioGenerated } from '../shared-utils/Audio'
+import AudioLike from '../shared-utils/AduioLike'
+import { VreoProvider } from '../react'
+
+const DefaultAudioCacheLength = 3
+
+const id = `vreo-app-dhjskadhksahdjskahdjksa`
+
+const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
 
 export class Player extends Subscribe<VreoKeyframeEvent> {
     $five: Five
@@ -17,33 +27,36 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     constructor(five: Five, configs: Partial<PlayerConfigs> = {}) {
         super()
-        this.controller = new Controller()
-        this.$five = this.controller.$five = five
+        this.$five = five
 
-        if (!configs.containter) {
-            const containter = document.getElementById('vreo-app') || document.createElement('div')
-            ReactDOM.unmountComponentAtNode(containter)
-            containter.setAttribute('id', 'vreo-app')
-            configs.containter = containter
+        generateBlankAudio(audioCacheLength)
+
+        if (!configs.container) {
+            configs.container = configs.containter
+        }
+        if (!configs.container) {
+            const oldElement = document.getElementById(id)
+            if (oldElement) {
+                ReactDOM.unmountComponentAtNode(oldElement)
+                oldElement.remove()
+            }
+            const container = document.createElement('div')
+            container.id = id
+            configs.container = container
             const fiveCanvasDomParent = five.getElement()?.parentNode
             if (fiveCanvasDomParent) {
-                fiveCanvasDomParent.append(containter)
+                fiveCanvasDomParent.append(container)
             } else {
-                document.body.append(containter)
+                document.body.append(container)
             }
-            // document.body.append(containter)
         }
 
-        this.configs = Object.freeze(
-            Object.assign(
-                {
-                    keyframeMap: {},
-                },
-                configs
-            )
-        )
+        if (!configs.container.classList.contains('vreo-app')) configs.container.classList.add('vreo-app')
 
-        this.controller.configs = this.configs
+        this.configs = Object.freeze( Object.assign({ keyframeMap: {} }, configs) )
+
+        this.controller = new Controller({five, container:configs.container, configs: this.configs})
+
 
         ReactDOM.render(
             <ControllerContext.Provider value={this.controller}>
@@ -55,15 +68,15 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                     <CustomCmpt
                         key={key}
                         subscribe={{
-                            on: (name, callback) => this.on(name, callback),
-                            once: (name, callback) => this.once(name, callback),
-                            off: (name, callback) => this.off(name, callback),
+                            on: (name, callback) => this.on(name as any, callback as any),
+                            once: (name, callback) => this.once(name as any, callback as any),
+                            off: (name, callback) => this.off(name as any, callback as any),
                         }}
                         five={five}
                     />
                 ))}
             </ControllerContext.Provider>,
-            configs.containter
+            configs.container
         )
 
         // 监听播放情况：抛出触发时机
@@ -87,16 +100,18 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     }
 
     async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false) {
+        this.controller.clear()
+        this.controller.setLoading(true)
         if (force) {
             vreoUnit = JSON.parse(JSON.stringify(vreoUnit))
         }
-        if (!this.controller.visible) {
-            this.controller.setVisible(true)
-            // 延迟 500ms 规避跟 DOM 动画冲突
-            await new Promise((resolve) => {
-                setTimeout(() => resolve(true), 500)
-            })
-        }
+        // if (!this.controller.visible) {
+        //     this.controller.setVisible(true)
+        //     // 延迟 500ms 规避跟 DOM 动画冲突
+        //     await new Promise((resolve) => {
+        //         setTimeout(() => resolve(true), 500)
+        //     })
+        // }
 
         if (this.controller.stopInterval) {
             this.controller.stopInterval()
@@ -104,7 +119,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         }
 
         this.controller.vreoUnit = vreoUnit
-        this.controller.videoInstance?.pause()
+
+
+        this.controller.mediaInstance?.pause()
+        
 
         // 预载逻辑
         // 是否降低图片分辨率
@@ -138,9 +156,9 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                     return accu
                 }, {})
 
-            const panoIndexs = Object.keys(panoIndexMap)
-            for (let i = 0; i < panoIndexs.length; i++) {
-                await this.$five.preloadPano(Number(panoIndexs[i]))
+            const panoIndexes = Object.keys(panoIndexMap)
+            for (let i = 0; i < panoIndexes.length; i++) {
+                await this.$five.preloadPano(Number(panoIndexes[i]))
             }
         }
 
@@ -148,19 +166,26 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.emit('loaded', vreoUnit)
         this.controller.emit('loaded', vreoUnit)
 
-        if (this.controller.videoAgentScene?.videoAgentMesh.videoInstance) {
-            this.controller.videoAgentScene.videoAgentMesh.videoInstance.currentTime = currentTime / 1000
+        if (this.controller.videoAgentScene?.videoAgentMesh.mediaInstance) {
+            this.controller.videoAgentScene.videoAgentMesh.mediaInstance.currentTime = currentTime / 1000
         }
+
+        this.controller.setAvatar(vreoUnit.video.avatar)
+
+        await waitForBlankAudioGenerated()
+
         await this.controller.videoAgentScene?.videoAgentMesh.play(
             vreoUnit.video.url,
             currentTime / 1000,
             vreoUnit.video.duration
         )
 
+
         this.controller.setEnded(false)
         this.play()
 
-        this.controller.run((type, keyframe) => this.emit(type, keyframe))
+        this.controller.run((type, keyframe) => this.emit(type, keyframe, this.controller.currentTime))
+        this.controller.setLoading(false)
         return true
     }
 
@@ -170,13 +195,22 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
     play(currentTime?: number) {
         if (this.controller.playing) return true
-        if (currentTime && this.controller.videoInstance) {
-            this.controller.videoInstance.currentTime = currentTime / 1000
+        if (currentTime && this.controller.mediaInstance) {
+            this.controller.mediaInstance.currentTime = currentTime / 1000
         }
         Object.assign(window, { $vreoController: this.controller })
-
+        this.controller.setEnded(false)
         this.controller.setPlaying(true)
+        this.controller.vreoUnit?.keyframes.forEach((keyframe) => {
+            if (keyframe.type === VreoKeyframeEnum.BgMusic) {
+                keyframe.parsed = false
+            }
+        })
         return true
+    }
+
+    setAppearance(appearance: Appearance) {
+        this.controller.setAppearance(appearance)
     }
 
     pause() {
@@ -196,24 +230,21 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     }
 
     dispose() {
-        this.pause()
         this.controller.dispose()
 
-        if (this.configs.containter) {
-            ReactDOM.unmountComponentAtNode(this.configs.containter as Element)
+        if (this.configs.container) {
+            ReactDOM.unmountComponentAtNode(this.configs.container as Element)
         }
     }
 }
 
 console.log(`
-
-┏━━━┓━━━━━━━━━┏┓━━━━━━━━━━━━━
-┃┏━┓┃━━━━━━━━━┃┃━━━━━━━━━━━━━
-┃┗━┛┃┏━━┓┏━━┓━┃┃━┏━━┓┏━━┓┏━━┓
-┃┏┓┏┛┃┏┓┃┗━┓┃━┃┃━┃━━┫┃┏┓┃┃┏┓┃
-┃┃┃┗┓┃┃━┫┃┗┛┗┓┃┗┓┣━━┃┃┃━┫┃┃━┫
-┗┛┗━┛┗━━┛┗━━━┛┗━┛┗━━┛┗━━┛┗━━┛
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-
+    ┏━━━┓━━━━━━━━━┏┓━━━━━━━━━━━━━
+    ┃┏━┓┃━━━━━━━━━┃┃━━━━━━━━━━━━━
+    ┃┗━┛┃┏━━┓┏━━┓━┃┃━┏━━┓┏━━┓┏━━┓
+    ┃┏┓┏┛┃┏┓┃┗━┓┃━┃┃━┃━━┫┃┏┓┃┃┏┓┃
+    ┃┃┃┗┓┃┃━┫┃┗┛┗┓┃┗┓┣━━┃┃┃━┫┃┃━┫
+    ┗┛┗━┛┗━━┛┗━━━┛┗━┛┗━━┛┗━━┛┗━━┛
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `)

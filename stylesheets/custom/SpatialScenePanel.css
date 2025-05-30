@@ -46,7 +46,8 @@
   top: 0;
   left: 0;
   pointer-events: none;
-  user-select: none
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .SpatialScenePanel {
