@@ -1,11 +1,16 @@
 import React, { ReactNode } from 'react';
 import { Subscribe, Five } from '@realsee/five';
 
-import { VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit'
+import { VreoKeyframe, VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit'
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
+import { Overwrite } from '@realsee/dnalogel/libs/typings/utils.type';
 
 export interface PlayerConfigs {
-  containter?: ReactDOM.Container
+/**
+ * @deprecated rename to container
+ */
+  containter?: Element
+  container?: Element
   keyframeMap: VreoKeyframeConfigMap
   /**
    * 微信端自动播放功能实现需要提前初始化 Video 实例。
@@ -15,6 +20,7 @@ export interface PlayerConfigs {
   videos?: {
     videoEffect?: HTMLVideoElement
     modelTVVideo?: HTMLVideoElement
+    videoPanel?: HTMLVideoElement
   }
 
   videoAgentMeshOptions?: VideoAgentMeshOptions
@@ -25,11 +31,27 @@ export interface PlayerConfigs {
   customKeyframes?: React.FC<CustomVreoKeyframeProps>[]
   imageOptions?: { size: number }
   autoPreload?: boolean
+  appSize?: AppSize
+  appearance?: Appearance
+  /**
+   * @description: 波浪UI 静态资源前缀
+   */
+  waveStaticPrefix?: string
+  onAvatarClick?: () => any
+  onWaveClick?: () => any
+}
+
+export type AppSize = 'S' | 'M' | 'L' | 'XL'
+
+export type WaveAppearance = 'single' | 'double' | 'solid' | 'swap' | 'expand'
+
+export interface Appearance {
+  waveStyle?: 'wave' | 'solid'
 }
 
 export type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>
 
 export interface CustomVreoKeyframeProps {
-  subscribe: VreoSubscribe
+  subscribe: Pick<Subscribe<{[key: string]: (data: VreoKeyframe, currentTime: number) => any}>, 'on' | 'once' | 'off'>
   five: Five
 }

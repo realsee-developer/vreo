@@ -1,57 +1,75 @@
-import classNames from 'classnames'
 import * as React from 'react'
-import { Vector3 } from 'three'
-import { useController, useFiveInstance, useFiveProject2d } from '../../../hooks'
-import {
-  PanoTagData,
-  PanoTagEnum,
-  PanoTagStyleEnum,
-  Vertex,
-  VreoKeyframe,
-  VreoKeyframeEnum,
-} from '../../../../typings/VreoUnit'
+import { useController, useFiveInstance } from '../../../hooks'
+import { PanoTagData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
+
+import { PanoTagPlugin, Tag } from '@realsee/dnalogel'
 
 export function PanoTag() {
-  const [state, setState] = React.useState<{
-    vertex: Vertex
-    text?: string
-    type: PanoTagEnum
-    style?: PanoTagStyleEnum
-    imgUrl?: string
-  } | null>(null)
-
-  const [pos, setPos] = React.useState<{ left: number; top: number } | null>(null)
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
-
   const controller = useController()
   const five = useFiveInstance()
-  const project2d = useFiveProject2d()
+  const panoTagPlugin = React.useRef(PanoTagPlugin(five as any, {
+    config: {
+      globalConfig: {
+        visibleConfig: {
+          keep: 'visible'
+        },
+        unfoldedConfig: {
+          autoUnfold: false,
+          unfoldDistance: { max: 100 }
+        }
+      }
+    }
+  }))
 
   React.useEffect(() => {
     if (controller.configs?.keyframeMap.PanoTag === false) {
       return
     }
     const callback = (keyframe: VreoKeyframe) => {
+      if (!panoTagPlugin.current) return
+
       const { start, end, data } = keyframe
 
       const panoTagData = data as PanoTagData
-      const vertex = panoTagData.vertex
-      const { x, y, z } = panoTagData.vertex
-      const res = project2d(new Vector3(x, y, z))
 
-      if (!res) return
-      const { x: left, y: top } = res
-      setState({
-        vertex,
-        text: panoTagData.text || PanoTagEnum.Text,
-        type: panoTagData.type,
-        imgUrl: panoTagData.imgUrl,
-        style: panoTagData.style || PanoTagStyleEnum.Growth,
-      })
-      setPos({ left, top })
+      const id = Date.now().toString()
+      const pointType = 'PointTag'
+      const dimensionType = '2D'
+      const position = [panoTagData.vertex.x, panoTagData.vertex.y, panoTagData.vertex.z]
+      const tag: Tag = (() => {
+        if (panoTagData.imgUrl) {
+          return { id, pointType, position, dimensionType, contentType: 'ImageText', stickType: '2DPoint', data: { text: panoTagData.text, mediaData: [{ type: 'Image',  url: panoTagData.imgUrl }] }}
+        } else {
+          return { id, pointType, position, dimensionType, contentType: 'Text', stickType: '2DPoint', data: { text: panoTagData.text }}
+        }
+      })()
+
+      // show
+      panoTagPlugin.current.load({ tagList: [tag] })
+
+      const tagInstance = panoTagPlugin.current.getTagById(id)
+      if (tagInstance) {
+        tagInstance.state.unfolded = true
+        ;(panoTagPlugin.current as any).updateRenderAllTags()
+      }
+
       timeoutRef.current = setTimeout(() => {
-        setState(null)
-        setPos(null)
+        // clear
+        const tag = panoTagPlugin.current.getTagById(id)
+        if (!tag) return
+        if (tag.state) {
+          tag.state.unfolded = false
+          ;(panoTagPlugin.current as any).updateRenderAllTags()
+        }
+        tag.hooks?.on('folded', () => {
+          setTimeout(() => {
+            if (tag.state) {
+              tag.state.visible = false
+              panoTagPlugin.current.destroyTagById(id)
+            }
+          }, 1500)
+        })
       }, end - start)
     }
 
@@ -65,82 +83,5 @@ export function PanoTag() {
     }
   }, [controller])
 
-  React.useEffect(() => {
-    const callback = () => {
-      if (!state?.vertex) return
-      const { x, y, z } = state.vertex
-      const res = project2d(new Vector3(x, y, z))
-      if (!res) return
-      const { x: left, y: top } = res
-      setPos({ left, top })
-    }
-    five.on('currentStateChange', callback)
-
-    return () => {
-      five.off('currentStateChange', callback)
-    }
-  }, [state?.vertex])
-
-  const boxContent = (() => {
-    if (!state) return undefined
-
-    if (state.type === PanoTagEnum.Text) {
-      return (
-        <>
-          <span>{state.text}</span>
-        </>
-      )
-    }
-    if (state.type === PanoTagEnum.Image) {
-      return (
-        <>
-          <img className="PanoTag-img" src={state.imgUrl!} alt={state.text || ''}></img>
-          <span className="PanoTag-txt">{state.text}</span>
-        </>
-      )
-    }
-    return undefined
-  })()
-
-  if (state?.style === PanoTagStyleEnum.Expand) {
-    return (
-      <>
-        <div
-          className={classNames('PanoTag', {
-            'PanoTag--expand': true,
-            'PanoTag--notHidden': state,
-          })}
-          style={{
-            left: (pos?.left || 0) + 'px',
-            top: (pos?.top || 0) + 'px',
-          }}
-        >
-          <div className={'PanoTag-box PanoTag-box--' + (state?.type || '')}>{boxContent}</div>
-          <div className="PanoTag-guideline"></div>
-        </div>
-      </>
-    )
-  }
-  return (
-    <>
-      <div
-        className={classNames('PanoTag', {
-          'PanoTag--notHidden': state,
-        })}
-        style={{
-          left: (pos?.left || 0) + 'px',
-          top: (pos?.top || 0) + 'px',
-        }}
-      >
-        <div className="PanoTag-point"></div>
-        <div className="PanoTag-content">
-          <span className="PanoTag-linewrap">
-            <span className="PanoTag-slashline"></span>
-            <span className="PanoTag-straightline"></span>
-          </span>
-          <div className={'PanoTag-box PanoTag-box--' + (state?.type || '')}>{boxContent}</div>
-        </div>
-      </div>
-    </>
-  )
+  return null
 }

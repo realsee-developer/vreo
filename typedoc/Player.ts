@@ -12,4 +12,4 @@ export type {
   InfoPanelTypeEnum, InfoPanelStyleEnum, InfoPanelData, VideoEffectData, CustomData,
 } from '../resources/typings/VreoUnit'
 
-export type { AudioLike, AudioLikeEvent } from '../resources/shared-utils/AduioLike'
+export type { AudioLike, AudioLikeEvent } from '../resources/shared-utils/AudioLike'

@@ -9,21 +9,72 @@ import {
 } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
+
+const isWX = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+const isIOS = navigator.userAgent.toLowerCase().indexOf('iphone') !== -1
+
+const isIOSorWX = isIOS || isWX
+
+
+const _videoElement = document.createElement('video')
+_videoElement.setAttribute('playsinline', 'true')
+_videoElement.setAttribute('webkit-playsinline', 'true')
+
+if (isIOSorWX) {
+  if (_videoElement.paused) {
+    _videoElement.addEventListener('click', () => _videoElement.play(), {once:true})
+  }
+}
+
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
   return (
-    <div className="vreo-infoPanel vreo-infoPanel--img">
-      {children}
-      <div className="vreo-infoPanelImg" style={{ backgroundImage: `url(${url})` }}></div>
+    <div className="vreo-infoPanel-container">
+      <div className="vreo-infoPanel">
+        {children}
+        <img src={url}></img>
+      </div>
     </div>
   )
 }
 
 function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }) {
+  const videoWrapperRef = React.useRef<HTMLDivElement>(null)
+  const controller = useController()
+
+  React.useEffect(() => {
+    // if (!isIOSorWX) return
+    const video = controller.configs?.videos?.videoPanel || _videoElement
+    if (!videoWrapperRef.current) return
+    video.src = url
+    if (!videoWrapperRef.current.contains(video)) {
+      videoWrapperRef.current.appendChild(video)
+    }
+
+    const canplaythrough = () => {
+      video.removeEventListener('canplaythrough', canplaythrough)
+      try {
+        video.play()
+      } catch (error) {}
+    }
+    video.addEventListener('canplaythrough', canplaythrough)
+    video.load()
+    // video.play()
+
+    return () => {
+      video.pause()
+      if (videoWrapperRef.current?.contains(video)) {
+        videoWrapperRef.current.removeChild(video)
+      }
+    }
+  }, [videoWrapperRef.current])
+
   return (
-    <div className="vreo-infoPanel vreo-infoPanel--video">
-      {children}
-      <div className="vreo-infoPanelWrapper">
-        <video playsInline autoPlay className="vreo-infoPanelVideo" src={url} />
+    <div className="vreo-infoPanel-container">
+      <div className='vreo-infoPanel'>
+        {children}
+        <div className='vreo-infoPanel-inner' ref={videoWrapperRef}>
+          {/* {!isIOSorWX && <video playsInline webkit-playsinline="true" autoPlay src={url} />} */}
+        </div>
       </div>
     </div>
   )
@@ -40,10 +91,13 @@ const Title = (props: TitleProps) => {
   }
 
   return (
-    <div className="vreo-infoPanel-title">
-      <div className="vreo-infoPanel-t1">{props.title}</div>
-      <div className="vreo-infoPanel-t2">{props.subTitle}</div>
-    </div>
+    <>
+      {/* <div className="vreo-infoPanel-title-shadow"></div> */}
+      <div className="vreo-infoPanel-title">
+        <div className="vreo-infoPanel-t1">{props.title}</div>
+        <div className="vreo-infoPanel-t2">{props.subTitle}</div>
+      </div>
+    </>
   )
 }
 
@@ -107,36 +161,13 @@ export function InfoPanel() {
     }
     controller.on(VreoKeyframeEnum.InfoPanel, callback)
 
-    // Object.assign(window, {
-    //   $setInfoPanel: () => {
-    //     controller.openPopUp(
-    //       // <InfoPanelImg url='//vrlab-static.ljcdn.com/release/web/psq/a.8e868cb2.gif' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/b.f9a1ed52.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/c.4f88c112.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif' />
-    //       <InfoPanelImg url="http://vrlab-public.ljcdn.com/common/images/web/d94e1bd7-0311-4b20-9c41-a1294fe43554.png">
-    //         <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       </InfoPanelImg>
-    //       // <InfoPanelVideo url="//vrlab-public.ljcdn.com/release/seesay/tools/2022011713142___b320f74a5e1b5ad4bb46b4dc69d73ecc.mp4">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelVideo>
-    //     )
-    //   },
-    //   $setInfoPanel2: () => {
-    //     controller.openPopUp(
-    //       <InfoPanelImg url='//vrlab-static.ljcdn.com/release/web/psq/a.8e868cb2.gif' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/b.f9a1ed52.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/web/psq/c.4f88c112.png' />
-    //       // <InfoPanelImg url='//vrlab-public.ljcdn.com/release/seesay/tools/cat_music___f68fb9bbe1f7cd6d00a16456dd0b09ad.gif' />
-    //       // <InfoPanelImg url="http://vrlab-public.ljcdn.com/common/images/web/d94e1bd7-0311-4b20-9c41-a1294fe43554.png">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelImg>
-    //       // <InfoPanelVideo url="//vrlab-public.ljcdn.com/release/seesay/tools/2022011713142___b320f74a5e1b5ad4bb46b4dc69d73ecc.mp4">
-    //       //   <Title title="场景联动抓拍图片" subTitle={'2022.02.17 14:00'} />
-    //       // </InfoPanelVideo>
-    //     )
-    //   },
-    // })
+    controller.on('ended', () => {
+      controller.openPopUp(false)
+    })
+
+    controller.on('paused', () => {
+      controller.openPopUp(false)
+    })
 
     return () => {
       controller.off(VreoKeyframeEnum.InfoPanel, callback)
