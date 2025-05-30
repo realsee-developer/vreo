@@ -35,6 +35,7 @@ const calcPoints = (
   //   size: 0.4,
   // })
   // _point = new THREE.Points(pointgeometry, pointmaterial)
+  // console.log(cameraPosition)
 
   const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide })
   const plane = new THREE.Mesh(geometry, material)
