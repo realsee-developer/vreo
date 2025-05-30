@@ -2,27 +2,42 @@ import { Five, Subscribe } from '@realsee/five'
 import { action, computed, makeObservable, observable, reaction } from 'mobx'
 import * as React from 'react'
 import { requestAnimationFrameInterval } from '../shared-utils/animationFrame'
-import { VreoKeyframe, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit'
+import { VreoKeyframe, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit, VreoVideo } from '../typings/VreoUnit'
 import { VideoAgentScene } from './modules/VideoAgent/VideoAgentScene'
-import { PlayerConfigs } from './typings'
+import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
+import setElementDataset from '../shared-utils/setElementDataset'
+import { getMediaType } from '../shared-utils/getMediaInfo'
 
 /**
  * 逻辑控制器：内部状态。
  */
 export class Controller extends Subscribe<VreoKeyframeEvent> {
 
-    $five?: Five
-    configs?: PlayerConfigs
+    five: Five
+    configs: PlayerConfigs
     videoAgentScene?: VideoAgentScene
     vreoUnit?: VreoUnit
     stopInterval?: () => void
     playing = false
     ended = false
+    loading: boolean | null = false // null 表示加载失败
+    containerSize: { width: number, height: number } = { width: 0, height: 0 }
+    appSize?: 'S' | 'M' | 'L' | 'XL'
+    container: Element
+    waveAppearance: WaveAppearance | null = null
+    appearance: Appearance = {
+        waveStyle: 'wave',
+    }
+    avatar: VreoVideo['avatar'] = {}
+
 
     visible = false
 
-    get isAudio() {
-        return !this.videoAgentScene?.videoAgentMesh.videoUrl?.endsWith('.mp4')
+    get agentType() {
+        const type = getMediaType(this.videoAgentScene?.videoAgentMesh.videoUrl)
+        if (this.avatar?.force) return 'avatar'
+        if (type === 'video') return 'video'
+        return 'none'
     }
 
     popUp: string | JSX.Element | null = null
@@ -35,10 +50,22 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.popUp = popUp
     }
 
+    setLoading(loading: boolean | null) {
+        this.loading = loading
+    }
+
     drawerConfig: {
         content: string | JSX.Element
         height?: number | string
     } | null = null
+
+    setAvatar(avatar: VreoVideo['avatar']) {
+        this.avatar = avatar
+    }
+
+    setContainerSize(width: number, height: number) {
+        this.containerSize = { width, height }
+    }
 
     setVisible(v: boolean) {
         this.visible = v
@@ -50,6 +77,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
     setEnded(ended: boolean) {
         this.ended = ended
+    }
+
+    setAppearance(appearance: Appearance) {
+        this.appearance = { ...this.appearance, ...appearance }
     }
 
     openDrawer(drawerConfig?: false | { content: string | JSX.Element; height?: number | string }) {
@@ -64,21 +95,94 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.drawerConfig = drawerConfig
     }
 
-    constructor() {
+    constructor({five, container, configs}: { five: Five, container: Element, configs: PlayerConfigs }) {
         super()
+
+        this.configs = configs
+        this.container = container
+        this.five = five
+        this.appSize = configs.appSize
+        this.appearance = { ...this.appearance, ...configs.appearance }
 
         makeObservable(this, {
             visible: observable,
             setVisible: action,
             playing: observable,
             setPlaying: action,
+            loading: observable,
+            // videoAgentScene: observable.ref,
+            setLoading: action,
             popUp: observable.ref,
             openPopUp: action,
             drawerConfig: observable.ref,
             openDrawer: action,
             ended: observable,
-            setEnded: action
+            waveAppearance: observable,
+            avatar: observable,
+            containerSize: observable,
+            setContainerSize: action,
+            appearance: observable,
+            setAppearance: action,
+            configs: observable.ref,
+            setEnded: action,
+            setAvatar: action,
         })
+
+        reaction<[typeof this.appearance.waveStyle, boolean | null], boolean>(
+            () => [this.appearance.waveStyle, this.loading], 
+            ([waveStyle, loading]) => {
+                if (loading === null) {
+                    this.waveAppearance = null
+                    return
+                }
+                if (waveStyle === 'wave') {
+                    switch (loading) {
+                        case true:
+                            this.waveAppearance = 'double'
+                            break
+                        case false:
+                            this.waveAppearance = 'solid'
+                            break
+                    }
+                } else if (waveStyle === 'solid') {
+                    switch (loading) {
+                        case true:
+                            this.waveAppearance = 'swap'
+                            break
+                        case false:
+                            this.waveAppearance = 'expand'
+                            break
+                    }
+                }
+            }, 
+            { fireImmediately: true }
+        )
+
+        if (!this.appSize) {
+            reaction(
+                () => this.containerSize,
+                (containerSize) => {
+                    if (!containerSize?.width) return
+                    const width = containerSize.width
+                    const height = containerSize.height
+                    const size = (() => {
+                        if (width <= 500) return 'S'
+                        if (width <= 1024) return 'M'
+                        if (width <= 2048) return 'L'
+                        return 'XL'
+                    })()
+                    const orientation = (() => {
+                        if (height > width) return 'portrait'
+                        return 'landscape'
+                    })()
+                    setElementDataset(this.container, { size })
+                    setElementDataset(this.container, { orientation })
+                },
+                { fireImmediately: true }
+            )
+        } else {
+            setElementDataset(this.container, { size: this.appSize })
+        }
 
         // 监听播放情况：抛出触发时机
         reaction(
@@ -115,45 +219,53 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         // 没有被解析过且开始时间低于当前时间戳 100ms
         return keyframes.filter((keyframe: VreoKeyframe) => {
             if (keyframe.parsed) return false
+            // 检测结束时间
+            if (keyframe.end < this.currentTime) return false
+            // 检测开始时间
+            if (keyframe.start > this.currentTime ) return false
+            if (keyframe.type === VreoKeyframeEnum.BgMusic) return true
+            // 开始时间低于当前时间戳 100ms
             const dur = this.currentTime - keyframe.start
             return dur <= 100 && dur >= 0
         })
     }
 
-    get videoInstance() {
-        return this.videoAgentScene?.videoAgentMesh.videoInstance
+    get mediaInstance() {
+        return this.videoAgentScene?.videoAgentMesh.mediaInstance
     }
 
     /**
      * 逐帧任务
      */
-    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void) {
-        if (this.videoInstance?.ended) {
+    requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void) {
+        if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
+            if (this.ended) return
+            this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
             this.setEnded(true)
             this.setPlaying(false)
-            this.videoInstance.pause()
+            this.mediaInstance.pause()
+            this.mediaInstance.currentTime = 0
             return
         }
 
         if (!this.playing) {
-            if (!this.videoInstance?.paused) {
-                this.videoInstance?.pause()
+            if (!this.mediaInstance?.paused) {
+                this.mediaInstance?.pause()
             }
             return
         }
 
-        if (this.videoInstance?.paused && this.playing) {
-            this.videoInstance.play()
+        if (this.mediaInstance?.paused && this.playing) {
+            this.mediaInstance.play()
         }
-
+        
         const currentKeyframes = this.currentKeyframes
-
         currentKeyframes.forEach((keyframe) => {
             if (keyframe.parsed) return
             keyframe.parsed = true
-            this.emit(keyframe.type, keyframe)
+            this.emit(keyframe.type, keyframe, this.currentTime)
             if (callback) {
-                callback(keyframe.type, keyframe)
+                callback(keyframe.type, keyframe, this.currentTime)
             }
         })
     }
@@ -163,26 +275,30 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.stopInterval = requestAnimationFrameInterval(() => this.requestAnimationFrameLoop(callback))
     }
 
-    dispose() {
+    clear() {
         this.setPlaying(false)
 
-        if (this.currentKeyframes) {
-            this.currentKeyframes.forEach((keyframe) => (keyframe.parsed = false))
-        }
+        this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
 
         /**
          * 清理掉数据
          */
         this.vreoUnit = undefined
-        if (this.videoInstance) {
-            this.videoInstance.currentTime = 0
+        if (this.mediaInstance) {
+            this.mediaInstance.pause()
+            this.mediaInstance.currentTime = 0
         }
 
-        if (this.stopInterval) {
-            this.stopInterval()
-            this.stopInterval = undefined
-        }
+        this.stopInterval?.()
+        this.stopInterval = undefined
+    }
+
+    dispose() {
+        this.clear()
     }
 }
 
-export const ControllerContext = React.createContext<Controller | null>(null)
+const ControllerContext = React.createContext<Controller | null>(null)
+
+export { ControllerContext }
+
