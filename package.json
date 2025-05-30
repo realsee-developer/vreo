@@ -1,6 +1,6 @@
 {
   "name": "@realsee/vreo",
-  "version": "2.3.10",
+  "version": "2.4.0",
   "description": "Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 用户界面构建库 React 实现的如视 3D 空间剧本播放器。",
   "keywords": [
     "realsee",
@@ -10,6 +10,10 @@
   "author": "BEIKE REALSEE TECHNOLOGY (HK) LIMITED",
   "license": "MIT",
   "private": false,
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
   "files": [
     "lib",
     "stylesheets",
@@ -25,35 +29,35 @@
     "postpublish": "cnpm sync @realsee/vreo"
   },
   "peerDependencies": {
-    "@realsee/five": "^5.0.0",
-    "@realsee/dnalogel": "^2.3.3",
-    "three": ">=0.115.0 <=0.117.1",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "@realsee/dnalogel": "^3.67.0",
+    "@realsee/five": "^6.4.0-alpha.36",
+    "react": "^18",
+    "react-dom": "^18",
+    "three": "0.117.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "7.24.3",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    "@realsee/dnalogel": "^2.19.3",
-    "@realsee/five": "5.0.0-alpha.149",
+    "@realsee/dnalogel": "^3.67.1",
+    "@realsee/five": "^6.4.0-alpha.36",
     "@tweenjs/tween.js": "18.6.4",
-    "@types/node": "^18.11.17",
+    "@types/node": "^22.0.0",
     "@types/offscreencanvas": "^2019.6.4",
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "@types/react-transition-group": "^4.4.4",
     "@vitejs/plugin-react": "^1.1.0",
     "cnpm": "^9.2.0",
     "del": "^6.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "three": "^0.117.1",
-    "typedoc": "^0.22.10",
-    "typescript": "4.7.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "three": "0.117.1",
+    "typedoc": "^0.25.0",
+    "typescript": "^5.3.0",
     "vite": "^2.6.14"
   },
   "dependencies": {
