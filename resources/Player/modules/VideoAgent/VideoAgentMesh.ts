@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
-import AudioLike from '../../../shared-utils/AudioLike'
+import AudioLike from '../../../shared-utils/AduioLike'
 import { getMediaType } from '../../../shared-utils/getMediaInfo'
 
 const vertexShader = `
