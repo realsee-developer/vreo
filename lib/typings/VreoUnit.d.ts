@@ -76,15 +76,22 @@ export interface VreoVideo {
     start: number;
     end: number;
     url: string;
+    avatar?: {
+        url?: string;
+        force?: true;
+    };
 }
 /**
  * 剧本结构
  */
 export interface VreoUnit {
-    categoryId: string;
-    categoryText: string;
-    frontRequestId: string;
-    index: string | number;
+    categoryId?: string;
+    categoryText?: string;
+    frontRequestId?: string;
+    index?: string | number;
+    configure?: {
+        pageTitle?: string;
+    };
     keyframes: VreoKeyframe[];
     video: VreoVideo;
 }
@@ -92,7 +99,7 @@ export interface VreoUnit {
  * 剧本事件
  */
 export declare type VreoKeyframeEvent = {
-    [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe) => void;
+    [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe, currentTime: number) => void;
 } & {
     loaded: (vreoUnit: VreoUnit) => void;
     paused: (ended?: boolean) => void;

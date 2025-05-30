@@ -1,51 +1,50 @@
 import * as React from 'react'
-import { BgMusicData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
+import { generateBlankAudio, getAudio } from '../../../../shared-utils/Audio'
+import { VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 import { useController } from '../../../hooks'
 
 export function BgMusic() {
   const controller = useController()
-  const timeoutIdRef = React.useRef<NodeJS.Timeout | null>(null)
-  const cleanTimeout = React.useCallback( () => {
-    if (timeoutIdRef.current) {
-      clearTimeout(timeoutIdRef.current)
-      timeoutIdRef.current = null
-    }
-  }, [])
 
   React.useEffect(() => {
-    const audio = new Audio()
-    audio.setAttribute('id', 'vreo-singleton-bgmusic')
-    audio.style.display = 'none'
-
-    audio.setAttribute('playsinline', 'true')
-    audio.loop = true
-    document.body.append(audio)
-
-    const callback = (keyframe: VreoKeyframe) => {
+    const callback = async (keyframe: VreoKeyframe, currentTime: number) => {
       const { start, end } = keyframe
-      const { url } = keyframe.data as BgMusicData
-      audio.src = url
-      const playCallback = () => {
-        audio.play()
-      }
-  
-      audio.addEventListener('canplaythrough', playCallback)
 
-      cleanTimeout()
-    
-      const cleanAudio = () => {
-        audio.pause()
-        audio.currentTime = 0
-        audio.src = ''
-        cleanTimeout()
-        audio.removeEventListener('canplaythrough', playCallback)
+      const _currentTime = (currentTime - start) / 1000
+
+      if (_currentTime < 0 || _currentTime >= keyframe.end - keyframe.start) {
+        return
       }
-  
-      const duration = (end - start) || 5000
-    
-      timeoutIdRef.current = setTimeout(() => {
+
+      const audio = getAudio(keyframe.data.url)
+      audio.currentTime = Math.max(0, _currentTime)
+      // console.log('play', audio.src)
+      // const play = () => audio.play()
+
+      audio.play()
+
+      const cleanAudio = () => {
+        // audio.removeEventListener('canplaythrough', play)
+        audio.removeEventListener('pause', play)
+        audio.pause()
+        audio.src = ''
+        // cleanTimeout()
+      }
+
+      // audio.addEventListener('canplaythrough', play)
+
+      audio.addEventListener('ended', () => {
         cleanAudio()
-      }, duration)
+      })
+
+      const play = () => {
+        if (audio.realSrc === keyframe.data.url) {
+          // 有可能会被其他音轨打断
+          audio.play()
+        }
+      }
+
+      audio.addEventListener('pause', play)
 
       controller.once('paused', () => {
         cleanAudio()
@@ -57,8 +56,6 @@ export function BgMusic() {
 
     return () => {
       controller.off(VreoKeyframeEnum.BgMusic, callback)
-      document.body.removeChild(audio)
-      cleanTimeout()
     }
   })
 

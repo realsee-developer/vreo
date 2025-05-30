@@ -2,12 +2,41 @@ import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
 import * as React from 'react'
 import { Player } from '../resources/Player'
 import { VreoUnit } from '../typedoc/Player'
-import { data } from './data/vreo-units/vreo-unit-a'
+// import { data } from './data/vreo-units/vreo-unit-a'
+
+// import { data } from './data/vreo-units/vreo-XQeernmw'
+
+// import { data } from './data/vreo-units/vreo-unit-test-video'
+
+// 弹层视频
+// import { data1 as data } from './data/vreo-units/vreo-unit-a'
+
+import { data } from './data/vreo-units/vreo-unit-PjVVGxn2'
 
 // 无视频版本
 // import { data } from './data/vreo-units/vreo-unit-b'
-//
+
 // import { data } from './data/vreo-units/vreo-unit-tmp'
+
+// 头像音频
+// import { data } from './data/vreo-units/vreo-unit-b-avatar'
+
+
+// 啥都没有版本
+// import { data } from './data/vreo-units/vreo-unit-b-noaudio'
+
+// import  {data}  from './data/vreo-units/vreo-unit-muti-audio-test'
+
+// import  {data}  from './data/vreo-units/vreo-unit-taibao'
+
+// import  {data}  from './data/vreo-units/vreo-unit-single-bgm'
+
+// video effect
+// import  {data}  from './data/vreo-units/vreo-unit-videoEffect'
+
+// vivo 视频黑屏
+// import {data} from './data/vreo-units/vreo-unit-o4bb0mxR'
+
 
 
 enum PlayerState {
@@ -16,6 +45,7 @@ enum PlayerState {
   paused = 'paused',
   playing = 'playing',
 }
+
 
 export function App() {
   const ref = React.useRef<Player>()
@@ -27,8 +57,12 @@ export function App() {
     const player = new Player(five)
     ref.current = player
     setState(PlayerState.ready)
+    player.on('loaded', () => console.log('loaded'))
     player.on('paused', () => setState(PlayerState.paused))
     player.on('playing', () => setState(PlayerState.playing))
+    player.on('ended', () => console.log('ended'))
+    player.on('playing', () => console.log('playing'))
+    player.on('paused', (ended) => console.log({ended}))
     Object.assign(window, { $player: player })
   }, [])
 
@@ -36,6 +70,7 @@ export function App() {
     <div className="btns">
       <button
         onClick={async () => {
+          console.log(1, Date.now())
           if (state === PlayerState.ready) {
             ref.current?.show()
             await ref.current?.load(data as VreoUnit)
