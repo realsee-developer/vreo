@@ -1,7 +1,7 @@
 import TWEEN from '@tweenjs/tween.js'
 import { requestAnimationFrameInterval } from '.'
 
-export class BetterTween<G> extends TWEEN.Tween<G> {
+export class BetterTween<G extends Record<string, any>> extends TWEEN.Tween<G> {
   private disposeMethods: (() => void)[] = []
   private animationFrameDisposer?: () => void
 
@@ -21,7 +21,7 @@ export class BetterTween<G> extends TWEEN.Tween<G> {
     this.animationFrameDisposer?.()
     this.disposeMethods.forEach((fn) => fn())
     this.disposeMethods = []
-    TWEEN.remove(this)
+    TWEEN.remove(this as any)
   }
 }
 
