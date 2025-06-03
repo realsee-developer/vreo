@@ -12,7 +12,9 @@ import { Appearance, PlayerConfigs } from './typings';
  * import { Five } from '@realsee/five'
  * import { Player } from '@realsee/vreo'
  *
- * const five = new Five()
+ * const five = new Five({
+ *   // Five 配置选项
+ * })
  * const player = new Player(five, {
  *   autoPreload: true,
  *   imageOptions: { size: 1024 }
