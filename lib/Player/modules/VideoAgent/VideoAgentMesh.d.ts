@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import AudioLike from '../../../shared-utils/AduioLike';
+import AudioLike from '../../../shared-utils/AudioLike';
 export interface VideoAgentMeshOptions {
     /**
      * 自定义视频实例。

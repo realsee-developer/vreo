@@ -11,7 +11,7 @@ import { Drawer } from './modules/Drawer'
 import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
 import { PopUp } from './modules/PopUp'
 import { generateBlankAudio, waitForBlankAudioGenerated } from '../shared-utils/Audio'
-import AudioLike from '../shared-utils/AduioLike'
+import AudioLike from '../shared-utils/AudioLike'
 import { VreoProvider } from '../react'
 
 const DefaultAudioCacheLength = 3
