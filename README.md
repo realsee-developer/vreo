@@ -4,43 +4,6 @@
 
 **Vreo** (VR Video 缩写) 是基于如视三维渲染引擎 [Five](https://unpkg.com/@realsee/five/docs/index.html) 和 用户界面构建库 [React](https://reactjs.org/) 实现的如视 3D 空间剧本播放器。
 
-## 最新更新
-
-### Vite 6 升级 (2024)
-
-项目已成功升级到 Vite 6.3.5，获得以下改进：
-
-- ⚡ **性能提升**: 更快的开发服务器启动和热更新
-- 🔧 **现代化构建**: 使用 esbuild 压缩，构建速度更快
-- 🛠️ **开发体验**: 更好的错误提示和 TypeScript 支持
-- 📦 **依赖更新**: React 插件更新到最新版本
-
-详细升级说明请查看 [VITE_UPGRADE_GUIDE.md](./VITE_UPGRADE_GUIDE.md)
-
-## 开发
-
-```bash
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建项目
-npm run build
-
-# 预览构建结果
-npm run preview
-```
-
-## 技术栈
-
-- **构建工具**: Vite 6.3.5
-- **框架**: React 18.3.1
-- **渲染引擎**: @realsee/five
-- **状态管理**: MobX
-- **类型检查**: TypeScript 4.7.4
-
 ## 特性
 
 - 相机运镜：支持 3D 空间全景游走、旋转、分镜切换等类似于电影运镜的效果。
