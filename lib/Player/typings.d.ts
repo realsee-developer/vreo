@@ -4,7 +4,7 @@ import { VreoKeyframe, VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typin
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 export interface PlayerConfigs {
     /**
-     * @deprecated use container instead
+     * @deprecated rename to container
      */
     containter?: Element;
     container?: Element;
