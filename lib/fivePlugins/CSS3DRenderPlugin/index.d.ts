@@ -12,16 +12,10 @@ export interface Vector3Position {
 export type CSS3DRenderPluginParameterType = undefined;
 export interface CSS3DRenderPluginExportType {
     /**
-     * @description: 根据传入的四个点位创建一个3d dom容器，可以通过ReactDom.render()的方式将react组件放到容器中
-     * @param {Five} five
-     * @param {Vector3[] | Vector3Position[]} points: 矩形四个点坐标
-     * @param {number} config.ratio: 1px对应多少米，默认为 0.002，即1px对应2mm
-     * @param {number} config.dpr: dpr, 默认为1
-     * @param {HTMLElement} config.container: HTMLElement
-     * @param {number} config.autoRender: 默认为true，如果需要手动render则传false
-     * @param {'front' | 'behind'} config.mode: 两种模式
-     * @param {HTMLElement} config.behindFiveContainer: 如果config.mode为'behind'，需要传入容器，并确保此容器位five下方，且中间没有其他dom元素遮挡
-     * @return {{ container: HTMLElement; dispose: () => void }}: container: dom容器, dispose: 清理函数
+     * @description 根据传入的四个点位创建一个3d dom容器，可以通过ReactDom.render()的方式将react组件放到容器中
+     * @param points - 矩形四个点坐标
+     * @param config - 配置参数对象，包含：ratio(1px对应多少米，默认0.002)、dpr(设备像素比，默认1)、container(HTML容器元素)、autoRender(是否自动渲染，默认true)、mode(渲染模式：'front'或'behind')、behindFiveContainer(behind模式下的容器元素)
+     * @returns 包含 container dom容器 和 dispose 清理函数的对象
      */
     create3DDomContainer: (points: Vector3[] | Vector3Position[], config?: {
         ratio?: number;
@@ -41,8 +35,8 @@ export interface CSS3DRenderPluginExportType {
         render?: () => void;
     } | void;
     /**
-     * @description: 销毁所有的渲染内容
-     * @return {void}
+     * @description 销毁所有的渲染内容
+     * @returns void
      */
     disposeAll: () => void;
 }
