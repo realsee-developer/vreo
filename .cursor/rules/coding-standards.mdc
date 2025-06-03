@@ -1,0 +1,65 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 编码规范与最佳实践
+
+## TypeScript 规范
+- 项目使用 TypeScript，配置文件：[tsconfig.json](mdc:tsconfig.json)
+- 严格类型检查，避免使用 `any` 类型
+- 所有导出的接口和类型必须有明确的类型定义
+- 类型定义文件统一放在 [lib/typings/](mdc:lib/typings/) 目录
+
+## React 组件规范
+- 使用函数式组件和 Hooks
+- 组件必须有明确的 TypeScript 类型定义
+- 使用 `React.FC` 类型声明函数组件
+- Props 接口命名格式：`ComponentNameProps`
+
+```typescript
+interface PlayerProps {
+  width: number;
+  height: number;
+}
+
+const Player: React.FC<PlayerProps> = ({ width, height }) => {
+  // 组件逻辑
+}
+```
+
+## 模块导出规范
+- 统一使用命名导出，避免默认导出
+- 主入口文件：[lib/index.js](mdc:lib/index.js)
+- 每个模块都应该有对应的类型声明文件
+
+## 状态管理规范
+- 使用 MobX 进行状态管理
+- 状态类使用 `makeObservable` 或相关装饰器
+- 确保状态更新的响应式特性
+
+## 插件开发规范
+### Five 插件
+- 继承自相应的 Five 基类
+- 实现必要的生命周期方法
+- 插件文件位于：[lib/fivePlugins/](mdc:lib/fivePlugins/)
+
+### 关键帧模块
+- 每个关键帧类型对应一个模块
+- 模块位于：[lib/Player/modules/keyframes/](mdc:lib/Player/modules/keyframes/)
+- 实现统一的接口和生命周期
+
+## 文件命名规范
+- TypeScript 文件使用 PascalCase：`ComponentName.tsx`
+- 样式文件使用 kebab-case：`component-name.css`
+- 测试文件后缀：`.test.ts` 或 `.spec.ts`
+
+## 错误处理
+- 使用明确的错误类型
+- 提供有意义的错误信息
+- 对异步操作进行适当的错误捕获
+
+## 文档注释
+- 公共 API 必须有 JSDoc 注释
+- 复杂逻辑需要添加注释说明
+- 类型定义应包含描述性注释

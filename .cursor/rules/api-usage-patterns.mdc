@@ -1,0 +1,168 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# API 使用模式与接口设计
+
+## 核心 API 概览
+
+### Player 类 API
+Player 是 Vreo 的核心控制器，提供以下主要方法：
+
+```typescript
+// 创建 Player 实例
+const vreoPlayer = new Player(five)
+
+// 加载剧本数据
+await vreoPlayer.load(vreoUnit)
+
+// 播放控制
+vreoPlayer.play()
+vreoPlayer.pause()
+```
+
+### React Hooks API
+使用 React Context 和 Hooks 模式：
+
+```typescript
+import { VreoProvider, useVreoAction } from '@realsee/vreo/lib/react'
+
+// 在组件中使用
+const { load, play, pause } = useVreoAction()
+```
+
+## VreoUnit 数据结构
+
+### 基本结构
+```typescript
+interface VreoUnit {
+  categoryId: string
+  categoryText: string
+  video: VideoData
+  keyframes: Keyframe[]
+}
+```
+
+### 视频数据结构
+```typescript
+interface VideoData {
+  duration: number  // 持续时间（毫秒）
+  start: number     // 开始时间
+  end: number       // 结束时间  
+  url: string       // 视频URL，空字符串则按音频模式执行
+}
+```
+
+### 关键帧结构
+```typescript
+interface Keyframe {
+  uuid: string
+  type: KeyframeType
+  start: number     // 开始时间（毫秒）
+  end: number       // 结束时间（毫秒）
+  parsed: boolean
+  data: any         // 具体数据取决于类型
+}
+```
+
+## 关键帧类型定义
+
+### PanoTextLabel - 全景文本标签
+```typescript
+interface PanoTextLabelData {
+  text: string
+  vertex: Vector3     // 3D 坐标
+  fontSize: number
+}
+```
+
+### ModelVideo - 模型视频
+```typescript
+interface ModelVideoData {
+  videoSrc: string
+  videoPosterSrc: string
+  vertexs: Vector3[]  // 四个顶点定义视频平面
+}
+```
+
+### PanoTag - 全景标签
+用于在 3D 空间中放置交互标签。
+
+### CameraMovement - 相机运动
+控制 3D 场景中相机的移动和旋转。
+
+## Five 引擎集成
+
+### 基本集成模式
+```typescript
+import { Five } from '@realsee/five'
+import { Player } from '@realsee/vreo'
+
+// 创建 Five 实例
+const five = new Five({
+  // Five 配置项
+})
+
+// 创建 Vreo Player
+const vreoPlayer = new Player(five)
+```
+
+### React 集成模式
+```typescript
+import { createFiveProvider, FiveCanvas } from '@realsee/five/react'
+import { VreoProvider } from '@realsee/vreo/lib/react'
+
+const FiveProvider = createFiveProvider({
+  // Five 配置项
+})
+
+const App = () => (
+  <FiveProvider initialWork={work}>
+    <FiveCanvas width={width} height={height} />
+    <VreoProvider>
+      {/* 应用组件 */}
+    </VreoProvider>
+  </FiveProvider>
+)
+```
+
+## 插件扩展 API
+
+### Five 插件接口
+扩展 Five 引擎功能的插件应遵循以下模式：
+- 继承相应的 Five 基类
+- 实现必要的生命周期方法
+- 提供清晰的配置接口
+
+### 关键帧模块接口
+自定义关键帧类型应实现统一的接口：
+- 解析数据的方法
+- 执行动画的方法
+- 清理资源的方法
+
+## 错误处理模式
+
+### 异步操作
+所有异步操作应正确处理错误：
+```typescript
+try {
+  await vreoPlayer.load(vreoUnit)
+  vreoPlayer.play()
+} catch (error) {
+  console.error('加载剧本失败:', error)
+}
+```
+
+### 类型安全
+利用 TypeScript 类型系统确保 API 使用的类型安全。
+
+## 样式集成
+
+### CSS 引入
+```css
+@import '@realsee/vreo/stylesheets/default.css';
+```
+
+### 动态样式
+支持运行时样式定制和主题切换。

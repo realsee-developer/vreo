@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Vreo 项目概览
+
+## 项目简介
+Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 React 实现的 3D 空间剧本播放器。
+
+## 核心特性
+- **相机运镜**：支持 3D 空间全景游走、旋转、分镜切换等电影运镜效果
+- **定制模块**：弹幕提词、全景标签、视频广告、空间文本等模块定制能力
+- **内置特效**：全景特效、视频特效、户改动画、模型特效等丰富动态效果
+- **虚拟形象渲染**：支持智能化讲房功能
+
+## 主要依赖
+- `@realsee/five`：如视三维渲染引擎
+- `react`：用户界面构建库
+- `three`：3D 图形库
+- `mobx`：状态管理
+
+## 项目结构
+- [lib/](mdc:lib) - 编译后的主要源码
+- [__test__/](mdc:__test__) - 测试文件
+- [docs/](mdc:docs) - 项目文档
+- [stylesheets/](mdc:stylesheets) - 样式文件
+- [resources/](mdc:resources) - 资源文件
+
+## 入口文件
+主入口：[lib/index.js](mdc:lib/index.js)
+类型定义：[lib/index.d.ts](mdc:lib/index.d.ts)
+
+## 配置文件
+- [package.json](mdc:package.json) - 项目依赖和脚本
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript 配置
+- [vite.config.ts](mdc:vite.config.ts) - Vite 构建配置
