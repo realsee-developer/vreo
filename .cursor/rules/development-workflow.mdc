@@ -1,0 +1,89 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 开发工作流程
+
+## 构建系统
+- 构建工具：Vite
+- 配置文件：[vite.config.ts](mdc:vite.config.ts)
+- 开发服务器端口：3088
+
+## NPM 脚本 ([package.json](mdc:package.json))
+```bash
+# 开发环境启动
+yarn dev
+
+# 构建项目
+yarn build
+
+# 预览构建结果  
+yarn preview
+
+# 生成文档
+yarn docs
+
+# 构建包
+yarn packages
+```
+
+## 依赖管理
+- 包管理器：Yarn (推荐) 或 npm
+- 锁定文件：[package-lock.json](mdc:package-lock.json) / [pnpm-lock.yaml](mdc:pnpm-lock.yaml)
+- Node.js 版本：见 [.nvmrc](mdc:.nvmrc)
+
+## 核心依赖关系
+### 对等依赖 (peerDependencies)
+- `@realsee/dnalogel`: 3.67.0
+- `@realsee/five`: ^6.4.0-alpha.1  
+- `three`: 0.117.1
+- `react`: ^18.0.0
+- `react-dom`: ^18.0.0
+
+⚠️ **重要**：这些依赖必须在使用项目时由消费者提供
+
+### 运行时依赖
+- `classnames`: CSS 类名工具
+- `mobx`: 状态管理
+- `mobx-react`: React MobX 集成
+
+## 文档生成
+- 工具：TypeDoc
+- 配置：[typedoc.json](mdc:typedoc.json)
+- 输出目录：[docs/](mdc:docs/)
+- 生成命令：`yarn docs`
+
+## 测试
+- 测试文件位于：[__test__/](mdc:__test__/)
+- 覆盖率报告：[coverage/](mdc:coverage/)
+
+## 样式开发
+- 主样式文件：[stylesheets/](mdc:stylesheets/)
+- 默认样式：`@realsee/vreo/stylesheets/default.css`
+- 在项目中引入样式的方式：
+  ```css
+  @import '@realsee/vreo/stylesheets/default.css';
+  ```
+
+## 版本发布
+- 当前版本：见 [package.json](mdc:package.json) version 字段
+- 变更日志：[CHANGELOG.md](mdc:CHANGELOG.md)
+- 发布后同步：`cnpm sync @realsee/vreo`
+
+## Git 工作流
+- 主分支：main
+- 忽略文件：[.gitignore](mdc:.gitignore)
+
+## 开发环境配置
+1. 安装依赖：`yarn install`
+2. 启动开发服务器：`yarn dev`
+3. 访问：http://localhost:3088
+4. 支持热重载和实时预览
+
+## 示例文件
+项目根目录提供了多个示例 HTML 文件：
+- [index.html](mdc:index.html) - 基础示例
+- [index-react.html](mdc:index-react.html) - React 示例
+- [index-react-dynamic.html](mdc:index-react-dynamic.html) - 动态 React 示例
+- [examples.html](mdc:examples.html) - 综合示例

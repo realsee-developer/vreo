@@ -1,0 +1,48 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 架构模式与代码组织
+
+## 核心架构
+Vreo 采用模块化架构，主要分为以下核心模块：
+
+### Player 模块
+- 位置：[lib/Player/](mdc:lib/Player/)
+- 功能：核心播放器逻辑，包含剧本播放、控制等功能
+- 关键文件：Player 类是整个系统的核心控制器
+
+### PlayController 模块  
+- 位置：[lib/PlayController/](mdc:lib/PlayController/)
+- 功能：播放控制逻辑，管理播放状态、进度等
+
+### React 集成模块
+- 位置：[lib/react/](mdc:lib/react/)
+- 功能：提供 React Context 和 Hooks 支持
+- 使用模式：`VreoProvider` + `useVreoAction`
+
+### Five 插件系统
+- 位置：[lib/fivePlugins/](mdc:lib/fivePlugins/)
+- 功能：扩展 Five 引擎功能的插件
+- 包含：CameraMovementPlugin、CSS3DRenderPlugin、ModelTVVideoPlugin
+
+## 关键帧系统
+剧本通过关键帧（keyframes）系统实现：
+- 每个关键帧包含类型、时间范围、数据
+- 支持的关键帧类型：
+  - PanoTextLabel：全景文本标签
+  - ModelVideo：模型视频
+  - PanoTag：全景标签
+  - CameraMovement：相机运动
+  - VideoEffect：视频特效
+
+## 状态管理
+使用 MobX 进行状态管理，支持响应式数据更新。
+
+## 样式系统
+- 默认样式：[stylesheets/default.css](mdc:stylesheets/default.css)
+- 模块化样式：各模块独立样式文件
+
+## 类型定义
+TypeScript 类型定义位于 [lib/typings/](mdc:lib/typings/)，确保类型安全。
