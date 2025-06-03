@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function Drawer(): JSX.Element;
+import * as React from 'react';
+export declare function Drawer(): React.JSX.Element;

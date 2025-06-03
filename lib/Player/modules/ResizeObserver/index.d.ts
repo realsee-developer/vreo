@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function ResizeObserver(): JSX.Element;
+import React from 'react';
+export declare function ResizeObserver(): React.JSX.Element;

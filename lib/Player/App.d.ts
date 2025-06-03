@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function App(): JSX.Element;
+import * as React from 'react';
+export declare function App(): React.JSX.Element;

@@ -1,5 +1,5 @@
 import { Tween, Easing } from '@tweenjs/tween.js';
-interface ITween<T> extends Tween<T> {
+interface ITween<T extends Record<string, any>> extends Tween<T> {
     onDestroy: (fn: () => void) => Tween<T>;
     destroy: () => void;
 }
@@ -13,7 +13,7 @@ interface ITween<T> extends Tween<T> {
  * @param duration 经历时间（s）
  * @param easing 过程动画，默认是 Easing.Linear.None
  */
-export default function tween<T>(from: T, to: T, duration: number, easing?: (amount: number) => number): ITween<T>;
+export default function tween<T extends Record<string, any>>(from: T, to: T, duration: number, easing?: (amount: number) => number): ITween<T>;
 export declare function tweenProgress(duration: number, easing: typeof Easing.Linear.None): ITween<{
     progress: number;
 }>;

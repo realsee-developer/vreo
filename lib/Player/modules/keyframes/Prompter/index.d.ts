@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function Prompter(): JSX.Element;
+import * as React from 'react';
+export declare function Prompter(): React.JSX.Element;

@@ -9,7 +9,7 @@ export interface Vector3Position {
     y: number;
     z: number;
 }
-export declare type CSS3DRenderPluginParameterType = undefined;
+export type CSS3DRenderPluginParameterType = undefined;
 export interface CSS3DRenderPluginExportType {
     /**
      * @description: 根据传入的四个点位创建一个3d dom容器，可以通过ReactDom.render()的方式将react组件放到容器中

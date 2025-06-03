@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function InfoPanel(): JSX.Element;
+import * as React from 'react';
+export declare function InfoPanel(): React.JSX.Element;

@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function VideoEffect(): JSX.Element;
+import * as React from 'react';
+export declare function VideoEffect(): React.JSX.Element;

@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import * as React from 'react';
 import { CustomVreoKeyframeProps } from '../../typings';
 export interface SpatialScenePanelData {
     customType: 'SpatialScenePanel';
@@ -19,4 +19,4 @@ export interface SpatialScenePanelData {
  * 空间场景面板
  * @returns
  */
-export declare function SpatialScenePanel(props: CustomVreoKeyframeProps): JSX.Element;
+export declare function SpatialScenePanel(props: CustomVreoKeyframeProps): React.JSX.Element;
