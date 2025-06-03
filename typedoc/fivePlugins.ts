@@ -13,4 +13,4 @@ export type {
 
 export type { ModelTVVideoPlugin, ModelTVVideoPluginData, ModelTVVideoPluginParameterType, ModelTVVideoPluginExportType } from '../resources/fivePlugins/ModelTVVideoPlugin'
 
-export type { CSS3DRenderPlugin, CSS3DRenderPluginExportType, Vector3Position } from '../resources/fivePlugins/CSS3DRenderPlugin'
+export type { CSS3DRenderPlugin, CSS3DRenderPluginExportType, CSS3DRenderPluginParameterType, Vector3Position } from '../resources/fivePlugins/CSS3DRenderPlugin'

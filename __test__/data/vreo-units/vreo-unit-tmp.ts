@@ -206,7 +206,7 @@ export const data = {
     },
     {
       "data": {
-        "url": "https://vrlab-static.ljcdn.com/release/web/202202151612.1cc68ed5.mp3"
+        "url": "https://vr-static.realsee-cdn.cn/release/web/202202151612.1cc68ed5.mp3"
       },
       "type": "BgMusic",
       "uuid": "7cd15bf8-a5dd-11ec-bbab-42dab2568fe1",

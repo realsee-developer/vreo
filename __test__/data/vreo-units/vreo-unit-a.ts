@@ -20,7 +20,7 @@ export const data1 = // debug popup image
       "end": 46000,
       "parsed": false,
       "data": {
-        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+        "url": "//vr-static.realsee-cdn.cn/release/web/see_you_again.cacdbda9.mp3"
       }
     },
     // {
@@ -82,7 +82,7 @@ export const data1 = // debug popup image
         "style": "PopUp",
         // "url": "https://vrlab-public.ljcdn.com/release/seesay/tools/Screenshot_20220527220803031_com.jingdong.app.mall____d9f902ea827338a07f57788b831c3552.png",
         // "type": "Image",    
-        // "url": "https://vrlab-static.ljcdn.com/release/web/jsl/test.69dacffb.mp4",
+        // "url": "https://vr-static.realsee-cdn.cn/release/web/jsl/test.69dacffb.mp4",
         "url": "https://test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/psHKdM20/aitalk_text/merged.mp4",
         "type": "Video",
         "title": "测试面板问题",
@@ -189,7 +189,7 @@ export const data =
       "end": 46000,
       "parsed": false,
       "data": {
-        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+        "url": "//vr-static.realsee-cdn.cn/release/web/see_you_again.cacdbda9.mp3"
       }
     },
     // 动线效果

@@ -281,7 +281,7 @@ export const BgMusicData: VreoUnit = {
       "end": 46000,
       "parsed": false,
       "data": {
-        "url": "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+        "url": "//vr-static.realsee-cdn.cn/release/web/see_you_again.cacdbda9.mp3"
       }
     }
   ]
@@ -317,7 +317,7 @@ export const Data: VreoUnit = {
       end: 46000,
       parsed: false,
       data: {
-        url: "//vrlab-static.ljcdn.com/release/web/see_you_again.cacdbda9.mp3"
+        url: "//vr-static.realsee-cdn.cn/release/web/see_you_again.cacdbda9.mp3"
       }
     },
     // 动线效果

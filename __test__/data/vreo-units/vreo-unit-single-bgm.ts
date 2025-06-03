@@ -21,7 +21,7 @@ export const vreoUnitNoVideo: VreoUnit = {
       "start": 0,
       "end": 25990,
       "data": {
-        "url": "https://vrlab-static.ljcdn.com/release/web/washer.02228ca8.mp3"
+        "url": "https://vr-static.realsee-cdn.cn/release/web/washer.02228ca8.mp3"
       }
     },
     {

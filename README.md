@@ -11,7 +11,7 @@
 - 内置特效：提供全景特效、视频特效、户改动画、模型特效等丰富动态效果。
 - 独特的虚拟形象渲染能力：支持用户在 Web 页面模拟虚拟形象，配合语音讲解、相机运镜和定制特效，可实现智能化讲房功能。
 
-> 访问 [Vreo Demo](https://vrlab-static.ljcdn.com/release/web/vreo/index.html?v=1) 体验功能。
+> 访问 [Vreo Demo](https://vr-static.realsee-cdn.cn/release/web/vreo/index.html?v=1) 体验功能。
 
 ## 安装说明
 

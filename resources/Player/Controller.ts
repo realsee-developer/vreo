@@ -9,7 +9,28 @@ import setElementDataset from '../shared-utils/setElementDataset'
 import { getMediaType } from '../shared-utils/getMediaInfo'
 
 /**
- * 逻辑控制器：内部状态。
+ * Vreo 播放器逻辑控制器
+ * 
+ * 负责管理播放器的内部状态、事件处理、UI 控制和剧本执行。
+ * 提供播放控制、外观设置、弹窗管理、抽屉控制等功能。
+ * 
+ * @example
+ * ```typescript
+ * const controller = new Controller({
+ *   five: fiveInstance,
+ *   container: document.getElementById('container'),
+ *   configs: playerConfigs
+ * })
+ * 
+ * // 设置播放状态
+ * controller.setPlaying(true)
+ * 
+ * // 打开弹窗
+ * controller.openPopUp('弹窗内容')
+ * 
+ * // 打开抽屉
+ * controller.openDrawer({ content: '抽屉内容', height: 300 })
+ * ```
  */
 export class Controller extends Subscribe<VreoKeyframeEvent> {
 
@@ -33,6 +54,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
     visible = false
 
+    /**
+     * 获取当前播放媒体的类型
+     * @returns 'video' | 'avatar' | 'none' - 媒体类型
+     */
     get agentType() {
         const type = getMediaType(this.videoAgentScene?.videoAgentMesh.videoUrl)
         if (this.avatar?.force) return 'avatar'
@@ -42,6 +67,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
     popUp: string | JSX.Element | null = null
 
+    /**
+     * 打开或关闭弹窗
+     * @param popUp - 弹窗内容，可以是字符串、JSX元素或false（关闭弹窗）
+     */
     openPopUp(popUp: string | JSX.Element | false) {
         if (!popUp) {
             this.popUp = null
@@ -50,6 +79,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.popUp = popUp
     }
 
+    /**
+     * 设置加载状态
+     * @param loading - 加载状态：true（加载中）、false（加载完成）、null（加载失败）
+     */
     setLoading(loading: boolean | null) {
         this.loading = loading
     }
@@ -59,30 +92,59 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         height?: number | string
     } | null = null
 
+    /**
+     * 设置虚拟形象配置
+     * @param avatar - 虚拟形象配置对象
+     */
     setAvatar(avatar: VreoVideo['avatar']) {
         this.avatar = avatar
     }
 
+    /**
+     * 设置容器尺寸
+     * @param width - 容器宽度
+     * @param height - 容器高度
+     */
     setContainerSize(width: number, height: number) {
         this.containerSize = { width, height }
     }
 
+    /**
+     * 设置播放器可见性
+     * @param v - 是否可见
+     */
     setVisible(v: boolean) {
         this.visible = v
     }
 
+    /**
+     * 设置播放状态
+     * @param playing - 是否正在播放
+     */
     setPlaying(playing: boolean) {
         this.playing = playing
     }
 
+    /**
+     * 设置结束状态
+     * @param ended - 是否已结束
+     */
     setEnded(ended: boolean) {
         this.ended = ended
     }
 
+    /**
+     * 设置播放器外观
+     * @param appearance - 外观配置对象
+     */
     setAppearance(appearance: Appearance) {
         this.appearance = { ...this.appearance, ...appearance }
     }
 
+    /**
+     * 打开或关闭抽屉
+     * @param drawerConfig - 抽屉配置对象，false表示关闭抽屉
+     */
     openDrawer(drawerConfig?: false | { content: string | JSX.Element; height?: number | string }) {
         if (!drawerConfig) {
             this.drawerConfig = {
@@ -95,6 +157,13 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.drawerConfig = drawerConfig
     }
 
+    /**
+     * 创建 Controller 实例
+     * @param params - 构造参数对象
+     * @param params.five - Five 渲染引擎实例
+     * @param params.container - DOM 容器元素
+     * @param params.configs - 播放器配置
+     */
     constructor({five, container, configs}: { five: Five, container: Element, configs: PlayerConfigs }) {
         super()
 
@@ -205,14 +274,26 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
     }
 
+    /**
+     * 获取播放器是否准备就绪
+     * @returns 是否有可用的视频代理场景
+     */
     get ready() {
         return !!this.videoAgentScene
     }
 
+    /**
+     * 获取当前播放时间（毫秒）
+     * @returns 当前播放时间戳
+     */
     get currentTime() {
         return this.videoAgentScene?.videoAgentMesh.currentTime || 0
     }
 
+    /**
+     * 获取当前时间点应该触发的关键帧
+     * @returns 当前应该执行的关键帧数组
+     */
     get currentKeyframes() {
         if (!this.vreoUnit) return []
         const keyframes = this.vreoUnit.keyframes
@@ -230,12 +311,19 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         })
     }
 
+    /**
+     * 获取当前媒体实例（音频或视频元素）
+     * @returns HTML媒体元素实例
+     */
     get mediaInstance() {
         return this.videoAgentScene?.videoAgentMesh.mediaInstance
     }
 
     /**
-     * 逐帧任务
+     * 逐帧任务循环处理
+     * 
+     * 在每个动画帧中检查播放状态、处理关键帧触发等
+     * @param callback - 关键帧触发时的回调函数
      */
     requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void) {
         if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
@@ -270,11 +358,22 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         })
     }
 
+    /**
+     * 开始运行播放器逻辑循环
+     * 
+     * 启动帧循环，持续监听并处理关键帧事件
+     * @param callback - 关键帧触发时的回调函数
+     */
     run(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe) => void) {
         if (this.stopInterval) return
         this.stopInterval = requestAnimationFrameInterval(() => this.requestAnimationFrameLoop(callback))
     }
 
+    /**
+     * 清理播放器状态
+     * 
+     * 停止播放、重置关键帧状态、清理数据和定时器
+     */
     clear() {
         this.setPlaying(false)
 
@@ -293,6 +392,11 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.stopInterval = undefined
     }
 
+    /**
+     * 销毁控制器实例
+     * 
+     * 清理所有状态和资源，释放内存
+     */
     dispose() {
         this.clear()
     }
