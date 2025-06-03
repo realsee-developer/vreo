@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function PanoEffect(): JSX.Element;
+import * as React from 'react';
+export declare function PanoEffect(): React.JSX.Element;

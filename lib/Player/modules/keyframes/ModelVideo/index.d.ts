@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export declare function ModelVideo(): JSX.Element;
+import * as React from 'react';
+export declare function ModelVideo(): React.JSX.Element;

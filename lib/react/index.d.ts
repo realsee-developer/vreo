@@ -3,6 +3,7 @@ import { PlayerConfigs } from '../Player/typings';
 import { VreoKeyframeEvent, VreoUnit } from '../typings/VreoUnit';
 export interface VreoProviderProps {
     configs?: Partial<PlayerConfigs>;
+    children?: React.ReactNode;
 }
 export declare const VreoProvider: React.FC<VreoProviderProps>;
 /**

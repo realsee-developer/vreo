@@ -27,21 +27,63 @@ export declare class VideoAgentMesh extends THREE.Mesh {
     audioInstance: HTMLAudioElement;
     audioLikeInstance: AudioLike;
     $removeEventListener: () => void;
+    /**
+     * 获取当前活动的媒体实例
+     *
+     * 根据当前状态返回不同类型的媒体实例：
+     * - 如果没有视频URL，返回音频模拟实例 (AudioLike)
+     * - 如果是音频文件，返回 HTML Audio 元素
+     * - 如果是视频文件，返回 HTML Video 元素
+     */
     get mediaInstance(): HTMLAudioElement | HTMLVideoElement | AudioLike;
     /**
+     * 创建视频代理网格
      *
-     * @param width
-     * @param height
-     * @param widthSegments
-     * @param heightSegments
-     * @param options
+     * @param width - 网格宽度
+     * @param height - 网格高度
+     * @param widthSegments - 宽度分段数
+     * @param heightSegments - 高度分段数
+     * @param options - 配置选项
      */
     constructor(width: number, height: number, widthSegments: number, heightSegments: number, options?: VideoAgentMeshOptions);
+    /**
+     * 更新视频源
+     *
+     * 这是一个复杂的异步过程，包括：
+     * 1. 检查是否需要更新
+     * 2. 冻结当前播放状态
+     * 3. 预加载或直接设置视频源
+     * 4. 设置播放开始监听器
+     *
+     * @private
+     */
     private update;
+    /**
+     * 播放媒体内容
+     *
+     * 支持多种播放模式：
+     * 1. 仅时长播放（AudioLike模式）
+     * 2. 继续播放当前视频
+     * 3. 播放新的视频内容
+     *
+     * @param videoUrl - 视频URL，空字符串表示继续播放或仅时长模式
+     * @param currentTime - 开始播放时间（秒）
+     * @param duration - 播放时长（毫秒），用于AudioLike模式
+     * @returns Promise<boolean> - 播放操作是否成功
+     */
     play(videoUrl?: string, currentTime?: number, duration?: number): Promise<unknown>;
     /**
-     * 秒转成毫秒，保障精准度
+     * 获取当前播放时间（毫秒）
+     * 将媒体元素的秒数转换为毫秒，提供更精确的时间控制
      */
     get currentTime(): number;
+    /**
+     * 销毁实例并清理所有资源
+     *
+     * 包括：
+     * 1. 移除所有事件监听器
+     * 2. 清理缓存的媒体实例
+     * 3. 从DOM中移除元素
+     */
     dispose(): void;
 }

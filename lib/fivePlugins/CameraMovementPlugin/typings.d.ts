@@ -30,21 +30,21 @@ export interface CameraMovementOptsCallback {
     asyncStartCallback?: () => void;
     asyncEndCallback?: () => void;
 }
-export declare type MoveArgs = {
+export type MoveArgs = {
     mode: Mode;
     panoIndex: number;
     transEffect?: "fly" | "fade" | "instant";
 } & Pose;
-export declare type MoveOpts = {
+export type MoveOpts = {
     preload?: boolean;
 } & CameraMovementOptsCallback;
-export declare type RotateArgs = {
+export type RotateArgs = {
     mode?: Mode;
     panoIndex: number;
     loop: boolean;
     rotateSpeed: number;
     rotation: Rotation;
 } & Pose;
-export declare type RotateOpts = {
+export type RotateOpts = {
     preload?: boolean;
 } & CameraMovementOptsCallback;

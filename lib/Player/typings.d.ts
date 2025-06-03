@@ -4,7 +4,7 @@ import { VreoKeyframe, VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typin
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 export interface PlayerConfigs {
     /**
-     * @deprecated rename to container
+     * @deprecated use container instead
      */
     containter?: Element;
     container?: Element;
@@ -38,12 +38,12 @@ export interface PlayerConfigs {
     onAvatarClick?: () => any;
     onWaveClick?: () => any;
 }
-export declare type AppSize = 'S' | 'M' | 'L' | 'XL';
-export declare type WaveAppearance = 'single' | 'double' | 'solid' | 'swap' | 'expand';
+export type AppSize = 'S' | 'M' | 'L' | 'XL';
+export type WaveAppearance = 'single' | 'double' | 'solid' | 'swap' | 'expand';
 export interface Appearance {
     waveStyle?: 'wave' | 'solid';
 }
-export declare type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
+export type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>;
 export interface CustomVreoKeyframeProps {
     subscribe: Pick<Subscribe<{
         [key: string]: (data: VreoKeyframe, currentTime: number) => any;

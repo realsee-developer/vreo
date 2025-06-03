@@ -51,7 +51,7 @@ export declare enum VreoKeyframeEnum {
 /**
  * 支持自定义剧本关键帧配置项
  */
-export declare type VreoKeyframeConfigMap = {
+export type VreoKeyframeConfigMap = {
     PanoTag?: false;
     PanoTextLabel?: false;
     Prompter?: false;
@@ -98,7 +98,7 @@ export interface VreoUnit {
 /**
  * 剧本事件
  */
-export declare type VreoKeyframeEvent = {
+export type VreoKeyframeEvent = {
     [key in VreoKeyframeEnum]: (keyframe: VreoKeyframe, currentTime: number) => void;
 } & {
     loaded: (vreoUnit: VreoUnit) => void;
@@ -110,7 +110,7 @@ export declare type VreoKeyframeEvent = {
 /**
  * 相机运动
  */
-export declare type CameraMovementData = {
+export type CameraMovementData = {
     effect?: CameraMovementEffect;
     transEffect?: "fly" | "fade" | "instant";
     mode: Mode;
@@ -122,13 +122,13 @@ export declare type CameraMovementData = {
 /**
  * 提词器
  */
-export declare type PrompterData = {
+export type PrompterData = {
     text: string;
 };
 /**
  * VR 全景切换
  */
-export declare type UpdateVRPanoramaData = {
+export type UpdateVRPanoramaData = {
     _signature: string;
     allow_hosts: string[];
     certificate: string;
@@ -157,15 +157,15 @@ export interface Vertex {
 /**
  * 矩形顶点
  */
-export declare type QuadrangleVertexs = [Vertex, Vertex, Vertex, Vertex];
+export type QuadrangleVertexs = [Vertex, Vertex, Vertex, Vertex];
 /**
  * 顶点数组
  */
-export declare type Vertexs = Vertex[];
+export type Vertexs = Vertex[];
 /**
  * 视频广告
  */
-export declare type ModelVideoData = {
+export type ModelVideoData = {
     /**
      * 视频素材
      */
@@ -183,7 +183,7 @@ export declare type ModelVideoData = {
 /**
  * 四元数
  */
-export declare type Quaternion = {
+export type Quaternion = {
     x: number;
     y: number;
     z: number;
@@ -192,7 +192,7 @@ export declare type Quaternion = {
 /**
  * 全景文本标签
  */
-export declare type PanoTextLabelData = {
+export type PanoTextLabelData = {
     text: string;
     vertex: Vertex;
     normal?: Vertex;
@@ -219,7 +219,7 @@ export declare enum PanoTagStyleEnum {
      */
     Expand = "Expand"
 }
-export declare type PanoTagData = {
+export type PanoTagData = {
     type: PanoTagEnum;
     style: PanoTagStyleEnum;
     text: string;
@@ -238,7 +238,7 @@ export declare enum PanoEffectEnum {
 /**
  * 全景特效
  */
-export declare type PanoEffectData = {
+export type PanoEffectData = {
     effect: PanoEffectEnum;
     twoVertexs: [Vertex, Vertex];
 };
@@ -256,7 +256,7 @@ export declare enum InfoPanelStyleEnum {
 /**
  * 信息面板
  */
-export declare type InfoPanelData = {
+export type InfoPanelData = {
     type: InfoPanelTypeEnum;
     style?: InfoPanelStyleEnum;
     url: string;
@@ -266,7 +266,7 @@ export declare type InfoPanelData = {
 /**
  * 视频特效
  */
-export declare type VideoEffectData = {
+export type VideoEffectData = {
     videoSrc: string;
     panoIndex: number;
     fov: number;
@@ -276,8 +276,8 @@ export declare type VideoEffectData = {
 /**
  * 背景音乐
  */
-export declare type BgMusicData = {
+export type BgMusicData = {
     url: string;
 };
 /** 自定义序列帧 */
-export declare type CustomData = Record<string, any>;
+export type CustomData = Record<string, any>;
