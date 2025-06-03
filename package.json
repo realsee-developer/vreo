@@ -14,7 +14,8 @@
     "lib",
     "stylesheets",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "docs"
   ],
   "scripts": {
     "dev": "vite --port=3088 --host 0.0.0.0",
