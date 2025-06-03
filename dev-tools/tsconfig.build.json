@@ -13,14 +13,14 @@
   "compilerOptions": {
     /* Basic Options */
     "jsx": "react",
-    "target": "es5",
+    "target": "es2015",
     "lib": ["es2015", "DOM"],
 
     "declaration": true,
     "sourceMap": true,
     "rootDir": "../resources",
     "outDir": "../lib",
-    "module": "CommonJS",
+    "module": "ESNext",
 
 
     /* Strict Type-Checking Options */

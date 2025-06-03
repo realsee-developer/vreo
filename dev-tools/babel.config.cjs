@@ -1,9 +1,10 @@
-export default {
+module.exports = {
   "presets": [
-    ["@babel/preset-env", { 
+    ["@babel/preset-env", {
       "modules": false,
       "targets": {
-        "browsers": ["last 2 versions", "not ie <= 11"]
+        "node": "16",
+        "browsers": ["last 2 versions", "ie >= 11"]
       }
     }], 
     "@babel/preset-react", 
@@ -12,9 +13,6 @@ export default {
   "plugins": [
     ["@babel/plugin-transform-runtime", {
       "useESModules": true
-    }],
-    ["babel-plugin-add-import-extension", { 
-      "extension": "js" 
     }]
   ],
 }
