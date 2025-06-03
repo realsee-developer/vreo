@@ -16,7 +16,7 @@ const inlinePlay = (videoInstance?: HTMLVideoElement | null) => {
   videoInstance.load()
 }
 
-// const emptyVideo = '//vrlab-static.ljcdn.com/release/web/leisure.69fd3522.mov'
+// const emptyVideo = '//vr-static.realsee-cdn.cn/release/web/leisure.69fd3522.mov'
 const PI = Math.PI
 const PI_2 = PI * 2
 

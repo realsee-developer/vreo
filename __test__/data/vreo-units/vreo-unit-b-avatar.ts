@@ -11,7 +11,7 @@ export const data: VreoUnit = {
     "end": 106278,
     "url": "//test-vr-public.realsee-cdn.cn/vrframework/test/audio_merged/hxjHhG5N/aitalk_text/merged.wav",
     "avatar": {
-      url: "//vrlab-static.ljcdn.com/release/web/avatar2.6ab7080c.png",
+      url: "//vr-static.realsee-cdn.cn/release/web/avatar2.6ab7080c.png",
       force: true,
     }
   },
