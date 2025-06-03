@@ -1,9 +1,18 @@
 import { Tween, Easing } from '@tweenjs/tween.js'
 import { nextFrame, requestAnimationFrameInterval } from './index'
 
-interface ITween<T> extends Tween<T> {
+type UnknownProps = Record<string, any>
+
+interface ITween<T extends UnknownProps> extends Tween<T> {
   onDestroy: (fn: () => void) => Tween<T>
   destroy: () => void
+}
+
+let disposeMethods: (() => void)[] = []
+
+export const clear = () => {
+  disposeMethods.forEach(dispose => dispose())
+  disposeMethods = []
 }
 
 /**
@@ -16,7 +25,7 @@ interface ITween<T> extends Tween<T> {
  * @param duration 经历时间（s）
  * @param easing 过程动画，默认是 Easing.Linear.None
  */
-export default function tween<T>(from: T, to: T, duration: number, easing = Easing.Linear.None) {
+export default function tween<T extends UnknownProps>(from: T, to: T, duration: number, easing = Easing.Linear.None) {
   const tween = new Tween(from).to(to, duration).easing(easing) as ITween<T>
   // 这里注意一下，因为 requestAnimationFrameInterval 给的时间是从 0 开始的，tween 动画也从 0 开始
   nextFrame(() => tween.start(0))

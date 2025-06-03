@@ -40,7 +40,7 @@ export function UpdateVRPanorama() {
 
   React.useEffect(() => {
     const callback = (keyframe: VreoKeyframe) => {
-      if (!deafultWorkRef.current) {
+      if (!deafultWorkRef.current && five.work?.raw?.works) {
         deafultWorkRef.current = five.work.raw.works
       }
 
@@ -53,8 +53,11 @@ export function UpdateVRPanorama() {
         return
       }
 
-      const lastRawWork = five.work?.raw.works[0]
-
+      const lastRawWork = five.work?.raw?.works?.[0]
+      if (!lastRawWork) {
+        console.warn('UpdateVRPanorama: 没有可用的 work 数据')
+        return
+      }
 
       // 动态场景：不提供完成的签名数据，需重新整理
       if (data.dynamic_scene && !data.panorama) {

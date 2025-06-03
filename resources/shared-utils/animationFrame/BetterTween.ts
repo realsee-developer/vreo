@@ -1,7 +1,9 @@
-import TWEEN from '@tweenjs/tween.js'
+import * as TWEEN from '@tweenjs/tween.js'
 import { requestAnimationFrameInterval } from '.'
 
-export class BetterTween<G> extends TWEEN.Tween<G> {
+type UnknownProps = Record<string, any>
+
+export class BetterTween<G extends UnknownProps> extends TWEEN.Tween<G> {
   private disposeMethods: (() => void)[] = []
   private animationFrameDisposer?: () => void
 
