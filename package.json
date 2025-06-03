@@ -14,7 +14,8 @@
     "lib",
     "stylesheets",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "docs"
   ],
   "scripts": {
     "dev": "vite --port=3088 --host 0.0.0.0",
@@ -25,40 +26,41 @@
     "postpublish": "cnpm sync @realsee/vreo"
   },
   "peerDependencies": {
-    "@realsee/five": "^5.0.0",
-    "@realsee/dnalogel": "^2.3.3",
-    "three": ">=0.115.0 <=0.117.1",
+    "@realsee/dnalogel": "3.67.0",
+    "@realsee/five": "^6.4.0-alpha.1",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "three": "0.117.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "7.24.3",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    "@realsee/dnalogel": "^2.19.3",
-    "@realsee/five": "5.0.0-alpha.149",
+    "@realsee/dnalogel": "^3.67.2",
+    "@realsee/five": "^6.4.0-alpha.38",
     "@tweenjs/tween.js": "18.6.4",
     "@types/node": "^18.11.17",
     "@types/offscreencanvas": "^2019.6.4",
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "@types/react-transition-group": "^4.4.4",
-    "@vitejs/plugin-react": "^1.1.0",
+    "@vitejs/plugin-react": "^4.3.3",
     "cnpm": "^9.2.0",
     "del": "^6.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "three": "^0.117.1",
-    "typedoc": "^0.22.10",
-    "typescript": "4.7.4",
-    "vite": "^2.6.14"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "0.117.1",
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   },
   "dependencies": {
     "classnames": "^2.3.1",
     "mobx": "^6.3.7",
     "mobx-react": "^7.2.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
