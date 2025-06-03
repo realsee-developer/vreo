@@ -4,11 +4,6 @@
     "../resources/**/*.tsx",
   ],
   "exclude": [
-    "../node_modules/**",
-    "../**/*.test.ts",
-    "../**/*.test.tsx",
-    "../**/*.spec.ts",
-    "../**/*.spec.tsx"
   ],
   "compilerOptions": {
     /* Basic Options */
@@ -22,6 +17,7 @@
     "outDir": "../lib",
     "module": "CommonJS",
 
+
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
@@ -34,7 +30,6 @@
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
 
     /* Experimental Options */
     "experimentalDecorators": true,

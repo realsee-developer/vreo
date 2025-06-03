@@ -8,7 +8,6 @@ const VreoContext = React.createContext<Player | null>(null)
 
 export interface VreoProviderProps {
   configs?: Partial<PlayerConfigs>
-  children?: React.ReactNode
 } 
 
 export const VreoProvider: React.FC<VreoProviderProps> = (props ) => {

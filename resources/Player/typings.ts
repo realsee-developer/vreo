@@ -7,7 +7,7 @@ import { Overwrite } from '@realsee/dnalogel/libs/typings/utils.type';
 
 export interface PlayerConfigs {
 /**
- * @deprecated use container instead
+ * @deprecated rename to container
  */
   containter?: Element
   container?: Element

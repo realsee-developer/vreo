@@ -20,7 +20,7 @@ export type AudioLikeEvent = {
  * 模拟 `<Audio>` 功能：没有音频，但执行逻辑跟 `<Audio>` 相似。
  */
 export class AudioLike extends Subscribe<AudioLikeEvent> {
-  private $timestamp: number | null = null
+  private $timestamp = 0
   private $currentTime = 0
   private $duration = 0
   private stopInterval?: () => void
@@ -39,11 +39,11 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   play() {
+    if (this.$timestamp === 0) {
+      this.$timestamp = performance.now()
+    }
     if (this.$currentTime === this.$duration) {
       this.$currentTime = 0
-    }
-    if (this.$timestamp === null) {
-      this.$timestamp = performance.now()
     }
     this.stopInterval = requestAnimationFrameInterval(() => this.requestAnimationFrameLoop())
     this.emit('play')
@@ -55,14 +55,12 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
       this.emit('pause')
       this.stopInterval = undefined
     }
-    this.$timestamp = null
+    this.$timestamp = 0
   }
 
   requestAnimationFrameLoop() {
-    if (this.$timestamp === null) return
     const now = performance.now()
-    this.$currentTime += (now - this.$timestamp)
-    this.$timestamp = now
+    this.$currentTime = now - this.$timestamp
     this.emit('timeupdate')
     if (this.$currentTime >= this.$duration - 10) {
       this.$currentTime = this.$duration
@@ -76,7 +74,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   set currentTime(time: number) {
-    this.$currentTime = time * 1000
+    this.$currentTime = time
   }
 
   get duration() {
@@ -84,7 +82,10 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   set duration(duration: number) {
+    this.pause()
     this.$duration = duration
+    this.$timestamp = 0
+    this.$currentTime = 0
   }
 
   get ended() {
