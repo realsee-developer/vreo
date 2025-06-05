@@ -1,0 +1,310 @@
+@keyframes SpatialScenePanel-panel-sprites-animation {
+  0% {
+      background-position: 0 0
+  }
+
+  100% {
+      background-position: -330rem 0
+  }
+}
+
+
+@keyframes SpatialScenePanel-opacity-animation {
+  0% {
+      opacity: .3
+  }
+
+  100% {
+      opacity: 1
+  }
+}
+
+@keyframes SpatialScenePanel-dot-sprites-animation {
+  0% {
+      background-position: 0 0
+  }
+
+  100% {
+      background-position: -31.25rem 0
+  }
+}
+
+@keyframes SpatialScenePanel-line-sprites-animation {
+  0% {
+      background-position: 0 0
+  }
+
+  100% {
+      background-position: -9.583333333333334rem 0
+  }
+}
+
+.vreo-SpatialScenePanel {
+  width: 10rem;
+  height: 13.4375rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.SpatialScenePanel {
+  width: 10rem;
+  height: 13.4375rem;
+  transform: scale3d(1,1,1);
+  transform-origin: center;
+  position: fixed;
+  left: 3rem;
+  top: 3rem;
+}
+
+.SpatialScenePanel-show-area {
+  width: 100%;
+  height: 100%;
+  transform: scale3d(1,1,1);
+  transform-origin: center;
+  position: absolute
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-bg {
+  width: 10rem;
+  height: 13.4375rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/panel-min.7d9ba2b7.png");
+  background-size: 340rem 13.4375rem;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.SpatialScenePanel-bg--animation {
+  /* animation: SpatialScenePanel-panel-sprites-animation 1.375s 0s steps(33) infinite normal; */
+  animation: SpatialScenePanel-panel-sprites-animation 1.375s 0.5s steps(33) normal;
+}
+
+
+.SpatialScenePanel-show-area .SpatialScenePanel-header {
+  width: 7.5rem;
+  height: 1.375rem;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-between;
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/title-bg.377af865.png");
+  background-size: 100%;
+  margin: 1.875rem auto 1.25rem auto;
+  background-image: linear-gradient(to left, rgba(234, 208, 154, 0), rgb(255 229 176 / 21%) 47%, rgba(234, 208, 154, 0));
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 2px;
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-header .SpatialScenePanel-title {
+  font-family: PingFangSC-Medium;
+  font-size: 1.0625rem;
+  color: #ffe5b0;
+  letter-spacing: 0;
+  line-height: 1.125;
+  text-shadow: 0 0 1.25rem rgba(0,0,0,0.15)
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-header .SpatialScenePanel-temperature {
+  font-family: PingFangSC-Semibold;
+  font-size: .625rem;
+  color: rgba(255,229,176,0.6);
+  letter-spacing: 0;
+  line-height: 1.25rem;
+  text-shadow: 0 0 .625rem rgba(255,255,255,0.03);
+  align-self: flex-end
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body {
+  position: relative;
+  padding: 0 1.25rem
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-item {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-text {
+  opacity: .3;
+  font-family: PingFangSC-Regular;
+  font-size: .75rem;
+  color: #fff;
+  letter-spacing: 0;
+  line-height: .75rem
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-icon {
+  opacity: .3;
+  width: 1rem;
+  height: 1rem;
+  margin-right: .375rem;
+  flex-shrink: 0
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-dot {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -.625rem
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-dot::before {
+  display: block;
+  position: absolute;
+  width: .25rem;
+  height: .25rem;
+  background: #c3d5ff;
+  opacity: .3;
+  content: '';
+  z-index: 1;
+  border-radius: 100%
+}
+
+.SpatialScenePanel-show-area .SpatialScenePanel-body .SpatialScenePanel-dot::after {
+  display: block;
+  position: absolute;
+  content: '';
+  z-index: 2
+}
+
+.SpatialScenePanel.show .SpatialScenePanel-disappear-area {
+  display: none
+}
+
+.SpatialScenePanel.show .SpatialScenePanel-show-area {
+  transform: scale3d(1,1,1);
+  transition: -webkit-transform 1s linear;
+  transition: transform 1s linear;
+  transition: transform 1s linear, -webkit-transform 1s linear
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_0 .SpatialScenePanel-text,.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_0 .SpatialScenePanel-icon {
+  animation: SpatialScenePanel-opacity-animation 1s 1s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_0 .SpatialScenePanel-dot::before {
+  animation: SpatialScenePanel-opacity-animation 1s 1s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_0 .SpatialScenePanel-dot::after {
+  width: 2.083333333333333rem;
+  height: 2.083333333333333rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/dot.54b5e078.png");
+  background-size: 33.333333333333336rem 2.083333333333333rem;
+  background-repeat: no-repeat;
+  animation: SpatialScenePanel-dot-sprites-animation 1s 1s steps(15) 1 normal
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_1 .SpatialScenePanel-text,.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_1 .SpatialScenePanel-icon {
+  animation: SpatialScenePanel-opacity-animation 1s 2s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_1 .SpatialScenePanel-dot::before {
+  animation: SpatialScenePanel-opacity-animation 1s 2s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_1 .SpatialScenePanel-dot::after {
+  width: 2.083333333333333rem;
+  height: 2.083333333333333rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/dot.54b5e078.png");
+  background-size: 33.333333333333336rem 2.083333333333333rem;
+  background-repeat: no-repeat;
+  animation: SpatialScenePanel-dot-sprites-animation 1s 2s steps(15) 1 normal
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_2 .SpatialScenePanel-text,.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_2 .SpatialScenePanel-icon {
+  animation: SpatialScenePanel-opacity-animation 1s 3s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_2 .SpatialScenePanel-dot::before {
+  animation: SpatialScenePanel-opacity-animation 1s 3s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_2 .SpatialScenePanel-dot::after {
+  width: 2.083333333333333rem;
+  height: 2.083333333333333rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/dot.54b5e078.png");
+  background-size: 33.333333333333336rem 2.083333333333333rem;
+  background-repeat: no-repeat;
+  animation: SpatialScenePanel-dot-sprites-animation 1s 3s steps(15) 1 normal
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_3 .SpatialScenePanel-text,.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_3 .SpatialScenePanel-icon {
+  animation: SpatialScenePanel-opacity-animation 1s 4s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_3 .SpatialScenePanel-dot::before {
+  animation: SpatialScenePanel-opacity-animation 1s 4s 1 normal forwards
+}
+
+.SpatialScenePanel .SpatialScenePanel-body .SpatialScenePanel-item.index_3 .SpatialScenePanel-dot::after {
+  width: 2.083333333333333rem;
+  height: 2.083333333333333rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/dot.54b5e078.png");
+  background-size: 33.333333333333336rem 2.083333333333333rem;
+  background-repeat: no-repeat;
+  animation: SpatialScenePanel-dot-sprites-animation 1s 4s steps(15) 1 normal
+}
+
+.SpatialScenePanel.hide .SpatialScenePanel-show-area {
+  transform: scale3d(0,1,1);
+  transition: transform 150ms linear;
+}
+
+.SpatialScenePanel.hide .SpatialScenePanel-disappear-area {
+  display: -ms-flexbox;
+  display: flex;
+  width: 1.25rem;
+  height: 13.4375rem;
+  justify-content: center;
+  align-items: center
+}
+
+.SpatialScenePanel.hide .SpatialScenePanel-disappear-area::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  width: .4166666666666667rem;
+  height: 11.666666666666666rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+  background-image: url("//vr-static.realsee-cdn.cn/release/web/VoiceAssistant/images/line.4ac1c0bb.png");
+  background-size: 10rem 11.666666666666666rem;
+  background-repeat: no-repeat;
+  animation: SpatialScenePanel-line-sprites-animation 500ms 100ms steps(23) 1 normal
+}
+

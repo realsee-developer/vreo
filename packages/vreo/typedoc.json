@@ -1,0 +1,27 @@
+{
+  "name": "Vreo",
+  "entryPoints": ["./typedoc/fivePlugins.ts", "./typedoc/Player.ts", "./typedoc/react.ts",  "./typedoc/custom.ts"],
+  "markdownItOptions": {
+    "silent": true,
+    "mangle": true,
+    "langPrefix": "hljs language-"
+  },
+  "hideGenerator": true,
+  "includeVersion": false,
+  "excludeExternals": true,
+  "theme": "default",
+  "out": "./docs",
+  "tsconfig": "./tsconfig.json",
+  "customCss": "./docs-theme/custom.css",
+  "highlightLanguages": ["tsx", "jsx", "typescript", "javascript", "bash", "shell", "sh", "css", "html", "json", "ts", "js"],
+  "blockTags": [
+    "@description", 
+    "@param", 
+    "@returns", 
+    "@return", 
+    "@deprecated",
+    "@extends",
+    "@example",
+    "@fires"
+  ]
+}
