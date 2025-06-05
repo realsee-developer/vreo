@@ -1,6 +1,7 @@
 // 下面这一行不能删
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Five, Subscribe } from '@realsee/five'
 
 import { App } from './App'
@@ -69,7 +70,6 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         if (!configs.container) {
             const oldElement = document.getElementById(id)
             if (oldElement) {
-                ReactDOM.unmountComponentAtNode(oldElement)
                 oldElement.remove()
             }
             const container = document.createElement('div')
@@ -90,7 +90,8 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.controller = new Controller({five, container:configs.container, configs: this.configs})
 
 
-        ReactDOM.render(
+        const root = createRoot(configs.container)
+        root.render(
             <ControllerContext.Provider value={this.controller}>
                 <App />
                 <Drawer />
@@ -107,8 +108,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                         five={five}
                     />
                 ))}
-            </ControllerContext.Provider>,
-            configs.container
+            </ControllerContext.Provider>
         )
 
         // 监听播放情况：抛出触发时机

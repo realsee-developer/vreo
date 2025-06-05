@@ -1,7 +1,7 @@
 import _slicedToArray from "@babel/runtime/helpers/esm/slicedToArray";
 import * as React from 'react';
 import * as THREE from 'three';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Vector3, Quaternion } from 'three';
 import { useController, useFiveInstance } from "../../../hooks.js";
 import { CSS3DRenderPlugin } from "../../../../fivePlugins/CSS3DRenderPlugin/index.js";
@@ -92,16 +92,19 @@ export function PanoTextLabel() {
         var quaternion = new Quaternion(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w);
         css3DObject === null || css3DObject === void 0 ? void 0 : css3DObject.quaternion.copy(quaternion);
       }
-      if (container !== null && container !== void 0 && container.container) ReactDOM.render( /*#__PURE__*/React.createElement("div", {
-        className: "PanoTextLabel PanoTextLabel--notHidden"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "PanoTextLabel-wrapper"
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          fontSize: "".concat(data.fontSize || 16, "px")
-        },
-        className: "PanoText-innerText"
-      }, data.text || ''))), container === null || container === void 0 ? void 0 : container.container);
+      if (container !== null && container !== void 0 && container.container) {
+        var root = createRoot(container.container);
+        root.render( /*#__PURE__*/React.createElement("div", {
+          className: "PanoTextLabel PanoTextLabel--notHidden"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "PanoTextLabel-wrapper"
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: "".concat(data.fontSize || 16, "px")
+          },
+          className: "PanoText-innerText"
+        }, data.text || ''))));
+      }
       timeoutRef.current = setTimeout(function () {
         var _ref$current;
         (_ref$current = ref.current) === null || _ref$current === void 0 ? void 0 : _ref$current.disposeAll();

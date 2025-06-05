@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as THREE from 'three'
 import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Vector3, Quaternion } from 'three'
 
 import { useController, useFiveInstance } from '../../../hooks'
@@ -88,17 +89,18 @@ export function PanoTextLabel() {
         const quaternion = new Quaternion(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w)
         css3DObject?.quaternion.copy(quaternion)
       }
-      if (container?.container)
-        ReactDOM.render(
+      if (container?.container) {
+        const root = createRoot(container.container)
+        root.render(
           <div className="PanoTextLabel PanoTextLabel--notHidden">
             <div className="PanoTextLabel-wrapper">
               <div style={{ fontSize: `${data.fontSize || 16}px` }} className="PanoText-innerText">
                 {data.text || ''}
               </div>
             </div>
-          </div>,
-          container?.container
+          </div>
         )
+      }
 
       timeoutRef.current = setTimeout(() => {
         ref.current?.disposeAll()
