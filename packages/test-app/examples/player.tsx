@@ -1,6 +1,6 @@
 import { unsafe__useFiveInstance } from '@realsee/five/react'
-import { Player } from '../../resources/Player'
-import { VreoKeyframeEnum } from '../../resources/typings/VreoUnit'
+import { Player } from '@realsee/vreo/Player'
+import { VreoKeyframeEnum } from '@realsee/vreo/typings'
 import * as React from 'react'
 import { CameraMovementData, PanoTagData, ModelVideoData, VideoEffectData, BgMusicData } from './data'
 
@@ -29,7 +29,7 @@ export function VreoPlayer() {
         const player = new Player(five)
         vreoPlayerRef.current = player
         setPlayerState(PlayerState.ready)
-        player.on('paused', (ended) => {
+        player.on('paused', (ended?: boolean) => {
             if (ended) {
                 console.log('已播放')
             }

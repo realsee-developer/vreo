@@ -62,7 +62,7 @@ export function App() {
     player.on('playing', () => setState(PlayerState.playing))
     player.on('ended', () => console.log('ended'))
     player.on('playing', () => console.log('playing'))
-    player.on('paused', (ended) => console.log({ended}))
+    player.on('paused', (ended?: boolean) => console.log({ended}))
     Object.assign(window, { $player: player })
   }, [])
 
