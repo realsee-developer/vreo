@@ -1,6 +1,6 @@
 import _slicedToArray from "@babel/runtime/helpers/esm/slicedToArray";
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Raycaster, Vector3 } from 'three';
 import { tweenProgress } from "../../../shared-utils/animationFrame/BetterTween.js";
 import { CSS3DRenderPlugin } from "../../../fivePlugins/CSS3DRenderPlugin/index.js";
@@ -94,12 +94,13 @@ export function SpatialScenePanel(props) {
         $css3DObject: css3DObject
       });
       if (!container) return;
-      ReactDOM.render( /*#__PURE__*/React.createElement(Panel, {
+      var root = createRoot(container);
+      root.render( /*#__PURE__*/React.createElement(Panel, {
         ref: function ref(_ref3) {
           return panelRef.current = _ref3;
         },
         data: data
-      }), container);
+      }));
       var startRotateY = -(Math.PI * 2) / 9;
       var lastRotateY = 0;
       tweenProgress(1000).onUpdate(function (_ref4) {

@@ -11,6 +11,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 // 下面这一行不能删
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Subscribe } from '@realsee/five';
 import { App } from "./App.js";
 import { Controller, ControllerContext } from "./Controller.js";
@@ -75,7 +76,6 @@ export var Player = /*#__PURE__*/function (_Subscribe) {
       var _five$getElement;
       var oldElement = document.getElementById(id);
       if (oldElement) {
-        ReactDOM.unmountComponentAtNode(oldElement);
         oldElement.remove();
       }
       var container = document.createElement('div');
@@ -97,7 +97,8 @@ export var Player = /*#__PURE__*/function (_Subscribe) {
       container: configs.container,
       configs: _this.configs
     });
-    ReactDOM.render( /*#__PURE__*/React.createElement(ControllerContext.Provider, {
+    var root = createRoot(configs.container);
+    root.render( /*#__PURE__*/React.createElement(ControllerContext.Provider, {
       value: _this.controller
     }, /*#__PURE__*/React.createElement(App, null), /*#__PURE__*/React.createElement(Drawer, null), /*#__PURE__*/React.createElement(PopUp, null), _this.configs.customKeyframes && _this.configs.customKeyframes.map(function (CustomCmpt, key) {
       return /*#__PURE__*/React.createElement(CustomCmpt, {
@@ -115,7 +116,7 @@ export var Player = /*#__PURE__*/function (_Subscribe) {
         },
         five: five
       });
-    })), configs.container);
+    })));
 
     // 监听播放情况：抛出触发时机
     reaction(function () {
