@@ -17,7 +17,7 @@ import { App } from './App'
 
 import './index.css'
 
-import '../stylesheets/default.css'
+import '@realsee/vreo/stylesheets/default.css'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },

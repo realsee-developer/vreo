@@ -1,4 +1,4 @@
-import { VreoUnit } from '../../../resources/typings/VreoUnit'
+import { VreoUnit } from '@realsee/vreo/typings'
 
 export const data: VreoUnit = {
   "categoryId": "a80d5051-122d-4618-1d19-d43f4196c97a",

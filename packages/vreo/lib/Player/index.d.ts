@@ -119,3 +119,4 @@ export declare class Player extends Subscribe<VreoKeyframeEvent> {
      */
     dispose(): void;
 }
+export { SpatialScenePanel } from './custom/SpatialScenePanel';

@@ -341,6 +341,9 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     }
 }
 
+// 导出自定义组件
+export { SpatialScenePanel } from './custom/SpatialScenePanel'
+
 console.log(`
     ┏━━━┓━━━━━━━━━┏┓━━━━━━━━━━━━━
     ┃┏━┓┃━━━━━━━━━┃┃━━━━━━━━━━━━━
