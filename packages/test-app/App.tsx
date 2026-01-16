@@ -54,7 +54,7 @@ export function App() {
 
   React.useEffect(() => {
     if (ref.current) return
-    const player = new Player(five)
+    const player = new Player(five, { waitForBgMusicLoaded: true })
     ref.current = player
     setState(PlayerState.ready)
     player.on('loaded', () => console.log('loaded'))

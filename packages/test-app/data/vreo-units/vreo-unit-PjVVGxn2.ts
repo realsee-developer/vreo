@@ -14,9 +14,18 @@ export const data = {
 	},
 	"keyframes": [
 		{
+			"uuid": "8d61882e-feb9-4b4c-ae19-e19acb56c2d1",
+			"type": "BgMusic",
+			"start": 0,
+			"end": 74820,
+			"data": {
+				"url": "https://vr-public.realsee-cdn.cn/release/vrcustomer/editor/2___26c6947fae963be249cf119505a26432.mp3"
+			}
+		},
+		{
 			"uuid": "56866f2a-a51e-4dff-d58e-8ce3da80c865",
 			"type": "CameraMovement",
-			"start": 0,
+			"start": 100,
 			"end": 2700,
 			"data": {
 				"effect": "Rotate",
