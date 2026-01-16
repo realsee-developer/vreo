@@ -51,6 +51,11 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     }
     avatar: VreoVideo['avatar'] = {}
 
+    /**
+     * 是否正在等待背景音乐加载
+     * 当此状态为 true 时，播放流程会暂停，等待音频加载完成
+     */
+    waitingForBgMusic = false
 
     visible = false
 
@@ -134,6 +139,14 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     }
 
     /**
+     * 设置是否正在等待背景音乐加载
+     * @param waiting - 是否正在等待
+     */
+    setWaitingForBgMusic(waiting: boolean) {
+        this.waitingForBgMusic = waiting
+    }
+
+    /**
      * 设置播放器外观
      * @param appearance - 外观配置对象
      */
@@ -195,6 +208,8 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             configs: observable.ref,
             setEnded: action,
             setAvatar: action,
+            waitingForBgMusic: observable,
+            setWaitingForBgMusic: action,
         })
 
         reaction<[typeof this.appearance.waveStyle, boolean | null], boolean>(
@@ -326,6 +341,14 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * @param callback - 关键帧触发时的回调函数
      */
     requestAnimationFrameLoop(callback: (type: VreoKeyframeEnum, keyframe: VreoKeyframe, currentTime: number) => void) {
+        // 如果正在等待背景音乐加载，暂停整个播放流程
+        if (this.waitingForBgMusic) {
+            if (!this.mediaInstance?.paused) {
+                this.mediaInstance?.pause()
+            }
+            return
+        }
+
         if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
             if (this.ended) return
             this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))

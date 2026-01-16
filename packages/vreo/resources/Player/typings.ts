@@ -39,6 +39,13 @@ export interface PlayerConfigs {
   waveStaticPrefix?: string
   onAvatarClick?: () => any
   onWaveClick?: () => any
+  /**
+   * 是否等待背景音乐加载完成后再播放
+   * - true: 等待音频完全可播放（canplaythrough）后再播放，确保不会卡顿
+   * - false: 立即播放，边加载边播放（默认行为）
+   * @default false
+   */
+  waitForBgMusicLoaded?: boolean
 }
 
 export type AppSize = 'S' | 'M' | 'L' | 'XL'
