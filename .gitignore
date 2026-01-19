@@ -12,6 +12,11 @@
 /vreo
 /dist
 
+# build output
+/packages/*/lib
+/packages/*/docs
+/packages/*/node_modules/.vite
+
 # misc
 .DS_Store
 .env.local
