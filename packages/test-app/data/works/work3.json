@@ -1,15 +1,21 @@
 {
-  "_signature": "m/k61CcnRtbrEWE+5+O4AKiOQ5L8O7l9nYAoU5cBpM4v0nNaECOONfWJfv6DLQD1usKwUgIs6IrLA8rW6u9oJB56S0CvGwVwTPUiMOYZ/Ki4ymaB2iDrrgHzoIXaDDlP5JhbtIHPMNrn4LAjKz522eoqN6aXcMd5BI7cQYcUOVc=",
-  "allow_hosts": [],
+  "_signature": "kzXGBiiNKGgJuX0681t5Kwmbu/fb4IVvOByqyGpzbavh4XgjWCPWNiIRyxCgB4RJ8pOlC8GaU4rbi0wT/neVCIl1ueDIN0kVn4yTlbYl7cUDHJML4mxYZxm9wv6mAM1/pheGPOhds0mMirloP2XBu66Wi7rlLc9j1LvGlyffsUU=",
+  "allow_hosts": [
+    "*"
+  ],
   "base_url": "https://test-vr-public.realsee-cdn.cn/",
   "certificate": "-----BEGIN CERTIFICATE-----\nMIIEMzCCAhsCCQDYAS/7ATZRmTANBgkqhkiG9w0BAQsFADCBkzELMAkGA1UEBhMC\nQ04xEDAOBgNVBAgMB0JlaWppbmcxEDAOBgNVBAcMB0JlaWppbmcxFDASBgNVBAoM\nC2xpYW5qaWEuY29tMRAwDgYDVQQLDAdSZWFsc2VlMREwDwYDVQQDDAhIYXJkd2Fy\nZTElMCMGCSqGSIb3DQEJARYWbml1aGFpcWluZ0BsaWFuamlhLmNvbTAeFw0yMTA5\nMTAwNTIwMDBaFw0zMTA5MDgwNTIwMDBaMIGmMQswCQYDVQQGEwJDTjEQMA4GA1UE\nCAwHQmVpSmluZzEQMA4GA1UEBwwHQmVpSmluZzEQMA4GA1UECgwHUmVhbHNlZTEZ\nMBcGA1UECwwQUmVhbHNlZUFwcEdldHdheTEgMB4GA1UEAwwXYXBwLWdhdGV3YXku\ncmVhbHNlZS5jb20xJDAiBgkqhkiG9w0BCQEWFWRldmVsb3BlckByZWFsc2VlLmNv\nbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuv/y3Ezsy/wh3LCA8vomPbgI\nSO9iO5kyR+oAetklD+epMU6J/ZbvTDEomZxuS5iyyKGBupzAh2ZFLIy7tsE71Vx1\nIIvT7Kdyq66lMU4YzdrpKUcxv7oOQnO8DA1orKluNa4jkyXBywHKs/Q+20LVc+RD\ngKXqFGJUdo8mAxEScs0CAwEAATANBgkqhkiG9w0BAQsFAAOCAgEAkMxsU4VLPd4J\n0rElBNBIyqPtvnlTs6VkhIK0l4oM58wtDKc1uG9UPSX5j29NguZM6LOe0jCsU2Vg\nEpUseMWQjx4o2yBg7MokQyjWc1zu6PppKhQ+RqHQy/biJ2zsIMpX3oMASXffvnW5\nn4Bjyo1JdDJiLm1fLvLlVVxQoraJD+rtpqWDEYixGVREUo5OIL5Y5dVjkHG2r9RQ\nQuu3yEiyr9gAW8yhz3YR6/sJ6boyGK8NC0v8Jih7NnCdT+9ML+3jn3P5F3TeXdSf\nVeYIm5oWAOTe3AjjKP8ARMb2RYACjg80/AcowD/dvRRjbwQmyucUNug2pXJynXpD\nNfx1IBmUmzSAT1Z5yNuY/f3VRBJvmIQ6Jpmef+g0/wUJpyS4SObguItyYlFPLqRH\nK1oKqNX/uV0GWWEQl6Lml986TzlHxc4ljtHBhjzlKYIYYZLWWipk4JiB8hxJcTK+\ncrgvclEQSxFlmAyoqxYFClrOOsPqZJdBhDTvoUWnnWuJLQt7DLHpyInp+S75Gg3o\n0zgHpt9m26B3YbjQGYMQlYmhl2VLQa+Ey0W8UZQXLcTvoRT4p+8crqr6cNNsxCyZ\nm08vBbEMIMvhBeLQvpM75oaMBmelegipFl2eelxVIHdGJWoyJSZQUdXN0uSidhZp\nI7AIgzhqK1Ku/IXK0OSXJonn+/9X/VI=\n-----END CERTIFICATE-----",
   "create_time": null,
-  "expire_at": "1646646725127",
+  "expire_at": "2084337275000",
   "initial": {
     "latitude": 0,
     "longitude": 3.141592653589793,
     "pano": 1,
-    "position": [-1.057923828125, 1.2, -5.103007031250003]
+    "position": [
+      -1.057923828125,
+      1.2,
+      -5.103007031250003
+    ]
   },
   "model": {
     "file_url": "vrframework/test/ue4_decoration_plan/4kQ0bmgz6qUYDjpZ/vrproc-ue4/render/model.at3d",
@@ -55,301 +61,1038 @@
   },
   "observers": [
     {
-      "accessible_nodes": [1, 2, 3, 6, 13, 15, 23],
+      "accessible_nodes": [
+        1,
+        2,
+        3,
+        6,
+        13,
+        15,
+        23
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 0,
       "offset_point_count": 1000,
-      "position": [-1.0828822265624984, 1.2, 0.8121333984375014],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.0828822265624984, 0, 0.8121333984375014],
-      "visible_nodes": [1, 2, 3, 6, 13, 15, 23]
+      "position": [
+        -1.0828822265624984,
+        1.2,
+        0.8121333984375014
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.0828822265624984,
+        0,
+        0.8121333984375014
+      ],
+      "visible_nodes": [
+        1,
+        2,
+        3,
+        6,
+        13,
+        15,
+        23
+      ]
     },
     {
-      "accessible_nodes": [0, 2, 3, 6, 9, 10, 13, 15, 23, 25],
+      "accessible_nodes": [
+        0,
+        2,
+        3,
+        6,
+        9,
+        10,
+        13,
+        15,
+        23,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 1,
       "offset_point_count": 1001,
-      "position": [-1.057923828125, 1.2, -5.103007031250003],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.057923828125, 0, -5.103007031250003],
-      "visible_nodes": [0, 2, 3, 6, 9, 10, 13, 15, 23, 25]
+      "position": [
+        -1.057923828125,
+        1.2,
+        -5.103007031250003
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.057923828125,
+        0,
+        -5.103007031250003
+      ],
+      "visible_nodes": [
+        0,
+        2,
+        3,
+        6,
+        9,
+        10,
+        13,
+        15,
+        23,
+        25
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 3, 6, 15, 23],
+      "accessible_nodes": [
+        0,
+        1,
+        3,
+        6,
+        15,
+        23
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 2,
       "offset_point_count": 1000,
-      "position": [-1.6070085937499972, 1.2, 2.2098037109375],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.6070085937499972, 0, 2.2098037109375],
-      "visible_nodes": [0, 1, 3, 6, 15, 23]
+      "position": [
+        -1.6070085937499972,
+        1.2,
+        2.2098037109375
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.6070085937499972,
+        0,
+        2.2098037109375
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        3,
+        6,
+        15,
+        23
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 2, 6, 13, 15, 23],
+      "accessible_nodes": [
+        0,
+        1,
+        2,
+        6,
+        13,
+        15,
+        23
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 3,
       "offset_point_count": 1000,
-      "position": [-1.0828822265624984, 1.2, 1.5359269531249957],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.0828822265624984, 0, 1.5359269531249957],
-      "visible_nodes": [0, 1, 2, 6, 13, 15, 23]
+      "position": [
+        -1.0828822265624984,
+        1.2,
+        1.5359269531249957
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.0828822265624984,
+        0,
+        1.5359269531249957
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        2,
+        6,
+        13,
+        15,
+        23
+      ]
     },
     {
-      "accessible_nodes": [5],
+      "accessible_nodes": [
+        5
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 4,
       "offset_point_count": 1000,
-      "position": [4.607632617187504, 1.2, -5.202840625000005],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [4.607632617187504, 0, -5.202840625000005],
-      "visible_nodes": [5]
+      "position": [
+        4.607632617187504,
+        1.2,
+        -5.202840625000005
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        4.607632617187504,
+        0,
+        -5.202840625000005
+      ],
+      "visible_nodes": [
+        5
+      ]
     },
     {
-      "accessible_nodes": [4, 14],
+      "accessible_nodes": [
+        4,
+        14
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 5,
       "offset_point_count": 1001,
-      "position": [3.4096294921875017, 1.2, -5.152923828125],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [3.4096294921875017, 0, -5.152923828125],
-      "visible_nodes": [4, 14]
+      "position": [
+        3.4096294921875017,
+        1.2,
+        -5.152923828125
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        3.4096294921875017,
+        0,
+        -5.152923828125
+      ],
+      "visible_nodes": [
+        4,
+        14
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 2, 3, 9, 10, 13, 15, 23, 25],
+      "accessible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        9,
+        10,
+        13,
+        15,
+        23,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 6,
       "offset_point_count": 1001,
-      "position": [-1.107840624999997, 1.2, -6.750261328125001],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.107840624999997, 0, -6.750261328125001],
-      "visible_nodes": [0, 1, 2, 3, 9, 10, 13, 15, 23, 25]
+      "position": [
+        -1.107840624999997,
+        1.2,
+        -6.750261328125001
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.107840624999997,
+        0,
+        -6.750261328125001
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        9,
+        10,
+        13,
+        15,
+        23,
+        25
+      ]
     },
     {
-      "accessible_nodes": [15, 16, 24, 25],
+      "accessible_nodes": [
+        15,
+        16,
+        24,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 7,
       "offset_point_count": 1000,
-      "position": [0.7390808593750043, 1.2, 2.509304492187497],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.7390808593750043, 0, 2.509304492187497],
-      "visible_nodes": [15, 16, 24, 25]
+      "position": [
+        0.7390808593750043,
+        1.2,
+        2.509304492187497
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.7390808593750043,
+        0,
+        2.509304492187497
+      ],
+      "visible_nodes": [
+        15,
+        16,
+        24,
+        25
+      ]
     },
     {
-      "accessible_nodes": [18, 20],
+      "accessible_nodes": [
+        18,
+        20
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 8,
       "offset_point_count": 1000,
-      "position": [3.5344214843750015, 1.2, -2.058082421875006],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [3.5344214843750015, 0, -2.058082421875006],
-      "visible_nodes": [18, 20]
+      "position": [
+        3.5344214843750015,
+        1.2,
+        -2.058082421875006
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        3.5344214843750015,
+        0,
+        -2.058082421875006
+      ],
+      "visible_nodes": [
+        18,
+        20
+      ]
     },
     {
-      "accessible_nodes": [1, 6, 13, 25],
+      "accessible_nodes": [
+        1,
+        6,
+        13,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 9,
       "offset_point_count": 1001,
-      "position": [0.4894968750000044, 1.2, -6.7752197265625],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.4894968750000044, 0, -6.7752197265625],
-      "visible_nodes": [1, 6, 13, 25]
+      "position": [
+        0.4894968750000044,
+        1.2,
+        -6.7752197265625
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.4894968750000044,
+        0,
+        -6.7752197265625
+      ],
+      "visible_nodes": [
+        1,
+        6,
+        13,
+        25
+      ]
     },
     {
-      "accessible_nodes": [1, 6, 13, 25],
+      "accessible_nodes": [
+        1,
+        6,
+        13,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 10,
       "offset_point_count": 1001,
-      "position": [0.4894968750000044, 1.2, -5.302674218750006],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.4894968750000044, 0, -5.302674218750006],
-      "visible_nodes": [1, 6, 13, 25]
+      "position": [
+        0.4894968750000044,
+        1.2,
+        -5.302674218750006
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.4894968750000044,
+        0,
+        -5.302674218750006
+      ],
+      "visible_nodes": [
+        1,
+        6,
+        13,
+        25
+      ]
     },
     {
-      "accessible_nodes": [12, 14, 19, 20, 21, 26],
+      "accessible_nodes": [
+        12,
+        14,
+        19,
+        20,
+        21,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 11,
       "offset_point_count": 1001,
-      "position": [2.3114599609375, 1.2, 0.9618837890625],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [2.3114599609375, 0, 0.9618837890625],
-      "visible_nodes": [12, 14, 19, 20, 21, 26]
+      "position": [
+        2.3114599609375,
+        1.2,
+        0.9618837890625
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        2.3114599609375,
+        0,
+        0.9618837890625
+      ],
+      "visible_nodes": [
+        12,
+        14,
+        19,
+        20,
+        21,
+        26
+      ]
     },
     {
-      "accessible_nodes": [11],
+      "accessible_nodes": [
+        11
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 12,
       "offset_point_count": 1000,
-      "position": [1.5377496093750014, 1.2, 1.386176562499997],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [1.5377496093750014, 0, 1.386176562499997],
-      "visible_nodes": [11]
+      "position": [
+        1.5377496093750014,
+        1.2,
+        1.386176562499997
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        1.5377496093750014,
+        0,
+        1.386176562499997
+      ],
+      "visible_nodes": [
+        11
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 3, 6, 9, 10, 15, 23, 25],
+      "accessible_nodes": [
+        0,
+        1,
+        3,
+        6,
+        9,
+        10,
+        15,
+        23,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 13,
       "offset_point_count": 1000,
-      "position": [-1.7068421874999986, 1.2, -6.725302929687503],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.7068421874999986, 0, -6.725302929687503],
-      "visible_nodes": [0, 1, 3, 6, 9, 10, 15, 23, 25]
+      "position": [
+        -1.7068421874999986,
+        1.2,
+        -6.725302929687503
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.7068421874999986,
+        0,
+        -6.725302929687503
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        3,
+        6,
+        9,
+        10,
+        15,
+        23,
+        25
+      ]
     },
     {
-      "accessible_nodes": [5, 11, 19, 20, 21, 26],
+      "accessible_nodes": [
+        5,
+        11,
+        19,
+        20,
+        21,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 14,
       "offset_point_count": 1001,
-      "position": [2.085081134901004, 1.2, -3.9235680329208042],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [2.085081134901004, 0, -3.9235680329208042],
-      "visible_nodes": [5, 11, 19, 20, 21, 26]
+      "position": [
+        2.085081134901004,
+        1.2,
+        -3.9235680329208042
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        2.085081134901004,
+        0,
+        -3.9235680329208042
+      ],
+      "visible_nodes": [
+        5,
+        11,
+        19,
+        20,
+        21,
+        26
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 2, 3, 6, 7, 13, 16, 17, 18, 20, 22, 23, 24, 25],
+      "accessible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        7,
+        13,
+        16,
+        17,
+        18,
+        20,
+        22,
+        23,
+        24,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 15,
       "offset_point_count": 1000,
-      "position": [-1.0389136121234697, 1.2, -3.404889021868963],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.0389136121234697, 0, -3.404889021868963],
-      "visible_nodes": [0, 1, 2, 3, 6, 7, 13, 16, 17, 18, 20, 22, 23, 24, 25]
+      "position": [
+        -1.0389136121234697,
+        1.2,
+        -3.404889021868963
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.0389136121234697,
+        0,
+        -3.404889021868963
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        7,
+        13,
+        16,
+        17,
+        18,
+        20,
+        22,
+        23,
+        24,
+        25
+      ]
     },
     {
-      "accessible_nodes": [7, 15, 18, 22, 23, 24],
+      "accessible_nodes": [
+        7,
+        15,
+        18,
+        22,
+        23,
+        24
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 16,
       "offset_point_count": 1001,
-      "position": [0.32027772932143855, 1.2, -3.049077416158143],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.32027772932143855, 0, -3.049077416158143],
-      "visible_nodes": [7, 15, 18, 22, 23, 24]
+      "position": [
+        0.32027772932143855,
+        1.2,
+        -3.049077416158143
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.32027772932143855,
+        0,
+        -3.049077416158143
+      ],
+      "visible_nodes": [
+        7,
+        15,
+        18,
+        22,
+        23,
+        24
+      ]
     },
     {
-      "accessible_nodes": [15, 22],
+      "accessible_nodes": [
+        15,
+        22
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 17,
       "offset_point_count": 1001,
-      "position": [4.839389174107142, 1.2, -0.000797293526789872],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [4.839389174107142, 0, -0.000797293526789872],
-      "visible_nodes": [15, 22]
+      "position": [
+        4.839389174107142,
+        1.2,
+        -0.000797293526789872
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        4.839389174107142,
+        0,
+        -0.000797293526789872
+      ],
+      "visible_nodes": [
+        15,
+        22
+      ]
     },
     {
-      "accessible_nodes": [8, 15, 16, 20, 23, 24, 25],
+      "accessible_nodes": [
+        8,
+        15,
+        16,
+        20,
+        23,
+        24,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 18,
       "offset_point_count": 1001,
-      "position": [0.46817985782009053, 1.2, -1.7489856727662774],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.46817985782009053, 0, -1.7489856727662774],
-      "visible_nodes": [8, 15, 16, 20, 23, 24, 25]
+      "position": [
+        0.46817985782009053,
+        1.2,
+        -1.7489856727662774
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.46817985782009053,
+        0,
+        -1.7489856727662774
+      ],
+      "visible_nodes": [
+        8,
+        15,
+        16,
+        20,
+        23,
+        24,
+        25
+      ]
     },
     {
-      "accessible_nodes": [11, 14, 20, 21, 26],
+      "accessible_nodes": [
+        11,
+        14,
+        20,
+        21,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 19,
       "offset_point_count": 1000,
-      "position": [2.15604068689252, 1.2, -5.320784022914769],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [2.15604068689252, 0, -5.320784022914769],
-      "visible_nodes": [11, 14, 20, 21, 26]
+      "position": [
+        2.15604068689252,
+        1.2,
+        -5.320784022914769
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        2.15604068689252,
+        0,
+        -5.320784022914769
+      ],
+      "visible_nodes": [
+        11,
+        14,
+        20,
+        21,
+        26
+      ]
     },
     {
-      "accessible_nodes": [8, 11, 14, 15, 18, 19, 21, 22, 23, 26],
+      "accessible_nodes": [
+        8,
+        11,
+        14,
+        15,
+        18,
+        19,
+        21,
+        22,
+        23,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 20,
       "offset_point_count": 1001,
-      "position": [1.814178993066409, 1.2, -2.150371102824356],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [1.814178993066409, 0, -2.150371102824356],
-      "visible_nodes": [8, 11, 14, 15, 18, 19, 21, 22, 23, 26]
+      "position": [
+        1.814178993066409,
+        1.2,
+        -2.150371102824356
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        1.814178993066409,
+        0,
+        -2.150371102824356
+      ],
+      "visible_nodes": [
+        8,
+        11,
+        14,
+        15,
+        18,
+        19,
+        21,
+        22,
+        23,
+        26
+      ]
     },
     {
-      "accessible_nodes": [11, 14, 19, 20, 26],
+      "accessible_nodes": [
+        11,
+        14,
+        19,
+        20,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 21,
       "offset_point_count": 1000,
-      "position": [2.027360124078812, 1.2, -6.669542642467386],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [2.027360124078812, 0, -6.669542642467386],
-      "visible_nodes": [11, 14, 19, 20, 26]
+      "position": [
+        2.027360124078812,
+        1.2,
+        -6.669542642467386
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        2.027360124078812,
+        0,
+        -6.669542642467386
+      ],
+      "visible_nodes": [
+        11,
+        14,
+        19,
+        20,
+        26
+      ]
     },
     {
-      "accessible_nodes": [15, 16, 17, 20, 26],
+      "accessible_nodes": [
+        15,
+        16,
+        17,
+        20,
+        26
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 22,
       "offset_point_count": 1001,
-      "position": [3.2835974121153777, 1.2, -0.673189615443458],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [3.2835974121153777, 0, -0.673189615443458],
-      "visible_nodes": [15, 16, 17, 20, 26]
+      "position": [
+        3.2835974121153777,
+        1.2,
+        -0.673189615443458
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        3.2835974121153777,
+        0,
+        -0.673189615443458
+      ],
+      "visible_nodes": [
+        15,
+        16,
+        17,
+        20,
+        26
+      ]
     },
     {
-      "accessible_nodes": [0, 1, 2, 3, 6, 13, 15, 16, 18, 20, 24],
+      "accessible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        13,
+        15,
+        16,
+        18,
+        20,
+        24
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 23,
       "offset_point_count": 1001,
-      "position": [-1.2096154986784386, 1.2, -0.30228264841541386],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.2096154986784386, 0, -0.30228264841541386],
-      "visible_nodes": [0, 1, 2, 3, 6, 13, 15, 16, 18, 20, 24]
+      "position": [
+        -1.2096154986784386,
+        1.2,
+        -0.30228264841541386
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.2096154986784386,
+        0,
+        -0.30228264841541386
+      ],
+      "visible_nodes": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        13,
+        15,
+        16,
+        18,
+        20,
+        24
+      ]
     },
     {
-      "accessible_nodes": [7, 15, 16, 18, 23, 25],
+      "accessible_nodes": [
+        7,
+        15,
+        16,
+        18,
+        23,
+        25
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 24,
       "offset_point_count": 1000,
-      "position": [0.23608628305642196, 1.2, 0.32853418708622484],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [0.23608628305642196, 0, 0.32853418708622484],
-      "visible_nodes": [7, 15, 16, 18, 23, 25]
+      "position": [
+        0.23608628305642196,
+        1.2,
+        0.32853418708622484
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        0.23608628305642196,
+        0,
+        0.32853418708622484
+      ],
+      "visible_nodes": [
+        7,
+        15,
+        16,
+        18,
+        23,
+        25
+      ]
     },
     {
-      "accessible_nodes": [1, 6, 7, 9, 10, 13, 15, 18, 24],
+      "accessible_nodes": [
+        1,
+        6,
+        7,
+        9,
+        10,
+        13,
+        15,
+        18,
+        24
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 25,
       "offset_point_count": 1001,
-      "position": [-1.7603879099847617, 1.2, -4.829628874544811],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [-1.7603879099847617, 0, -4.829628874544811],
-      "visible_nodes": [1, 6, 7, 9, 10, 13, 15, 18, 24]
+      "position": [
+        -1.7603879099847617,
+        1.2,
+        -4.829628874544811
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        -1.7603879099847617,
+        0,
+        -4.829628874544811
+      ],
+      "visible_nodes": [
+        1,
+        6,
+        7,
+        9,
+        10,
+        13,
+        15,
+        18,
+        24
+      ]
     },
     {
-      "accessible_nodes": [11, 14, 19, 20, 21, 22],
+      "accessible_nodes": [
+        11,
+        14,
+        19,
+        20,
+        21,
+        22
+      ],
       "floor_index": 0,
       "fov": 95,
       "index": 26,
       "offset_point_count": 1000,
-      "position": [2.0738572058417484, 1.2, -0.5156857599585201],
-      "quaternion": { "w": 0.7071067811865475, "x": 0, "y": 0.7071067811865475, "z": 0 },
-      "standing_position": [2.0738572058417484, 0, -0.5156857599585201],
-      "visible_nodes": [11, 14, 19, 20, 21, 22]
+      "position": [
+        2.0738572058417484,
+        1.2,
+        -0.5156857599585201
+      ],
+      "quaternion": {
+        "w": 0.7071067811865475,
+        "x": 0,
+        "y": 0.7071067811865475,
+        "z": 0
+      },
+      "standing_position": [
+        2.0738572058417484,
+        0,
+        -0.5156857599585201
+      ],
+      "visible_nodes": [
+        11,
+        14,
+        19,
+        20,
+        21,
+        22
+      ]
     }
   ],
   "panorama": {
