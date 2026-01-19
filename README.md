@@ -149,9 +149,10 @@ git push origin --tags
 
 ### 配置要求
 
-发布到 npm 需要在仓库设置中配置：
+发布到 npm 需要在组织或仓库级别配置：
 - **Settings → Secrets and variables → Actions**
-- 添加 `NPM_TOKEN` secret（从 npmjs.com 获取访问令牌）
+- 添加 `NPM_AUTH_TOKEN` secret（从 npmjs.com 获取访问令牌）
+- 如果组织已配置 Organization Secret，可跳过此步骤
 
 GitHub Pages 需要启用：
 - **Settings → Pages → Source**: GitHub Actions
