@@ -15,11 +15,15 @@
 
 ### 在 GitHub 中配置
 
+**注意**: 如果你的组织已经配置了 Organization Secret `NPM_AUTH_TOKEN`，可以跳过此步骤。
+
+如果需要为单个仓库配置：
+
 1. 打开仓库页面：https://github.com/realsee-developer/vreo
 2. 进入 **Settings** → **Secrets and variables** → **Actions**
 3. 点击 **New repository secret**
 4. 配置如下：
-   - Name: `NPM_TOKEN`
+   - Name: `NPM_AUTH_TOKEN`
    - Secret: 粘贴你的 npm token
 5. 点击 **Add secret**
 
@@ -140,7 +144,7 @@ README 中已经添加了以下徽章：
 
 ### Q: 发布失败，显示 "Invalid authentication token"
 
-A: 检查 NPM_TOKEN 是否正确配置，token 是否过期。
+A: 检查 NPM_AUTH_TOKEN 是否正确配置（组织或仓库级别），token 是否过期。
 
 ### Q: GitHub Pages 部署失败
 

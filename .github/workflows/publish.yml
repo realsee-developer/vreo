@@ -58,7 +58,7 @@ jobs:
           cd packages/vreo
           npm publish --tag ${{ steps.npm-tag.outputs.tag }} --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
       - name: Read CHANGELOG
         id: changelog
