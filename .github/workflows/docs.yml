@@ -1,4 +1,4 @@
-name: Deploy Documentation
+name: Deploy Examples
 
 on:
   push:
@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build Documentation
+    name: Build Examples
     runs-on: ubuntu-latest
     
     steps:
@@ -43,13 +43,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
-      - name: Build package
+      - name: Build main package
         run: pnpm build
       
-      - name: Build documentation
-        run: pnpm run docs
-        env:
-          CI: true
+      - name: Build test app examples
+        run: pnpm test:build
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -57,10 +55,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './packages/vreo/docs'
+          path: './packages/test-app/dist'
   
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy Examples to GitHub Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
