@@ -12,7 +12,7 @@
   "theme": "default",
   "out": "./docs",
   "tsconfig": "./tsconfig.json",
-  "customCss": "./docs-theme/custom.css",
+  "customCss": "../../docs-theme/custom.css",
   "highlightLanguages": ["tsx", "jsx", "typescript", "javascript", "bash", "shell", "sh", "css", "html", "json", "ts", "js"],
   "blockTags": [
     "@description", 
