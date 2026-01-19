@@ -43,6 +43,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
+      - name: Override xdg-open to prevent browser opening
+        run: |
+          sudo bash -c 'echo -e "#!/bin/bash\nexit 0" > /usr/bin/xdg-open'
+          sudo chmod +x /usr/bin/xdg-open
+      
       - name: Build package
         run: pnpm build
       
@@ -51,6 +56,7 @@ jobs:
         env:
           CI: true
           BROWSER: none
+          OPEN: none
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
