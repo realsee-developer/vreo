@@ -40,11 +40,6 @@ jobs:
           node-version: '20.x'
           cache: 'pnpm'
       
-      - name: Override xdg-open to prevent browser opening
-        run: |
-          sudo bash -c 'echo -e "#!/bin/bash\nexit 0" > /usr/bin/xdg-open'
-          sudo chmod +x /usr/bin/xdg-open
-      
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
@@ -52,11 +47,9 @@ jobs:
         run: pnpm build
       
       - name: Build documentation
-        run: pnpm docs
+        run: pnpm run docs
         env:
           CI: true
-          BROWSER: none
-          OPEN: none
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
