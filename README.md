@@ -1,5 +1,10 @@
 # @realsee/vreo Monorepo
 
+[![CI](https://github.com/realsee-developer/vreo/actions/workflows/ci.yml/badge.svg)](https://github.com/realsee-developer/vreo/actions/workflows/ci.yml)
+[![NPM Version](https://img.shields.io/npm/v/@realsee/vreo.svg)](https://www.npmjs.com/package/@realsee/vreo)
+[![NPM Downloads](https://img.shields.io/npm/dm/@realsee/vreo.svg)](https://www.npmjs.com/package/@realsee/vreo)
+[![License](https://img.shields.io/npm/l/@realsee/vreo.svg)](https://github.com/realsee-developer/vreo/blob/main/packages/vreo/LICENSE)
+
 Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和用户界面构建库 React 实现的如视 3D 空间剧本播放器。
 
 ## 项目结构
@@ -59,7 +64,7 @@ pnpm test:build
 pnpm test:preview
 ```
 
-### 发布
+### 构建 npm 包
 
 ```bash
 pnpm packages
@@ -67,12 +72,98 @@ pnpm packages
 
 这会在 `packages/vreo/lib` 目录生成最终的 npm 包内容。
 
+### 发布流程
+
+本项目使用 GitHub Actions 自动化发布流程。发布步骤如下：
+
+#### 1. 更新版本号
+
+```bash
+cd packages/vreo
+
+# 正式版本
+npm version patch  # 补丁版本 (2.6.3 -> 2.6.4)
+npm version minor  # 次版本 (2.6.3 -> 2.7.0)
+npm version major  # 主版本 (2.6.3 -> 3.0.0)
+
+# 预发布版本
+npm version prerelease --preid=alpha  # 2.6.3 -> 2.6.4-alpha.0
+npm version prerelease --preid=beta   # 2.6.3 -> 2.6.4-beta.0
+npm version prerelease --preid=rc     # 2.6.3 -> 2.6.4-rc.0
+```
+
+#### 2. 推送代码和标签
+
+```bash
+git push origin main
+git push origin --tags
+```
+
+#### 3. 自动发布
+
+推送标签后，GitHub Actions 会自动：
+- 运行 CI 检查
+- 构建生产包
+- 发布到 npm registry（根据版本自动选择 tag：latest/alpha/beta/rc）
+- 创建 GitHub Release
+- 部署文档到 GitHub Pages
+
+#### 查看发布状态
+
+访问 [Actions](https://github.com/realsee-developer/vreo/actions) 页面查看工作流执行状态。
+
+## CI/CD 配置
+
+本项目使用 GitHub Actions 实现完整的 CI/CD 流程：
+
+### 持续集成 (CI)
+
+- **触发条件**: Pull Request 或推送到 main/master 分支
+- **执行内容**:
+  - Node.js 18 和 20 多版本测试
+  - 安装依赖并构建主包
+  - 构建测试应用验证包的可用性
+- **目的**: 确保代码质量，防止破坏性变更
+
+### 自动发布 (Publish)
+
+- **触发条件**: 推送版本标签（如 `v2.6.4`）
+- **执行内容**:
+  - 构建生产包
+  - 发布到 npm registry
+  - 创建 GitHub Release
+  - 同步到 cnpm（如果配置）
+- **版本支持**:
+  - 正式版本 (`v*.*.*`) → npm `latest` tag
+  - Alpha 版本 (`v*.*.*-alpha.*`) → npm `alpha` tag
+  - Beta 版本 (`v*.*.*-beta.*`) → npm `beta` tag
+  - RC 版本 (`v*.*.*-rc.*`) → npm `rc` tag
+
+### 文档部署 (Docs)
+
+- **触发条件**: 推送到 main/master 分支或发布新版本
+- **执行内容**:
+  - 生成 TypeDoc 文档
+  - 部署到 GitHub Pages
+- **访问地址**: https://realsee-developer.github.io/vreo/
+
+### 配置要求
+
+发布到 npm 需要在组织或仓库级别配置：
+- **Settings → Secrets and variables → Actions**
+- 添加 `NPM_AUTH_TOKEN` secret（从 npmjs.com 获取访问令牌）
+- 如果组织已配置 Organization Secret，可跳过此步骤
+
+GitHub Pages 需要启用：
+- **Settings → Pages → Source**: GitHub Actions
+
 ## Monorepo 优势
 
 1. **真实测试环境**: `test-app` 使用 npm 包的方式导入 `@realsee/vreo`，确保测试环境与真实使用环境一致
 2. **独立开发**: 主包和测试应用可以独立开发和构建
 3. **版本控制**: 使用 workspace: 协议确保测试应用始终使用最新的本地版本
 4. **构建隔离**: 主包只构建库文件，测试应用负责开发时的 HTML 页面
+5. **自动化发布**: 使用 GitHub Actions 实现 CI/CD，提高发布效率和质量
 
 ## 迁移说明
 
