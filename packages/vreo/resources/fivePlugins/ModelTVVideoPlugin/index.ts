@@ -10,10 +10,12 @@ export interface ModelTVVideoPluginData {
 
 export interface ModelTVVideoPluginParameterType {
   videoElement?: HTMLVideoElement
+  canPlay?: () => boolean
 }
 export interface ModelTVVideoPluginExportType {
   enable: () => void
   disable: () => void
+  dispose: () => void
   load: (data: ModelTVVideoPluginData, videoElement?: HTMLVideoElement) => Promise<void>
 }
 
@@ -32,8 +34,15 @@ type ModelTVVideoPluginState = {
 
 export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, ModelTVVideoPluginExportType> = (
   five,
-  { videoElement },
+  { videoElement, canPlay },
 ) => {
+  const listeners: (() => void)[] = []
+  const on: typeof five.on = (name, callback) => {
+    listeners.push(() => { five.off(name, callback) })
+    return five.on(name, callback)
+  }
+  let generation = 0
+  let disposed = false
   const state: ModelTVVideoPluginState = {
     videoMeshes: [],
     videoTextureEnabled: false,
@@ -45,8 +54,9 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
 
   const setMuted = (muted: boolean) => {
     if (state.videoTexture) {
+      if (!muted && canPlay && !canPlay()) return
       state.videoTexture.image.muted = muted
-      state.videoTexture.image.play()
+      if (state.enabled && (!canPlay || canPlay())) void state.videoTexture.image.play()
     }
   }
   const getMuted = () => {
@@ -55,7 +65,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
   }
 
   const enable = () => {
-    if (state.enabled) return
+    if (disposed || state.enabled || (canPlay && !canPlay())) return
     if (!state.videoTexture) return
 
     state.enabled = true
@@ -63,7 +73,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     state.videoMeshes.forEach((mesh) => five.scene.add(mesh))
 
     const play = () => {
-      if (!state.videoTexture) return
+      if (!state.videoTexture || !state.enabled || (canPlay && !canPlay())) return
 
       const timeupdate = () => {
         if (!state.videoTexture) return
@@ -87,6 +97,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
   }
 
   const disable = () => {
+    if (state.videoTexture) { state.videoTexture.image.muted = true; state.videoTexture.image.pause() }
     if (!state.enabled) return
     state.enabled = false
     state.videoMeshes.forEach((mesh) => {
@@ -197,6 +208,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
   }
 
   const load = async (data: ModelTVVideoPluginData, videoElement?: HTMLVideoElement) => {
+    const current = ++generation
     const { video_src, video_poster_src, points } = data
     state.videoSource = video_src
     state.rectPoints = points.map((items) => items.map(({ x, y, z }) => new THREE.Vector3(x, y, z)))
@@ -206,15 +218,27 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
       state.videoElement = videoElement
     }
 
-    state.videoTexture = await getVideoTexture(state.videoSource, state.videoElement)
+    const texture = await getVideoTexture(state.videoSource, state.videoElement)
+    if (disposed || current !== generation) {
+      texture.image.muted = true
+      texture.image.pause()
+      URL.revokeObjectURL(texture.image.src)
+      texture.dispose()
+      return
+    }
+    if (state.videoTexture) {
+      state.videoTexture.image.pause()
+      URL.revokeObjectURL(state.videoTexture.image.src)
+      state.videoTexture.dispose()
+    }
+    state.videoTexture = texture
 
-    state.enabled = !!data.enable
-    if (state.enabled) enable()
+    if (data.enable) enable()
   }
 
-  five.on('modeChange', () => setMuted(true))
+  on('modeChange', () => setMuted(true))
 
-  five.on('wantsTapGesture', (raycaster) => {
+  on('wantsTapGesture', (raycaster) => {
     if (!state.enabled) return
     const [intersect] = raycaster.intersectObjects(five.scene.children, true)
     if (!!intersect && /^video/.test(intersect.object.name)) {
@@ -223,7 +247,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     }
   })
 
-  five.on('panoArrived', () => {
+  on('panoArrived', () => {
     if (!state.enabled) return
     if (getMuted()) return
     const cameraPosition = five.camera.position
@@ -260,7 +284,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     if (!visible) setMuted(true)
   })
 
-  five.on('renderFrame', () => {
+  on('renderFrame', () => {
     state.videoMeshes.forEach((meshes) => {
       if (meshes)
         //@ts-ignore
@@ -268,11 +292,22 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     })
   })
 
-  five.on('load', (input) => {
+  on('load', (input) => {
     if (input.modelTVVideoData) {
       load(input.modelTVVideoData)
     }
   })
 
-  return { enable, disable, load }
+  const dispose = () => {
+    disposed = true
+    ++generation
+    disable()
+    listeners.splice(0).forEach(remove => remove())
+    state.imageTexture?.dispose()
+    if (state.videoTexture) {
+      URL.revokeObjectURL(state.videoTexture.image.src)
+      state.videoTexture.dispose()
+    }
+  }
+  return { enable, disable, load, dispose }
 }

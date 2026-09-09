@@ -59,15 +59,11 @@ void main(void) {
 }
 `
 
-const cacheInstance: {
-  videoInstance?: HTMLVideoElement
-  audioInstance?: HTMLAudioElement
-} = {}
-
 /**
  * 视频经纪人贴片的配置选项
  */
 export interface VideoAgentMeshOptions {
+  canPlay?: () => boolean
   /**
    * 自定义视频实例。
    */
@@ -123,6 +119,11 @@ export class VideoAgentMesh extends THREE.Mesh {
   /** 是否暂停状态 */
   paused: boolean
   /** 音频实例 */
+  private ownsVideo = false
+  private ownsAudio = false
+  private generation = 0
+  private removeStart?: () => void
+  private objectURL?: string
   audioInstance: HTMLAudioElement
   /** AudioLike 实例 */
   audioLikeInstance: AudioLike
@@ -180,20 +181,14 @@ export class VideoAgentMesh extends THREE.Mesh {
       preload: true
     },
   ) {
+    const ownsVideo = !options.videoInstance
     if (!options.videoInstance) {
-      if (cacheInstance.videoInstance) {
-        options.videoInstance = cacheInstance.videoInstance
-      } else {
-        const videoInstance = document.createElement('video')
-        videoInstance.style.opacity = '0'
-        videoInstance.style.pointerEvents = 'none'
-        videoInstance.style.display = 'none'
-        document.body.append(videoInstance)
-        options.videoInstance = videoInstance
-        cacheInstance.videoInstance = videoInstance
-        videoInstance.playsInline = true
-        videoInstance.controls = false
-      }
+      const videoInstance = document.createElement('video')
+      videoInstance.style.display = 'none'
+      videoInstance.playsInline = true
+      videoInstance.muted = true
+      document.body.append(videoInstance)
+      options.videoInstance = videoInstance
     }
 
     const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments)
@@ -209,24 +204,17 @@ export class VideoAgentMesh extends THREE.Mesh {
     })
 
     super(geometry, material)
+    this.ownsVideo = ownsVideo
+    this.ownsAudio = !options.audioInstance
     this.options = options
     this.freeze = false
     this.paused = true
 
     if (!options.audioInstance) {
-      if (cacheInstance.audioInstance) {
-        this.audioInstance = cacheInstance.audioInstance
-      } else {
-        const audioInstance = document.createElement('audio')
-        audioInstance.crossOrigin = ''
-        // videoInstance.muted = true
-        audioInstance.muted = false
-        audioInstance.autoplay = false
-        audioInstance.style.display = 'none'
-        document.body.appendChild(audioInstance)
-        this.audioInstance = audioInstance
-        cacheInstance.audioInstance = audioInstance
-      }
+      this.audioInstance = document.createElement('audio')
+      this.audioInstance.crossOrigin = ''
+      this.audioInstance.muted = true
+      this.audioInstance.autoplay = false
     } else {
       this.audioInstance = options.audioInstance
     }
@@ -263,41 +251,29 @@ export class VideoAgentMesh extends THREE.Mesh {
    * @param videoUrl - 媒体文件URL
    * @private
    */
-  private async update(videoUrl: string) {
-
-    if (this.videoUrl === videoUrl) {
-      return
-    }
-
-    this.videoUrl = videoUrl
-
-    // // 兼容非视频场景
-    // if (this.mediaInstance instanceof HTMLAudioElement) {
-    //   this.mediaInstance.style.display = 'none'
-    // } else if (this.mediaInstance instanceof HTMLVideoElement) {
-    //   this.mediaInstance.style.display = 'block'
-    // }
-
+  private async update(videoUrl: string, valid: () => boolean) {
+    if (this.videoUrl === videoUrl) return
+    this.stop()
     this.freeze = true
-    await this.mediaInstance.pause()
-
-    const uniforms = (this.material as THREE.ShaderMaterial).uniforms
-    this.mediaInstance.muted = true
-
-    this.mediaInstance.src = (this.options.preload || this.options.preload === undefined || getMediaType(this.videoUrl) === 'video') ?
-      await URL.createObjectURL((await Preloader.blob(this.videoUrl)) as unknown as Blob) : this.videoUrl
-    this.mediaInstance.setAttribute('data-src', this.videoUrl)
-
+    const media = getMediaType(videoUrl) === 'audio' ? this.audioInstance : this.options.videoInstance!
+    media.muted = true
+    const src = (this.options.preload !== false || getMediaType(videoUrl) === 'video')
+      ? URL.createObjectURL(await Preloader.blob(videoUrl) as unknown as Blob) : videoUrl
+    if (!valid()) { if (src !== videoUrl) URL.revokeObjectURL(src); return }
+    this.videoUrl = videoUrl
+    if (this.objectURL) URL.revokeObjectURL(this.objectURL)
+    this.objectURL = src !== videoUrl ? src : undefined
+    media.src = src
+    media.setAttribute('data-src', videoUrl)
     const onStart = () => {
-      if (this.mediaInstance.currentTime === 0) return
+      if (!valid() || media.currentTime === 0) return
       this.freeze = false
-      this.mediaInstance.muted = false
-      uniforms.enable.value = getMediaType(this.videoUrl) ? 1 : 0
-      this.mediaInstance.removeEventListener('timeupdate', onStart, false)
-
+      media.muted = false
+      ;(this.material as THREE.ShaderMaterial).uniforms.enable.value = getMediaType(videoUrl) ? 1 : 0
+      this.removeStart?.()
     }
-
-    this.mediaInstance.addEventListener('timeupdate', onStart, false)
+    this.removeStart = () => media.removeEventListener('timeupdate', onStart)
+    media.addEventListener('timeupdate', onStart)
   }
 
   /**
@@ -326,41 +302,36 @@ export class VideoAgentMesh extends THREE.Mesh {
    * ```
    */
   async play(videoUrl = '', currentTime = 0, duration?: number) {
-    videoUrl = videoUrl || ''
-
-    if (duration && !videoUrl) {
-      if (this.currentTime) {
-        this.mediaInstance.currentTime = currentTime
-      }
-      (this.mediaInstance as AudioLike).duration = duration
-      this.videoUrl = ''
-      this.mediaInstance.play()
-      return true
+    if (this.options.canPlay && !this.options.canPlay()) return false
+    // stop() invalidates all earlier loads before the new generation is captured.
+    if (videoUrl && videoUrl !== this.videoUrl) this.stop()
+    let generation = this.generation
+    const valid = () => generation === this.generation && (!this.options.canPlay || this.options.canPlay())
+    if (videoUrl && videoUrl !== this.videoUrl) {
+      // update's synchronous stop is accounted for before awaiting its load.
+      generation++
+      await this.update(videoUrl, valid)
     }
+    if (!valid()) return false
+    if (duration && !videoUrl) { this.videoUrl = ''; this.audioLikeInstance.duration = duration }
+    const media = this.mediaInstance
+    if (videoUrl || duration) media.currentTime = currentTime
+    media.muted = true
+    await media.play()
+    if (!valid()) return false
+    media.muted = false
+    return true
+  }
 
-    if (!videoUrl) {
-      if (this.videoUrl) await this.mediaInstance.play()
-      else console.warn('警告：视频资源未初始化。')
-      return true
-    }
-
-    if (videoUrl === this.videoUrl) {
-      this.mediaInstance.currentTime = currentTime
-      await this.mediaInstance.play()
-      return true
-    }
-
-    await this.update(videoUrl)
-
-    this.mediaInstance.pause()
-
-    return await new Promise((resolve) =>
-      setTimeout(async () => {
-        this.mediaInstance.currentTime = currentTime
-        await this.mediaInstance.play()
-        resolve(true)
-      }, 20),
-    )
+  stop() {
+    ++this.generation
+    this.removeStart?.()
+    this.removeStart = undefined
+    this.audioInstance.muted = true
+    this.audioInstance.pause()
+    this.options.videoInstance!.muted = true
+    this.options.videoInstance!.pause()
+    this.audioLikeInstance.pause()
   }
 
   /**
@@ -385,16 +356,13 @@ export class VideoAgentMesh extends THREE.Mesh {
    * ```
    */
   dispose() {
-    // 销毁事件监听
+    this.stop()
     this.$removeEventListener()
-    if (cacheInstance.audioInstance) {
-      document.body.removeChild(cacheInstance.audioInstance)
-      cacheInstance.audioInstance = undefined
-    }
-
-    if (cacheInstance.videoInstance) {
-      document.body.removeChild(cacheInstance.videoInstance)
-      cacheInstance.videoInstance = undefined
-    }
+    if (this.ownsVideo) this.options.videoInstance?.remove()
+    if (this.ownsAudio) this.audioInstance.remove()
+    if (this.objectURL) URL.revokeObjectURL(this.objectURL)
+    this.geometry.dispose()
+    ;(this.material as THREE.ShaderMaterial).uniforms.map.value.dispose()
+    ;(this.material as THREE.ShaderMaterial).dispose()
   }
 }

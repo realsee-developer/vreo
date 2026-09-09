@@ -4,18 +4,6 @@ import * as React from 'react'
 import { VideoEffectData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 import { useController, useFiveInstance } from '../../../hooks'
 
-const inlinePlay = (videoInstance?: HTMLVideoElement | null) => {
-  if (!videoInstance) return
-  const canplaythrough = () => {
-    videoInstance.removeEventListener('canplaythrough', canplaythrough)
-    try {
-      videoInstance.play()
-    } catch (error) {}
-  }
-  videoInstance.addEventListener('canplaythrough', canplaythrough)
-  videoInstance.load()
-}
-
 // const emptyVideo = '//vr-static.realsee-cdn.cn/release/web/leisure.69fd3522.mov'
 const PI = Math.PI
 const PI_2 = PI * 2
@@ -35,7 +23,10 @@ export function VideoEffect() {
   }
 
   React.useEffect(() => {
+    let generation = 0
+    let removeCanPlay: (() => void) | undefined
     const callback = async (keyframe: VreoKeyframe) => {
+      const current = ++generation
       const { start, end } = keyframe
       const { videoSrc, fov, direction, panoIndex, vector } = keyframe.data as VideoEffectData
       const [longitude, latitude] = (() => {
@@ -52,34 +43,49 @@ export function VideoEffect() {
         return [longitude, latitude]
       })()
 
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (videoRef.current) { videoRef.current.muted = true; videoRef.current.pause() }
       five.setState({ fov, panoIndex, longitude, latitude }, true)
       setBlobSrc(videoSrc)
 
-      inlinePlay(videoRef.current)
+      removeCanPlay?.()
+      const active = controller.audioFocus.capture()
+      const valid = () => current === generation && active()
+      const video = videoRef.current
+      if (!video || !valid()) return
+      const play = () => {
+        removeCanPlay?.()
+        if (!valid()) return
+        video.muted = false
+        void video.play().catch(error => { if (valid()) { controller.audioFocus.cancel('paused'); console.error(error) } })
+      }
+      removeCanPlay = () => video.removeEventListener('canplaythrough', play)
+      video.addEventListener('canplaythrough', play)
+      video.load()
       setVisible(true)
 
-      timeoutRef.current = setTimeout(() => {
-        videoRef.current?.pause()
-        setVisible(false)
-        setBlobSrc('')
-      }, end - start)
+      timeoutRef.current = setTimeout(destroy, Math.max(0, end - start))
     }
 
     controller.on(VreoKeyframeEnum.VideoEffect, callback)
 
     const destroy = () => {
+      ++generation
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
+      removeCanPlay?.()
+      if (videoRef.current) videoRef.current.muted = true
       videoRef.current?.pause()
       setVisible(false)
       setBlobSrc('')
     }
 
-    controller.on('paused', () => destroy())
-    controller.on('ended', () => destroy())
+    const remove = controller.audioFocus.add(destroy)
 
     return () => {
+      destroy()
+      remove()
       controller.off(VreoKeyframeEnum.VideoEffect, callback)
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
@@ -93,26 +99,15 @@ export function VideoEffect() {
     // <video playsInline key="VideoEffect-video" className="VideoEffect-video" src={blobSrc} />
     video.setAttribute('playsinline', 'true')
     video.setAttribute('webkit-playsinline', 'true')
-    video.setAttribute('autoplay', 'true')
+    video.autoplay = false
+    video.muted = true
     video.setAttribute('key', 'VideoEffect-video')
     video.setAttribute('class', 'VideoEffect-video')
 
     videoRef.current = video
     ref.current.append(videoRef.current)
-    document.addEventListener(
-      'WeixinJSBridgeReady',
-      function () {
-        videoRef.current?.play()
-      },
-      false
-    )
+    return () => { video.muted = true; video.pause(); video.remove() }
 
-    if (!ref.current) return
-    // const asyncfunc = async () => {
-    //   setBlobSrc(await URL.createObjectURL(await Preloader.blob(emptyVideo)))
-    //   inlinePlay(videoRef.current)
-    // }
-    // asyncfunc()
   }, [])
 
   return (

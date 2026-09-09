@@ -39,6 +39,7 @@ export class AudioLike extends Subscribe<AudioLikeEvent> {
   }
 
   play() {
+    if (this.stopInterval) return
     if (this.$currentTime === this.$duration) {
       this.$currentTime = 0
     }
