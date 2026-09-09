@@ -1,3 +1,4 @@
+import type { AudioFocusHost } from './AudioFocus'
 import React, { ReactNode } from 'react';
 import { Subscribe, Five } from '@realsee/five';
 
@@ -6,6 +7,7 @@ import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
 import { Overwrite } from '@realsee/dnalogel/libs/typings/utils.type';
 
 export interface PlayerConfigs {
+  audioFocus?: AudioFocusHost
 /**
  * @deprecated rename to container
  */
@@ -59,6 +61,7 @@ export interface Appearance {
 export type VreoSubscribe = Pick<Subscribe<VreoKeyframeEvent>, 'on' | 'once' | 'off'>
 
 export interface CustomVreoKeyframeProps {
+  audioFocus: AudioFocusHost
   subscribe: Pick<Subscribe<{[key: string]: (data: VreoKeyframe, currentTime: number) => any}>, 'on' | 'once' | 'off'>
   five: Five
 }

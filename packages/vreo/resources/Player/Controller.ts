@@ -1,3 +1,4 @@
+import { NarrationAudioFocus } from './AudioFocus'
 import { Five, Subscribe } from '@realsee/five'
 import { action, computed, makeObservable, observable, reaction } from 'mobx'
 import * as React from 'react'
@@ -127,7 +128,9 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * @param playing - 是否正在播放
      */
     setPlaying(playing: boolean) {
+        if (playing && !this.audioFocus.active) return
         this.playing = playing
+        if (playing) this.resumeMedia()
     }
 
     /**
@@ -177,9 +180,21 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * @param params.container - DOM 容器元素
      * @param params.configs - 播放器配置
      */
+    private resumeGeneration = 0
+    private resuming: number | undefined
+    private disposers: (() => void)[] = []
+    readonly audioFocus: NarrationAudioFocus
+
     constructor({five, container, configs}: { five: Five, container: Element, configs: PlayerConfigs }) {
         super()
 
+        this.audioFocus = new NarrationAudioFocus(configs.audioFocus, () => {
+            this.resuming = undefined
+            ++this.resumeGeneration
+            this.setPlaying(false)
+            this.videoAgentScene?.videoAgentMesh.stop()
+            this.setWaitingForBgMusic(false)
+        })
         this.configs = configs
         this.container = container
         this.five = five
@@ -212,7 +227,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             setWaitingForBgMusic: action,
         })
 
-        reaction<[typeof this.appearance.waveStyle, boolean | null], boolean>(
+        this.disposers.push(reaction<[typeof this.appearance.waveStyle, boolean | null], boolean>(
             () => [this.appearance.waveStyle, this.loading], 
             ([waveStyle, loading]) => {
                 if (loading === null) {
@@ -240,10 +255,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
                 }
             }, 
             { fireImmediately: true }
-        )
+        ))
 
         if (!this.appSize) {
-            reaction(
+            this.disposers.push(reaction(
                 () => this.containerSize,
                 (containerSize) => {
                     if (!containerSize?.width) return
@@ -263,29 +278,29 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
                     setElementDataset(this.container, { orientation })
                 },
                 { fireImmediately: true }
-            )
+            ))
         } else {
             setElementDataset(this.container, { size: this.appSize })
         }
 
         // 监听播放情况：抛出触发时机
-        reaction(
+        this.disposers.push(reaction(
             () => this.ended,
             (ended) => {
                 if (ended) {
                     this.emit('paused', true)
                 }
             }
-        )
+        ))
 
-        reaction(
+        this.disposers.push(reaction(
             () => this.playing,
             (playing) => {
                 if (!this.ended) {
                     this.emit(playing ? 'playing' : 'paused')
                 }
             }
-        )
+        ))
 
     }
 
@@ -352,6 +367,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
             if (this.ended) return
             this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
+            this.audioFocus.cancel('paused')
             this.setEnded(true)
             this.setPlaying(false)
             this.mediaInstance.pause()
@@ -366,9 +382,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             return
         }
 
-        if (this.mediaInstance?.paused && this.playing) {
-            this.mediaInstance.play()
-        }
+        this.resumeMedia()
         
         const currentKeyframes = this.currentKeyframes
         currentKeyframes.forEach((keyframe) => {
@@ -379,6 +393,18 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
                 callback(keyframe.type, keyframe, this.currentTime)
             }
         })
+    }
+
+    private resumeMedia() {
+        if (this.waitingForBgMusic) return
+        if (this.mediaInstance?.paused && this.playing && !this.resuming) {
+            const attempt = ++this.resumeGeneration
+            this.resuming = attempt
+            const valid = this.audioFocus.capture()
+            void this.videoAgentScene?.videoAgentMesh.play().catch(error => {
+                if (valid()) { this.audioFocus.cancel('paused'); console.error(error) }
+            }).finally(() => { if (this.resuming === attempt) this.resuming = undefined })
+        }
     }
 
     /**
@@ -421,6 +447,8 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * 清理所有状态和资源，释放内存
      */
     dispose() {
+        this.disposers.splice(0).forEach(dispose => dispose())
+        this.audioFocus.dispose()
         this.clear()
     }
 }

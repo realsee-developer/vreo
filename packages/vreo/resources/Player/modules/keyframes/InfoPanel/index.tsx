@@ -10,22 +10,6 @@ import {
 import { useController } from '../../../hooks'
 
 
-const isWX = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
-const isIOS = navigator.userAgent.toLowerCase().indexOf('iphone') !== -1
-
-const isIOSorWX = isIOS || isWX
-
-
-const _videoElement = document.createElement('video')
-_videoElement.setAttribute('playsinline', 'true')
-_videoElement.setAttribute('webkit-playsinline', 'true')
-
-if (isIOSorWX) {
-  if (_videoElement.paused) {
-    _videoElement.addEventListener('click', () => _videoElement.play(), {once:true})
-  }
-}
-
 function InfoPanelImg({ url, children }: { url: string; children?: ReactNode }) {
   return (
     <div className="vreo-infoPanel-container">
@@ -43,8 +27,14 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
 
   React.useEffect(() => {
     // if (!isIOSorWX) return
-    const video = controller.configs?.videos?.videoPanel || _videoElement
+    const video = controller.configs?.videos?.videoPanel || document.createElement('video')
+    const valid = controller.audioFocus.capture()
+    let disposed = false
+    video.playsInline = true
+    video.muted = true
+    const stop = () => { disposed = true; video.muted = true; video.pause(); video.removeEventListener('canplaythrough', canplaythrough) }
     if (!videoWrapperRef.current) return
+    const remove = controller.audioFocus.add(stop)
     video.src = url
     if (!videoWrapperRef.current.contains(video)) {
       videoWrapperRef.current.appendChild(video)
@@ -52,21 +42,22 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
 
     const canplaythrough = () => {
       video.removeEventListener('canplaythrough', canplaythrough)
-      try {
-        video.play()
-      } catch (error) {}
+      if (disposed || !valid()) return
+      video.muted = false
+      void video.play().catch(error => { if (valid() && !disposed) { stop(); controller.audioFocus.cancel('paused'); console.error(error) } })
     }
     video.addEventListener('canplaythrough', canplaythrough)
     video.load()
     // video.play()
 
     return () => {
-      video.pause()
+      stop()
+      remove()
       if (videoWrapperRef.current?.contains(video)) {
         videoWrapperRef.current.removeChild(video)
       }
     }
-  }, [videoWrapperRef.current])
+  }, [controller, url])
 
   return (
     <div className="vreo-infoPanel-container">
@@ -161,15 +152,16 @@ export function InfoPanel() {
     }
     controller.on(VreoKeyframeEnum.InfoPanel, callback)
 
-    controller.on('ended', () => {
+    const close = () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      controller.openDrawer(false)
       controller.openPopUp(false)
-    })
-
-    controller.on('paused', () => {
-      controller.openPopUp(false)
-    })
+    }
+    const remove = controller.audioFocus.add(close)
 
     return () => {
+      remove()
+      close()
       controller.off(VreoKeyframeEnum.InfoPanel, callback)
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)

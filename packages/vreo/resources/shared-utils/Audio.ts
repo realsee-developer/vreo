@@ -69,6 +69,7 @@ class IAudio extends Audio {
    * @param paramsSrc - 音频源 URL
    */
   set src(paramsSrc: string) {
+    this.muted = true
     this.setAttribute('src', paramsSrc)
     this.realSrc = paramsSrc
   }

@@ -12,9 +12,16 @@ export function ModelVideo() {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
 
   React.useEffect(() => {
+    let generation = 0
+    const stop = () => { ++generation; if (timeoutRef.current) clearTimeout(timeoutRef.current); ref.current?.disable() }
+    const remove = controller.audioFocus.add(stop)
     const callback = async (keyframe: VreoKeyframe) => {
+      stop()
+      const current = generation
+      const valid = controller.audioFocus.capture()
+      if (!valid()) return
       if (!ref.current) {
-        ref.current = ModelTVVideoPlugin(five, {})
+        ref.current = ModelTVVideoPlugin(five, { canPlay: () => controller.audioFocus.active })
       }
       const { start, end } = keyframe
       const { videoSrc, videoPosterSrc, vertexs, matrixWorld } = keyframe.data as ModelVideoData
@@ -51,6 +58,7 @@ export function ModelVideo() {
       })()
 
       ref.current.disable()
+      try {
       await ref.current.load(
         {
           video_src: videoSrc,
@@ -60,12 +68,21 @@ export function ModelVideo() {
         controller.configs?.videos?.modelTVVideo
       )
 
+      } catch (error) {
+        if (current === generation && valid()) { controller.audioFocus.cancel('paused'); console.error(error) }
+        return
+      }
+      if (current !== generation || !valid()) return
       ref.current.enable()
       timeoutRef.current = setTimeout(() => ref.current?.disable(), end - start)
     }
 
     controller.on(VreoKeyframeEnum.ModelVideo, callback)
     return () => {
+      stop()
+      remove()
+      ref.current?.dispose()
+      ref.current = undefined
       controller.off(VreoKeyframeEnum.ModelVideo, callback)
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
