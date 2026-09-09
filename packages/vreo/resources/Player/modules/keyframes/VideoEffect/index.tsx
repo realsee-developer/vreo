@@ -1,3 +1,4 @@
+import type { MediaOperations } from '../../../playback-types'
 import classNames from 'classnames'
 import * as React from 'react'
 // import { Preloader } from '../../../../shared-utils/Preloader'
@@ -16,17 +17,11 @@ export function VideoEffect() {
 
   const [visible, setVisible] = React.useState(false)
   const five = useFiveInstance()
-  const setBlobSrc = (blob: string) => {
-    if (!videoRef.current) return
-
-    videoRef.current.src = blob
-  }
-
   React.useEffect(() => {
+    let output: MediaOperations | undefined
     let generation = 0
     let removeCanPlay: (() => void) | undefined
     const callback = async (keyframe: VreoKeyframe) => {
-      const current = ++generation
       const { start, end } = keyframe
       const { videoSrc, fov, direction, panoIndex, vector } = keyframe.data as VideoEffectData
       const [longitude, latitude] = (() => {
@@ -43,25 +38,29 @@ export function VideoEffect() {
         return [longitude, latitude]
       })()
 
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      if (videoRef.current) { videoRef.current.muted = true; videoRef.current.pause() }
+      destroy()
+      const currentGeneration = generation
       five.setState({ fov, panoIndex, longitude, latitude }, true)
-      setBlobSrc(videoSrc)
+
 
       removeCanPlay?.()
-      const active = controller.audioFocus.capture()
-      const valid = () => current === generation && active()
+      const run = controller.playback.capture()
+      const active = () => !!run?.valid()
+      const valid = () => currentGeneration === generation && active()
       const video = videoRef.current
       if (!video || !valid()) return
+      const media = output = run!.bind(video)
+      media.muted = true
+      media.src = videoSrc
       const play = () => {
         removeCanPlay?.()
         if (!valid()) return
-        video.muted = false
-        void video.play().catch(error => { if (valid()) { controller.audioFocus.cancel('paused'); console.error(error) } })
+        media.muted = false
+        void media.play().catch(error => { if (valid()) { controller.playback.cancel(); console.error(error) } })
       }
       removeCanPlay = () => video.removeEventListener('canplaythrough', play)
       video.addEventListener('canplaythrough', play)
-      video.load()
+      media.load()
       setVisible(true)
 
       timeoutRef.current = setTimeout(destroy, Math.max(0, end - start))
@@ -75,13 +74,13 @@ export function VideoEffect() {
         clearTimeout(timeoutRef.current)
       }
       removeCanPlay?.()
-      if (videoRef.current) videoRef.current.muted = true
-      videoRef.current?.pause()
+      if (output) { output.muted = true; output.pause(); output.src = '' }
+      output = undefined
       setVisible(false)
-      setBlobSrc('')
+
     }
 
-    const remove = controller.audioFocus.add(destroy)
+    const remove = controller.playback.add(destroy)
 
     return () => {
       destroy()

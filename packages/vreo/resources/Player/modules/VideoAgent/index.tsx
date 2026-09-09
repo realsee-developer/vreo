@@ -23,7 +23,7 @@ export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMe
       console.warn('VideoAgentScene" 重复初始化，已被过滤')
       return
     }
-    const videoAgentScene = new VideoAgentScene(ref.current, { ...props.options, canPlay: () => controller.audioFocus.active })
+    const videoAgentScene = new VideoAgentScene(ref.current, { ...props.options, getPlayback: () => controller.playback.capture() })
     controller.videoAgentScene = videoAgentScene
 
     return () => {

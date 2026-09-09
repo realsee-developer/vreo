@@ -13,16 +13,15 @@ export function ModelVideo() {
 
   React.useEffect(() => {
     let generation = 0
-    const stop = () => { ++generation; if (timeoutRef.current) clearTimeout(timeoutRef.current); ref.current?.disable() }
-    const remove = controller.audioFocus.add(stop)
+    const stop = () => { ++generation; if (timeoutRef.current) clearTimeout(timeoutRef.current); ref.current?.dispose(); ref.current = undefined }
+    const remove = controller.playback.add(stop)
     const callback = async (keyframe: VreoKeyframe) => {
       stop()
       const current = generation
-      const valid = controller.audioFocus.capture()
+      const run = controller.playback.capture()
+      const valid = () => !!run?.valid()
       if (!valid()) return
-      if (!ref.current) {
-        ref.current = ModelTVVideoPlugin(five, { canPlay: () => controller.audioFocus.active })
-      }
+      const plugin = ref.current = ModelTVVideoPlugin(five, { mediaManager: run?.mediaManager })
       const { start, end } = keyframe
       const { videoSrc, videoPosterSrc, vertexs, matrixWorld } = keyframe.data as ModelVideoData
 
@@ -57,9 +56,9 @@ export function ModelVideo() {
         return [position]
       })()
 
-      ref.current.disable()
+      plugin.disable()
       try {
-      await ref.current.load(
+      await plugin.load(
         {
           video_src: videoSrc,
           video_poster_src: videoPosterSrc,
@@ -69,12 +68,12 @@ export function ModelVideo() {
       )
 
       } catch (error) {
-        if (current === generation && valid()) { controller.audioFocus.cancel('paused'); console.error(error) }
+        if (current === generation && valid()) { controller.playback.cancel(); console.error(error) }
         return
       }
       if (current !== generation || !valid()) return
-      ref.current.enable()
-      timeoutRef.current = setTimeout(() => ref.current?.disable(), end - start)
+      plugin.enable()
+      timeoutRef.current = setTimeout(stop, end - start)
     }
 
     controller.on(VreoKeyframeEnum.ModelVideo, callback)

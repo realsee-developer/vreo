@@ -1,7 +1,7 @@
 // 下面这一行不能删
 import * as React from 'react'
 import type { Root } from 'react-dom/client'
-import type { AudioIntent } from './AudioFocus'
+
 import { createRoot } from 'react-dom/client'
 import { Five, Subscribe } from '@realsee/five'
 
@@ -54,7 +54,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     private disposers: (() => void)[] = []
     private loadGeneration = 0
     private disposed = false
-    get audioFocus() { return this.controller.audioFocus.host }
+    getMediaManager() { return this.controller.playback.capture()?.mediaManager }
     /** 播放器配置（只读） */
     configs: Readonly<PlayerConfigs>
 
@@ -112,7 +112,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                             off: (name, callback) => this.off(name as any, callback as any),
                         }}
                         five={five}
-                        audioFocus={this.audioFocus}
+                        getMediaManager={() => this.getMediaManager()}
                     />
                 ))}
             </ControllerContext.Provider>
@@ -161,11 +161,12 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * await player.load(vreoUnit, 0, false, true)
      * ```
      */
-    async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false, intent: AudioIntent = 'auto') {
+    async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false, userAction = false) {
         const generation = ++this.loadGeneration
-        this.controller.audioFocus.cancel('replaced')
-        if (this.disposed || !this.controller.audioFocus.acquire(intent)) return false
-        const valid = this.controller.audioFocus.capture()
+        this.controller.playback.cancel()
+        if (this.disposed || !this.controller.playback.begin(userAction)) return false
+        const run = this.controller.playback.capture()!
+        const valid = () => run.valid()
         try {
         this.controller.clear()
         this.controller.setLoading(true)
@@ -188,7 +189,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.controller.vreoUnit = vreoUnit
 
 
-        this.controller.mediaInstance?.pause()
+        this.controller.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
         
 
         // 预载逻辑
@@ -233,9 +234,10 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         // 新数据载入就绪
         this.emit('loaded', vreoUnit)
         this.controller.emit('loaded', vreoUnit)
+        if (!valid() || generation !== this.loadGeneration) return false
 
-        if (this.controller.videoAgentScene?.videoAgentMesh.mediaInstance) {
-            this.controller.videoAgentScene.videoAgentMesh.mediaInstance.currentTime = currentTime / 1000
+        if (this.controller.videoAgentScene?.videoAgentMesh.mediaOperations) {
+            this.controller.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = currentTime / 1000
         }
 
         this.controller.setAvatar(vreoUnit.video.avatar)
@@ -252,14 +254,14 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
 
         if (!valid() || generation !== this.loadGeneration) return false
         this.controller.setEnded(false)
-        this.play(undefined, intent)
+        this.play(undefined, userAction)
 
         this.controller.run((type, keyframe) => this.emit(type, keyframe, this.controller.currentTime))
         this.controller.setLoading(false)
         return true
         } catch (error) {
             if (!valid()) return false
-            this.controller.audioFocus.cancel('paused')
+            this.controller.playback.cancel()
             throw error
         } finally {
             if (generation === this.loadGeneration) this.controller.setLoading(false)
@@ -289,11 +291,11 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * player.play(10000) // 从10秒处开始
      * ```
      */
-    play(currentTime?: number, intent: AudioIntent = 'auto') {
-        if (this.disposed || !this.controller.audioFocus.acquire(intent)) return false
+    play(currentTime?: number, userAction = false) {
+        if (this.disposed || !this.controller.playback.begin(userAction)) return false
         if (this.controller.playing) return true
-        if (currentTime && this.controller.mediaInstance) {
-            this.controller.mediaInstance.currentTime = currentTime / 1000
+        if (currentTime && this.controller.videoAgentScene?.videoAgentMesh.mediaOperations) {
+            this.controller.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = currentTime / 1000
         }
         Object.assign(window, { $vreoController: this.controller })
         this.controller.setEnded(false)
@@ -326,7 +328,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      */
     pause() {
         ++this.loadGeneration
-        this.controller.audioFocus.cancel('paused')
+        this.controller.playback.cancel()
         this.controller.setLoading(false)
     }
 

@@ -1,3 +1,5 @@
+import type { PlaybackRun } from '../../PlaybackLifecycle'
+import type { MediaOperations } from '../../playback-types'
 import * as THREE from 'three'
 import { Preloader } from '../../../shared-utils/Preloader'
 import { makeObservable, observable, runInAction } from 'mobx'
@@ -63,7 +65,7 @@ void main(void) {
  * 视频经纪人贴片的配置选项
  */
 export interface VideoAgentMeshOptions {
-  canPlay?: () => boolean
+  getPlayback?: () => PlaybackRun | undefined
   /**
    * 自定义视频实例。
    */
@@ -119,6 +121,12 @@ export class VideoAgentMesh extends THREE.Mesh {
   /** 是否暂停状态 */
   paused: boolean
   /** 音频实例 */
+  private outputs = new Map<HTMLMediaElement, MediaOperations>()
+  private operations(run: PlaybackRun | undefined, element: HTMLMediaElement) {
+    const operations = run ? run.bind(element) : element
+    this.outputs.set(element, operations)
+    return operations
+  }
   private ownsVideo = false
   private ownsAudio = false
   private generation = 0
@@ -251,11 +259,12 @@ export class VideoAgentMesh extends THREE.Mesh {
    * @param videoUrl - 媒体文件URL
    * @private
    */
-  private async update(videoUrl: string, valid: () => boolean) {
+  private async update(videoUrl: string, valid: () => boolean, run?: PlaybackRun) {
     if (this.videoUrl === videoUrl) return
     this.stop()
     this.freeze = true
-    const media = getMediaType(videoUrl) === 'audio' ? this.audioInstance : this.options.videoInstance!
+    const element = getMediaType(videoUrl) === 'audio' ? this.audioInstance : this.options.videoInstance!
+    const media = this.operations(run, element)
     media.muted = true
     const src = (this.options.preload !== false || getMediaType(videoUrl) === 'video')
       ? URL.createObjectURL(await Preloader.blob(videoUrl) as unknown as Blob) : videoUrl
@@ -264,7 +273,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     if (this.objectURL) URL.revokeObjectURL(this.objectURL)
     this.objectURL = src !== videoUrl ? src : undefined
     media.src = src
-    media.setAttribute('data-src', videoUrl)
+    element.setAttribute('data-src', videoUrl)
     const onStart = () => {
       if (!valid() || media.currentTime === 0) return
       this.freeze = false
@@ -272,8 +281,8 @@ export class VideoAgentMesh extends THREE.Mesh {
       ;(this.material as THREE.ShaderMaterial).uniforms.enable.value = getMediaType(videoUrl) ? 1 : 0
       this.removeStart?.()
     }
-    this.removeStart = () => media.removeEventListener('timeupdate', onStart)
-    media.addEventListener('timeupdate', onStart)
+    this.removeStart = () => element.removeEventListener('timeupdate', onStart)
+    element.addEventListener('timeupdate', onStart)
   }
 
   /**
@@ -302,19 +311,20 @@ export class VideoAgentMesh extends THREE.Mesh {
    * ```
    */
   async play(videoUrl = '', currentTime = 0, duration?: number) {
-    if (this.options.canPlay && !this.options.canPlay()) return false
+    const run = this.options.getPlayback?.()
+    if (this.options.getPlayback && !run?.valid()) return false
     // stop() invalidates all earlier loads before the new generation is captured.
     if (videoUrl && videoUrl !== this.videoUrl) this.stop()
     let generation = this.generation
-    const valid = () => generation === this.generation && (!this.options.canPlay || this.options.canPlay())
+    const valid = () => generation === this.generation && (!this.options.getPlayback || !!run?.valid())
     if (videoUrl && videoUrl !== this.videoUrl) {
       // update's synchronous stop is accounted for before awaiting its load.
       generation++
-      await this.update(videoUrl, valid)
+      await this.update(videoUrl, valid, run)
     }
     if (!valid()) return false
     if (duration && !videoUrl) { this.videoUrl = ''; this.audioLikeInstance.duration = duration }
-    const media = this.mediaInstance
+    const media = this.videoUrl ? this.operations(run, this.mediaInstance as HTMLMediaElement) : this.audioLikeInstance
     if (videoUrl || duration) media.currentTime = currentTime
     media.muted = true
     await media.play()
@@ -323,14 +333,18 @@ export class VideoAgentMesh extends THREE.Mesh {
     return true
   }
 
+  get mediaOperations(): MediaOperations | AudioLike | undefined {
+    const run = this.options.getPlayback?.()
+    if (this.options.getPlayback && !run?.valid()) return undefined
+    return this.videoUrl ? this.operations(run, this.mediaInstance as HTMLMediaElement) : this.audioLikeInstance
+  }
+
   stop() {
     ++this.generation
     this.removeStart?.()
     this.removeStart = undefined
-    this.audioInstance.muted = true
-    this.audioInstance.pause()
-    this.options.videoInstance!.muted = true
-    this.options.videoInstance!.pause()
+    for (const output of this.outputs.values()) { output.muted = true; output.pause() }
+    this.outputs.clear()
     this.audioLikeInstance.pause()
   }
 

@@ -27,7 +27,8 @@ export function PanoTag() {
       return
     }
     const callback = (keyframe: VreoKeyframe) => {
-      if (!panoTagPlugin.current) return
+      const run = controller.playback.capture()
+      if (!panoTagPlugin.current || !run?.valid()) return
 
       const { start, end, data } = keyframe
 
@@ -50,6 +51,7 @@ export function PanoTag() {
 
       const tagInstance = panoTagPlugin.current.getTagById(id)
       if (tagInstance) {
+        tagInstance.setMediaManager(run.mediaManager)
         tagInstance.state.unfolded = true
         ;(panoTagPlugin.current as any).updateRenderAllTags()
       }

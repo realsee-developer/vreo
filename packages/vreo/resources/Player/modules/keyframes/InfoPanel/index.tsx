@@ -28,14 +28,17 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
   React.useEffect(() => {
     // if (!isIOSorWX) return
     const video = controller.configs?.videos?.videoPanel || document.createElement('video')
-    const valid = controller.audioFocus.capture()
+    const run = controller.playback.capture()
+      const valid = () => !!run?.valid()
+    if (!run?.valid()) return
+    const output = run.bind(video)
     let disposed = false
     video.playsInline = true
-    video.muted = true
-    const stop = () => { disposed = true; video.muted = true; video.pause(); video.removeEventListener('canplaythrough', canplaythrough) }
+    output.muted = true
+    const stop = () => { disposed = true; output.muted = true; output.pause(); video.removeEventListener('canplaythrough', canplaythrough) }
     if (!videoWrapperRef.current) return
-    const remove = controller.audioFocus.add(stop)
-    video.src = url
+    const remove = controller.playback.add(stop)
+    output.src = url
     if (!videoWrapperRef.current.contains(video)) {
       videoWrapperRef.current.appendChild(video)
     }
@@ -43,12 +46,12 @@ function InfoPanelVideo({ url, children }: { url: string; children?: ReactNode }
     const canplaythrough = () => {
       video.removeEventListener('canplaythrough', canplaythrough)
       if (disposed || !valid()) return
-      video.muted = false
-      void video.play().catch(error => { if (valid() && !disposed) { stop(); controller.audioFocus.cancel('paused'); console.error(error) } })
+      output.muted = false
+      void output.play().catch(error => { if (valid() && !disposed) { stop(); controller.playback.cancel(); console.error(error) } })
     }
     video.addEventListener('canplaythrough', canplaythrough)
-    video.load()
-    // video.play()
+    output.load()
+    // output.play()
 
     return () => {
       stop()
@@ -157,7 +160,7 @@ export function InfoPanel() {
       controller.openDrawer(false)
       controller.openPopUp(false)
     }
-    const remove = controller.audioFocus.add(close)
+    const remove = controller.playback.add(close)
 
     return () => {
       remove()
