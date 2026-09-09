@@ -34,9 +34,9 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
               return
             }
             if (controller.playing) {
-              controller.audioFocus.cancel('paused')
+              controller.playback.cancel()
             } else {
-              if (controller.audioFocus.acquire('user')) controller.setPlaying(true)
+              if (controller.playback.begin(true)) controller.setPlaying(true)
             }
           }}
           options={controller.configs?.videoAgentMeshOptions || {}}

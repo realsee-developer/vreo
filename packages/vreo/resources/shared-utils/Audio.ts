@@ -83,10 +83,11 @@ class IAudio extends Audio {
   public constructor(src?: string) {
     super(src)
     this.realSrc = src ?? ''
+    this.muted = true
 
 
     super.addEventListener('ended', () => {
-      this.src = ''
+      if (this.src === blankAudioSrc) this.src = ''
     })
 
     const init = () => initAudio(this)

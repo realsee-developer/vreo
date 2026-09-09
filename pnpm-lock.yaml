@@ -131,8 +131,8 @@ importers:
         specifier: ^7.16.0
         version: 7.18.6(@babel/core@7.19.6)
       '@realsee/dnalogel':
-        specifier: 3.81.10-alpha.0
-        version: 3.81.10-alpha.0
+        specifier: 3.81.10-alpha.1
+        version: 3.81.10-alpha.1
       '@realsee/five':
         specifier: ^6.4.0-alpha.38
         version: 6.4.0-alpha.40(@types/react@18.3.23)(react@18.3.1)(three@0.117.1)
@@ -2446,8 +2446,8 @@ packages:
     resolution: {integrity: sha512-Nr8UFeKnA5rpA0Z+fB1JtWV55vC/dub1gKyZyl61xsJ1MG7lS2jpgNQMDjmYKqL7zVwB1oWQn/qV2aVHrSxZJg==}
     dev: true
 
-  /@realsee/dnalogel@3.81.10-alpha.0:
-    resolution: {integrity: sha512-mUd5J0VmnJgzLd9UoXaBKoGByc5qHTlqwdrddYWTLWANBhK6M31g9fCugIVEAe+Bai83iQHbb30HEKc7yBQ4AA==}
+  /@realsee/dnalogel@3.81.10-alpha.1:
+    resolution: {integrity: sha512-Hig+S6Llut9jAOn9fn4ZwbYSt/RAahjaFPA/+B40Qahe1PKjCi9GCwJRBwfca4UmhZzO5mHUgJW1xTirusjH9g==}
     dev: true
 
   /@realsee/five@6.4.0-alpha.40(@types/react@18.3.23)(react@18.3.1)(three@0.117.1):

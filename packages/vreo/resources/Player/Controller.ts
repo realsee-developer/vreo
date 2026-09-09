@@ -1,4 +1,4 @@
-import { NarrationAudioFocus } from './AudioFocus'
+import { PlaybackLifecycle } from './PlaybackLifecycle'
 import { Five, Subscribe } from '@realsee/five'
 import { action, computed, makeObservable, observable, reaction } from 'mobx'
 import * as React from 'react'
@@ -128,7 +128,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * @param playing - 是否正在播放
      */
     setPlaying(playing: boolean) {
-        if (playing && !this.audioFocus.active) return
+        if (playing && !this.playback.active) return
         this.playing = playing
         if (playing) this.resumeMedia()
     }
@@ -183,12 +183,12 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     private resumeGeneration = 0
     private resuming: number | undefined
     private disposers: (() => void)[] = []
-    readonly audioFocus: NarrationAudioFocus
+    readonly playback: PlaybackLifecycle
 
     constructor({five, container, configs}: { five: Five, container: Element, configs: PlayerConfigs }) {
         super()
 
-        this.audioFocus = new NarrationAudioFocus(configs.audioFocus, () => {
+        this.playback = new PlaybackLifecycle(configs.mediaManager, () => {
             this.resuming = undefined
             ++this.resumeGeneration
             this.setPlaying(false)
@@ -359,7 +359,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         // 如果正在等待背景音乐加载，暂停整个播放流程
         if (this.waitingForBgMusic) {
             if (!this.mediaInstance?.paused) {
-                this.mediaInstance?.pause()
+                this.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
             }
             return
         }
@@ -367,17 +367,18 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
             if (this.ended) return
             this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
-            this.audioFocus.cancel('paused')
+            const media = this.videoAgentScene?.videoAgentMesh.mediaOperations
+            media?.pause()
+            if (media) media.currentTime = 0
+            this.playback.finish()
             this.setEnded(true)
             this.setPlaying(false)
-            this.mediaInstance.pause()
-            this.mediaInstance.currentTime = 0
             return
         }
 
         if (!this.playing) {
             if (!this.mediaInstance?.paused) {
-                this.mediaInstance?.pause()
+                this.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
             }
             return
         }
@@ -385,11 +386,12 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         this.resumeMedia()
         
         const currentKeyframes = this.currentKeyframes
+        const run = this.playback.capture()
         currentKeyframes.forEach((keyframe) => {
-            if (keyframe.parsed) return
+            if (!run?.valid() || keyframe.parsed) return
             keyframe.parsed = true
             this.emit(keyframe.type, keyframe, this.currentTime)
-            if (callback) {
+            if (callback && run.valid()) {
                 callback(keyframe.type, keyframe, this.currentTime)
             }
         })
@@ -400,9 +402,10 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         if (this.mediaInstance?.paused && this.playing && !this.resuming) {
             const attempt = ++this.resumeGeneration
             this.resuming = attempt
-            const valid = this.audioFocus.capture()
+            const run = this.playback.capture()
+            const valid = () => !!run?.valid()
             void this.videoAgentScene?.videoAgentMesh.play().catch(error => {
-                if (valid()) { this.audioFocus.cancel('paused'); console.error(error) }
+                if (valid()) { this.playback.cancel(); console.error(error) }
             }).finally(() => { if (this.resuming === attempt) this.resuming = undefined })
         }
     }
@@ -433,8 +436,8 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
          */
         this.vreoUnit = undefined
         if (this.mediaInstance) {
-            this.mediaInstance.pause()
-            this.mediaInstance.currentTime = 0
+            this.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
+            if (this.videoAgentScene?.videoAgentMesh.mediaOperations) this.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = 0
         }
 
         this.stopInterval?.()
@@ -448,7 +451,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      */
     dispose() {
         this.disposers.splice(0).forEach(dispose => dispose())
-        this.audioFocus.dispose()
+        this.playback.dispose()
         this.clear()
     }
 }
