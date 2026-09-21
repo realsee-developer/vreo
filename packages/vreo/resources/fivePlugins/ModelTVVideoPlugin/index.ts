@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import type { FivePlugin } from '@realsee/five'
+import type { PlaybackManager, PlaybackSession, MediaOperations } from '../../Player/playback-types'
 
 export interface ModelTVVideoPluginData {
   enable?: boolean
@@ -10,10 +11,12 @@ export interface ModelTVVideoPluginData {
 
 export interface ModelTVVideoPluginParameterType {
   videoElement?: HTMLVideoElement
+  mediaManager?: PlaybackManager
 }
 export interface ModelTVVideoPluginExportType {
   enable: () => void
   disable: () => void
+  dispose: () => void
   load: (data: ModelTVVideoPluginData, videoElement?: HTMLVideoElement) => Promise<void>
 }
 
@@ -32,8 +35,15 @@ type ModelTVVideoPluginState = {
 
 export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, ModelTVVideoPluginExportType> = (
   five,
-  { videoElement },
+  { videoElement, mediaManager },
 ) => {
+  const listeners: (() => void)[] = []
+  const on: typeof five.on = (name, callback) => {
+    listeners.push(() => { five.off(name, callback) })
+    return five.on(name, callback)
+  }
+  let generation = 0
+  let disposed = false
   const state: ModelTVVideoPluginState = {
     videoMeshes: [],
     videoTextureEnabled: false,
@@ -43,61 +53,78 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     videoElement: videoElement,
   }
 
-  const setMuted = (muted: boolean) => {
-    if (state.videoTexture) {
-      state.videoTexture.image.muted = muted
-      state.videoTexture.image.play()
-    }
-  }
-  const getMuted = () => {
-    if (state.videoTexture) return state.videoTexture.image.muted
-    else return true
-  }
-
-  const enable = () => {
-    if (state.enabled) return
-    if (!state.videoTexture) return
-
-    state.enabled = true
-    state.videoMeshes = createPanoVideoMeshes()
-    state.videoMeshes.forEach((mesh) => five.scene.add(mesh))
-
-    const play = () => {
-      if (!state.videoTexture) return
-
-      const timeupdate = () => {
-        if (!state.videoTexture) return
-        state.videoTexture?.image.removeEventListener('timeupdate', timeupdate)
-        state.videoTextureEnabled = true
-        state.videoMeshes.forEach((mesh) => {
-          if (mesh.material.map !== state.videoTexture) mesh.material.map = state.videoTexture!
-        })
-        five.needsRender = true
-      }
-      state.videoTexture.image.addEventListener('timeupdate', timeupdate)
-      if (state.videoTexture && state.videoMeshes.length) {
-        state.videoTexture.image.play()
-      }
-    }
-
-    if (five.model.loaded) play()
-    else {
-      return five.once('modelLoaded', () => play())
-    }
-  }
-
-  const disable = () => {
-    if (!state.enabled) return
+  let session: PlaybackSession | undefined
+  let output: MediaOperations | undefined
+  let removeReady: (() => void) | undefined
+  const stop = () => {
+    ++generation
+    removeReady?.()
+    removeReady = undefined
+    if (output) { output.muted = true; output.pause() }
+    output = undefined
+    session = undefined
     state.enabled = false
-    state.videoMeshes.forEach((mesh) => {
+    state.videoMeshes.forEach(mesh => {
       mesh.geometry.dispose()
       mesh.material.dispose()
       five.scene.remove(mesh)
-      if (state.videoTexture) state.videoTexture.image.pause()
     })
     state.videoMeshes = []
     five.needsRender = true
   }
+  const controller = mediaManager?.createController({ label: 'vreo-model-video', onCancel: stop })
+  const bind = (userAction: boolean, audible: boolean) => {
+    const element = state.videoTexture?.image as HTMLVideoElement | undefined
+    if (!element) return undefined
+    const next = controller?.begin({ userAction, audible }) ?? undefined
+    if (controller && !next) return undefined
+    session = next
+    return output = next ? next.bind(element) : element
+  }
+  const setMuted = (muted: boolean, userAction = false) => {
+    const wasEnabled = state.enabled
+    const media = !muted ? bind(userAction, true) : output
+    if (!media) return
+    media.muted = muted
+    if (wasEnabled && !state.enabled) {
+      state.enabled = true
+      state.videoMeshes = createPanoVideoMeshes()
+      state.videoMeshes.forEach(mesh => five.scene.add(mesh))
+    }
+    const run = session
+    const current = generation
+    if (state.enabled) void media.play().catch(error => { if (current === generation && !run?.signal.aborted) { disable(); console.error(error) } })
+  }
+  const getMuted = () => output?.muted ?? true
+  const enable = () => {
+    if (disposed || state.enabled || !state.videoTexture) return
+    const media = bind(false, false)
+    if (!media) return
+    const current = generation
+    const run = session
+    const element = state.videoTexture.image as HTMLVideoElement
+    const valid = () => current === generation && !disposed && state.enabled && !run?.signal.aborted
+    state.enabled = true
+    state.videoMeshes = createPanoVideoMeshes()
+    state.videoMeshes.forEach(mesh => five.scene.add(mesh))
+    const timeupdate = () => {
+      element.removeEventListener('timeupdate', timeupdate)
+      if (!valid()) return
+      state.videoTextureEnabled = true
+      state.videoMeshes.forEach(mesh => { mesh.material.map = state.videoTexture! })
+      five.needsRender = true
+    }
+    const play = () => {
+      five.off('modelLoaded', play)
+      if (!valid()) return
+      element.addEventListener('timeupdate', timeupdate)
+      void media.play().catch(error => { if (valid()) { disable(); console.error(error) } })
+    }
+    removeReady = () => { five.off('modelLoaded', play); element.removeEventListener('timeupdate', timeupdate) }
+    if (five.model.loaded) play()
+    else five.on('modelLoaded', play)
+  }
+  const disable = () => { controller?.cancel(); stop() }
 
   const createPanoVideoMeshes = () => {
     return state.rectPoints.map((points, index) => {
@@ -165,16 +192,18 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
   const getVideoTexture = (
     source: string,
     video?: HTMLVideoElement,
+    valid = () => true,
   ): Promise<THREE.VideoTexture & { videoSource: string }> => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
+          if (!valid()) { reject(new DOMException('Playback cancelled', 'AbortError')); return }
           if (xhr.status == 200) {
             const url = window.URL || window.webkitURL
             video = video || document.createElement('video')
             video.crossOrigin = 'anonymous'
-            video.autoplay = true
+            video.autoplay = false
             video.muted = true
             video.loop = true
             video.playsInline = true
@@ -197,6 +226,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
   }
 
   const load = async (data: ModelTVVideoPluginData, videoElement?: HTMLVideoElement) => {
+    const current = ++generation
     const { video_src, video_poster_src, points } = data
     state.videoSource = video_src
     state.rectPoints = points.map((items) => items.map(({ x, y, z }) => new THREE.Vector3(x, y, z)))
@@ -206,24 +236,36 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
       state.videoElement = videoElement
     }
 
-    state.videoTexture = await getVideoTexture(state.videoSource, state.videoElement)
+    const texture = await getVideoTexture(state.videoSource, state.videoElement, () => !disposed && current === generation)
+    if (disposed || current !== generation) {
+      texture.image.muted = true
+      texture.image.pause()
+      URL.revokeObjectURL(texture.image.src)
+      texture.dispose()
+      return
+    }
+    if (state.videoTexture) {
+      state.videoTexture.image.pause()
+      URL.revokeObjectURL(state.videoTexture.image.src)
+      state.videoTexture.dispose()
+    }
+    state.videoTexture = texture
 
-    state.enabled = !!data.enable
-    if (state.enabled) enable()
+    if (data.enable) enable()
   }
 
-  five.on('modeChange', () => setMuted(true))
+  on('modeChange', () => setMuted(true))
 
-  five.on('wantsTapGesture', (raycaster) => {
+  on('wantsTapGesture', (raycaster) => {
     if (!state.enabled) return
     const [intersect] = raycaster.intersectObjects(five.scene.children, true)
     if (!!intersect && /^video/.test(intersect.object.name)) {
-      if (state.videoTexture) setMuted(!state.videoTexture.image.muted)
+      if (state.videoTexture) setMuted(!state.videoTexture.image.muted, true)
       return false
     }
   })
 
-  five.on('panoArrived', () => {
+  on('panoArrived', () => {
     if (!state.enabled) return
     if (getMuted()) return
     const cameraPosition = five.camera.position
@@ -260,7 +302,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     if (!visible) setMuted(true)
   })
 
-  five.on('renderFrame', () => {
+  on('renderFrame', () => {
     state.videoMeshes.forEach((meshes) => {
       if (meshes)
         //@ts-ignore
@@ -268,11 +310,23 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     })
   })
 
-  five.on('load', (input) => {
+  on('load', (input) => {
     if (input.modelTVVideoData) {
       load(input.modelTVVideoData)
     }
   })
 
-  return { enable, disable, load }
+  const dispose = () => {
+    disposed = true
+    ++generation
+    disable()
+    controller?.dispose()
+    listeners.splice(0).forEach(remove => remove())
+    state.imageTexture?.dispose()
+    if (state.videoTexture) {
+      URL.revokeObjectURL(state.videoTexture.image.src)
+      state.videoTexture.dispose()
+    }
+  }
+  return { enable, disable, load, dispose }
 }

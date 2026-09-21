@@ -12,10 +12,16 @@ export function ModelVideo() {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>()
 
   React.useEffect(() => {
+    let generation = 0
+    const stop = () => { ++generation; if (timeoutRef.current) clearTimeout(timeoutRef.current); ref.current?.dispose(); ref.current = undefined }
+    const remove = controller.playback.add(stop)
     const callback = async (keyframe: VreoKeyframe) => {
-      if (!ref.current) {
-        ref.current = ModelTVVideoPlugin(five, {})
-      }
+      stop()
+      const current = generation
+      const run = controller.playback.capture()
+      const valid = () => !!run?.valid()
+      if (!valid()) return
+      const plugin = ref.current = ModelTVVideoPlugin(five, { mediaManager: run?.mediaManager })
       const { start, end } = keyframe
       const { videoSrc, videoPosterSrc, vertexs, matrixWorld } = keyframe.data as ModelVideoData
 
@@ -50,8 +56,9 @@ export function ModelVideo() {
         return [position]
       })()
 
-      ref.current.disable()
-      await ref.current.load(
+      plugin.disable()
+      try {
+      await plugin.load(
         {
           video_src: videoSrc,
           video_poster_src: videoPosterSrc,
@@ -60,12 +67,21 @@ export function ModelVideo() {
         controller.configs?.videos?.modelTVVideo
       )
 
-      ref.current.enable()
-      timeoutRef.current = setTimeout(() => ref.current?.disable(), end - start)
+      } catch (error) {
+        if (current === generation && valid()) { controller.playback.cancel(); console.error(error) }
+        return
+      }
+      if (current !== generation || !valid()) return
+      plugin.enable()
+      timeoutRef.current = setTimeout(stop, end - start)
     }
 
     controller.on(VreoKeyframeEnum.ModelVideo, callback)
     return () => {
+      stop()
+      remove()
+      ref.current?.dispose()
+      ref.current = undefined
       controller.off(VreoKeyframeEnum.ModelVideo, callback)
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)

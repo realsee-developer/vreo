@@ -1,6 +1,7 @@
 // 下面这一行不能删
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import type { Root } from 'react-dom/client'
+
 import { createRoot } from 'react-dom/client'
 import { Five, Subscribe } from '@realsee/five'
 
@@ -49,6 +50,11 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
     $five: Five
     /** 内部控制器 */
     private controller: Controller
+    private root: Root
+    private disposers: (() => void)[] = []
+    private loadGeneration = 0
+    private disposed = false
+    getMediaManager() { return this.controller.playback.capture()?.mediaManager }
     /** 播放器配置（只读） */
     configs: Readonly<PlayerConfigs>
 
@@ -90,8 +96,8 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.controller = new Controller({five, container:configs.container, configs: this.configs})
 
 
-        const root = createRoot(configs.container)
-        root.render(
+        this.root = createRoot(configs.container)
+        this.root.render(
             <ControllerContext.Provider value={this.controller}>
                 <App />
                 <Drawer />
@@ -106,29 +112,30 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
                             off: (name, callback) => this.off(name as any, callback as any),
                         }}
                         five={five}
+                        getMediaManager={() => this.getMediaManager()}
                     />
                 ))}
             </ControllerContext.Provider>
         )
 
         // 监听播放情况：抛出触发时机
-        reaction(
+        this.disposers.push(reaction(
             () => this.controller.ended,
             (ended) => {
                 if (ended) {
                     this.emit('paused', true)
                 }
             }
-        )
+        ))
 
-        reaction(
+        this.disposers.push(reaction(
             () => this.controller.playing,
             (playing) => {
                 if (!this.controller.ended) {
                     this.emit(playing ? 'playing' : 'paused')
                 }
             }
-        )
+        ))
     }
 
     /**
@@ -154,7 +161,13 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * await player.load(vreoUnit, 0, false, true)
      * ```
      */
-    async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false) {
+    async load(vreoUnit: VreoUnit, currentTime = 0, preload = false, force = false, userAction = false) {
+        const generation = ++this.loadGeneration
+        this.controller.playback.cancel()
+        if (this.disposed || !this.controller.playback.begin(userAction)) return false
+        const run = this.controller.playback.capture()!
+        const valid = () => run.valid()
+        try {
         this.controller.clear()
         this.controller.setLoading(true)
         if (force) {
@@ -176,7 +189,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         this.controller.vreoUnit = vreoUnit
 
 
-        this.controller.mediaInstance?.pause()
+        this.controller.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
         
 
         // 预载逻辑
@@ -214,21 +227,24 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
             const panoIndexes = Object.keys(panoIndexMap)
             for (let i = 0; i < panoIndexes.length; i++) {
                 await this.$five.preloadPano(Number(panoIndexes[i]))
+                if (!valid() || generation !== this.loadGeneration) return false
             }
         }
 
         // 新数据载入就绪
         this.emit('loaded', vreoUnit)
         this.controller.emit('loaded', vreoUnit)
+        if (!valid() || generation !== this.loadGeneration) return false
 
-        if (this.controller.videoAgentScene?.videoAgentMesh.mediaInstance) {
-            this.controller.videoAgentScene.videoAgentMesh.mediaInstance.currentTime = currentTime / 1000
+        if (this.controller.videoAgentScene?.videoAgentMesh.mediaOperations) {
+            this.controller.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = currentTime / 1000
         }
 
         this.controller.setAvatar(vreoUnit.video.avatar)
 
         await waitForBlankAudioGenerated()
 
+        if (!valid() || generation !== this.loadGeneration) return false
         await this.controller.videoAgentScene?.videoAgentMesh.play(
             vreoUnit.video.url,
             currentTime / 1000,
@@ -236,12 +252,20 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         )
 
 
+        if (!valid() || generation !== this.loadGeneration) return false
         this.controller.setEnded(false)
-        this.play()
+        this.play(undefined, userAction)
 
         this.controller.run((type, keyframe) => this.emit(type, keyframe, this.controller.currentTime))
         this.controller.setLoading(false)
         return true
+        } catch (error) {
+            if (!valid()) return false
+            this.controller.playback.cancel()
+            throw error
+        } finally {
+            if (generation === this.loadGeneration) this.controller.setLoading(false)
+        }
     }
 
     /**
@@ -267,10 +291,11 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * player.play(10000) // 从10秒处开始
      * ```
      */
-    play(currentTime?: number) {
+    play(currentTime?: number, userAction = false) {
+        if (this.disposed || !this.controller.playback.begin(userAction)) return false
         if (this.controller.playing) return true
-        if (currentTime && this.controller.mediaInstance) {
-            this.controller.mediaInstance.currentTime = currentTime / 1000
+        if (currentTime && this.controller.videoAgentScene?.videoAgentMesh.mediaOperations) {
+            this.controller.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = currentTime / 1000
         }
         Object.assign(window, { $vreoController: this.controller })
         this.controller.setEnded(false)
@@ -302,7 +327,9 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * 暂停播放
      */
     pause() {
-        this.controller.setPlaying(false)
+        ++this.loadGeneration
+        this.controller.playback.cancel()
+        this.controller.setLoading(false)
     }
 
     /**
@@ -333,11 +360,12 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      * 清理所有资源、事件监听器和DOM元素
      */
     dispose() {
+        if (this.disposed) return
+        this.disposed = true
+        ++this.loadGeneration
+        this.disposers.forEach(dispose => dispose())
         this.controller.dispose()
-
-        if (this.configs.container) {
-            ReactDOM.unmountComponentAtNode(this.configs.container as Element)
-        }
+        this.root.unmount()
     }
 }
 
