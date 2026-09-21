@@ -9,6 +9,7 @@ export class VideoAgentScene {
   scene = new THREE.Scene()
   camera = new THREE.OrthographicCamera(-240, 240, 135, -135)
   renderer = new THREE.WebGLRenderer({ alpha: true })
+  private frame = 0
   disposers: (() => void)[] = []
 
   constructor(container?: HTMLElement, options?: VideoAgentMeshOptions) {
@@ -46,10 +47,13 @@ export class VideoAgentScene {
       this.renderer.render(this.scene, this.camera)
     }
 
-    requestAnimationFrame(this.run)
+    this.frame = requestAnimationFrame(this.run)
   }
 
   dispose = () => {
+    cancelAnimationFrame(this.frame)
+    this.renderer.dispose()
+    this.renderer.domElement.remove()
     this.videoAgentMesh?.dispose()
     this.disposers.forEach(disposer => disposer?.())
   }

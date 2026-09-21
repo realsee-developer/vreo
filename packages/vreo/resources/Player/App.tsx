@@ -34,9 +34,9 @@ const AppView = observer(({ controller }: { controller: Controller }) => {
               return
             }
             if (controller.playing) {
-              controller.setPlaying(false)
+              controller.playback.cancel()
             } else {
-              controller.setPlaying(true)
+              if (controller.playback.begin(true)) controller.setPlaying(true)
             }
           }}
           options={controller.configs?.videoAgentMeshOptions || {}}
