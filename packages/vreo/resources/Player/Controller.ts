@@ -1,6 +1,6 @@
 import { PlaybackLifecycle } from './PlaybackLifecycle'
-import { Five, Subscribe } from '@realsee/five'
-import { action, computed, makeObservable, observable, reaction } from 'mobx'
+import { Five, Subscribe } from '@realsee/five-webgpu'
+import { action, computed, makeObservable, observable, observableRef, reaction } from 'mobx'
 import * as React from 'react'
 import { requestAnimationFrameInterval } from '../shared-utils/animationFrame'
 import { VreoKeyframe, VreoKeyframeEnum, VreoKeyframeEvent, VreoUnit, VreoVideo } from '../typings/VreoUnit'
@@ -8,6 +8,7 @@ import { VideoAgentScene } from './modules/VideoAgent/VideoAgentScene'
 import { Appearance, PlayerConfigs, WaveAppearance } from './typings'
 import setElementDataset from '../shared-utils/setElementDataset'
 import { getMediaType } from '../shared-utils/getMediaInfo'
+import { Timeline } from '../timeline'
 
 /**
  * Vreo 播放器逻辑控制器
@@ -71,13 +72,13 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
         return 'none'
     }
 
-    popUp: string | JSX.Element | null = null
+    popUp: string | React.ReactElement | null = null
 
     /**
      * 打开或关闭弹窗
      * @param popUp - 弹窗内容，可以是字符串、JSX元素或false（关闭弹窗）
      */
-    openPopUp(popUp: string | JSX.Element | false) {
+    openPopUp(popUp: string | React.ReactElement | false) {
         if (!popUp) {
             this.popUp = null
             return
@@ -94,7 +95,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     }
 
     drawerConfig: {
-        content: string | JSX.Element
+        content: string | React.ReactElement
         height?: number | string
     } | null = null
 
@@ -161,7 +162,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * 打开或关闭抽屉
      * @param drawerConfig - 抽屉配置对象，false表示关闭抽屉
      */
-    openDrawer(drawerConfig?: false | { content: string | JSX.Element; height?: number | string }) {
+    openDrawer(drawerConfig?: false | { content: string | React.ReactElement; height?: number | string }) {
         if (!drawerConfig) {
             this.drawerConfig = {
                 content: '',
@@ -184,6 +185,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     private resuming: number | undefined
     private disposers: (() => void)[] = []
     readonly playback: PlaybackLifecycle
+    private readonly timeline = new Timeline<VreoKeyframe>()
 
     constructor({five, container, configs}: { five: Five, container: Element, configs: PlayerConfigs }) {
         super()
@@ -207,11 +209,11 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             playing: observable,
             setPlaying: action,
             loading: observable,
-            // videoAgentScene: observable.ref,
+            videoAgentScene: observableRef,
             setLoading: action,
-            popUp: observable.ref,
+            popUp: observableRef,
             openPopUp: action,
-            drawerConfig: observable.ref,
+            drawerConfig: observableRef,
             openDrawer: action,
             ended: observable,
             waveAppearance: observable,
@@ -220,7 +222,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
             setContainerSize: action,
             appearance: observable,
             setAppearance: action,
-            configs: observable.ref,
+            configs: observableRef,
             setEnded: action,
             setAvatar: action,
             waitingForBgMusic: observable,
@@ -324,21 +326,20 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
      * 获取当前时间点应该触发的关键帧
      * @returns 当前应该执行的关键帧数组
      */
+    loadTimeline(keyframes: readonly VreoKeyframe[]) {
+        this.timeline.load(keyframes)
+    }
+
+    seekTimeline(currentTime: number) {
+        this.timeline.seek(currentTime)
+    }
+
+    resetTimeline(type?: VreoKeyframeEnum) {
+        this.timeline.reset(type)
+    }
+
     get currentKeyframes() {
-        if (!this.vreoUnit) return []
-        const keyframes = this.vreoUnit.keyframes
-        // 没有被解析过且开始时间低于当前时间戳 100ms
-        return keyframes.filter((keyframe: VreoKeyframe) => {
-            if (keyframe.parsed) return false
-            // 检测结束时间
-            if (keyframe.end < this.currentTime) return false
-            // 检测开始时间
-            if (keyframe.start > this.currentTime ) return false
-            if (keyframe.type === VreoKeyframeEnum.BgMusic) return true
-            // 开始时间低于当前时间戳 100ms
-            const dur = this.currentTime - keyframe.start
-            return dur <= 100 && dur >= 0
-        })
+        return this.timeline.pendingAt(this.currentTime)
     }
 
     /**
@@ -366,7 +367,7 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
         if (this.mediaInstance?.ended && this.mediaInstance.currentTime !== 0) {
             if (this.ended) return
-            this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
+            this.timeline.reset()
             const media = this.videoAgentScene?.videoAgentMesh.mediaOperations
             media?.pause()
             if (media) media.currentTime = 0
@@ -385,15 +386,12 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 
         this.resumeMedia()
         
-        const currentKeyframes = this.currentKeyframes
         const run = this.playback.capture()
-        currentKeyframes.forEach((keyframe) => {
-            if (!run?.valid() || keyframe.parsed) return
-            keyframe.parsed = true
-            this.emit(keyframe.type, keyframe, this.currentTime)
-            if (callback && run.valid()) {
-                callback(keyframe.type, keyframe, this.currentTime)
-            }
+        if (!run?.valid()) return
+        const currentTime = this.currentTime
+        this.timeline.take(currentTime).forEach((keyframe) => {
+            this.emit(keyframe.type, keyframe, currentTime)
+            if (run.valid()) callback(keyframe.type, keyframe, currentTime)
         })
     }
 
@@ -429,12 +427,13 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
     clear() {
         this.setPlaying(false)
 
-        this.vreoUnit?.keyframes.forEach((keyframe) => (keyframe.parsed = false))
+        this.timeline.reset()
 
         /**
          * 清理掉数据
          */
         this.vreoUnit = undefined
+        this.timeline.clear()
         if (this.mediaInstance) {
             this.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
             if (this.videoAgentScene?.videoAgentMesh.mediaOperations) this.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = 0
@@ -459,4 +458,3 @@ export class Controller extends Subscribe<VreoKeyframeEvent> {
 const ControllerContext = React.createContext<Controller | null>(null)
 
 export { ControllerContext }
-

@@ -14,8 +14,15 @@ export function Prompter() {
     if (controller.configs?.keyframeMap.Prompter === false) {
       return
     }
-    const callback = (keyframe: VreoKeyframe) => {
-      const { start, end, data } = keyframe
+    const stop = () => {
+      if (ref.current !== null) clearTimeout(ref.current)
+      ref.current = null
+      setHidden(true)
+      setText('')
+    }
+    const removePlaybackCleanup = controller.playback.add(stop)
+    const callback = (keyframe: VreoKeyframe, currentTime = keyframe.start) => {
+      const { end, data } = keyframe
       setText(data.text)
       setHidden(false)
 
@@ -24,20 +31,15 @@ export function Prompter() {
         ref.current = null
       }
 
-      ref.current = setTimeout(() => {
-        setHidden(true)
-        setText('')
-        // setTimeout(() => setText(''), 500)
-
-        if (ref.current) clearTimeout(ref.current)
-        ref.current = null
-      }, end - start)
+      ref.current = setTimeout(stop, Math.max(0, end - currentTime))
     }
 
     controller.on(VreoKeyframeEnum.Prompter, callback)
 
     return () => {
       controller.off(VreoKeyframeEnum.Prompter, callback)
+      removePlaybackCleanup()
+      stop()
     }
   }, [controller])
 

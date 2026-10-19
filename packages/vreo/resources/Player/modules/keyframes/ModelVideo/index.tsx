@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as THREE from 'three'
+import * as THREE from 'three/webgpu'
 import { useController, useFiveInstance } from '../../../hooks'
 import { ModelTVVideoPlugin } from '../../../../fivePlugins/ModelTVVideoPlugin'
 import { createTransMatrix } from '../../../../shared-utils/createTransMatrix'
@@ -8,8 +8,8 @@ import { ModelVideoData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typi
 export function ModelVideo() {
   const controller = useController()
   const five = useFiveInstance()
-  const ref = React.useRef<ReturnType<typeof ModelTVVideoPlugin>>()
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>()
+  const ref = React.useRef<ReturnType<typeof ModelTVVideoPlugin> | undefined>(undefined)
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
   React.useEffect(() => {
     let generation = 0

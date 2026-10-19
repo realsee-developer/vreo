@@ -7,7 +7,7 @@ import { useController, useFiveInstance } from '../../../hooks'
 export function CameraMovement() {
   const controller = useController()
   const five = useFiveInstance()
-  const ref = React.useRef<ReturnType<typeof CameraMovementPlugin>>()
+  const ref = React.useRef<ReturnType<typeof CameraMovementPlugin> | undefined>(undefined)
 
   React.useEffect(() => {
     const callback = async (keyframe: VreoKeyframe) => {

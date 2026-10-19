@@ -59,7 +59,7 @@ test('AudioLike repeated play has one frame loop, pause cancels it', () => {
   const loops = new Set()
   class Subscribe { emit() {} on() {} off() {} }
   const { AudioLike } = load('../resources/shared-utils/AudioLike.ts', {
-    '@realsee/five': { Subscribe },
+    '@realsee/five-webgpu': { Subscribe },
     './animationFrame': { requestAnimationFrameInterval(fn) { loops.add(fn); return () => loops.delete(fn) } },
   })
   const audio = new AudioLike({ duration: 100 })
@@ -71,7 +71,7 @@ test('AudioLike repeated play has one frame loop, pause cancels it', () => {
 
 function meshFixture(blob) {
   const { VideoAgentMesh } = load('../resources/Player/modules/VideoAgent/VideoAgentMesh.ts', {
-    three: { Mesh: class {} }, mobx: {},
+    'three/webgpu': { Mesh: class {} }, mobx: {},
     '../../../shared-utils/Preloader': { Preloader: { blob } },
     '../../../shared-utils/AudioLike': {},
     '../../../shared-utils/getMediaInfo': { getMediaType: () => 'audio' },
@@ -191,13 +191,13 @@ test('finish notifies local members and finishes exactly the captured parent ses
 for (const replaced of [false, true]) {
   test(`Player load AbortError ${replaced ? 'does not cancel a newer narration' : 'cancels the active narration'}`, async () => {
     const { Player } = load('../resources/Player/index.tsx', {
-      '@realsee/five': { Subscribe: class { emit() {} } },
+      '@realsee/five-webgpu': { Subscribe: class { emit() {} } },
       '../shared-utils/Audio': { waitForBlankAudioGenerated: async () => {} },
     }, { location: { search: '' } })
     const group = new PlaybackLifecycle(undefined, () => {})
     let reject
     const controller = {
-      playback: group, clear() {}, setLoading() {}, emit() {}, setAvatar() {},
+      playback: group, clear() {}, loadTimeline() {}, setLoading() {}, emit() {}, setAvatar() {},
       videoAgentScene: { videoAgentMesh: { play: () => new Promise((_, fail) => { reject = fail }) } },
     }
     const player = Object.assign(Object.create(Player.prototype), {
@@ -214,7 +214,7 @@ for (const replaced of [false, true]) {
   })
   test(`Controller resume AbortError ${replaced ? 'does not cancel a newer narration' : 'cancels the active narration'}`, async () => {
     const { Controller } = load('../resources/Player/Controller.ts', {
-      '@realsee/five': { Subscribe: class {} }, react: { createContext() {} },
+      '@realsee/five-webgpu': { Subscribe: class {} }, react: { createContext() {} },
     }, { console: { error() {} } })
     const group = new PlaybackLifecycle(undefined, () => {})
     group.begin(true)

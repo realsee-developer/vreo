@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { Root } from 'react-dom/client'
 
 import { createRoot } from 'react-dom/client'
-import { Five, Subscribe } from '@realsee/five'
+import { Five, Subscribe } from '@realsee/five-webgpu'
 
 import { App } from './App'
 import { Controller, ControllerContext } from './Controller'
@@ -20,7 +20,10 @@ const DefaultAudioCacheLength = 3
 
 const id = `vreo-app-dhjskadhksahdjskahdjksa`
 
-const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
+function getAudioCacheLength() {
+    if (typeof location === 'undefined') return DefaultAudioCacheLength
+    return Number(location.search.match(/audio_cache=(\d+)/)?.[1] ?? DefaultAudioCacheLength)
+}
 
 /**
  * Vreo 播放器核心类
@@ -30,7 +33,7 @@ const audioCacheLength = Number(location.search.match(/audio_cache=(\d+)/)?.[1] 
  * 
  * @example
  * ```typescript
- * import { Five } from '@realsee/five'
+ * import { Five } from '@realsee/five-webgpu'
  * import { Player } from '@realsee/vreo'
  * 
  * const five = new Five({
@@ -68,7 +71,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         super()
         this.$five = five
 
-        generateBlankAudio(audioCacheLength)
+        generateBlankAudio(getAudioCacheLength())
 
         if (!configs.container) {
             configs.container = configs.containter
@@ -187,6 +190,7 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         }
 
         this.controller.vreoUnit = vreoUnit
+        this.controller.loadTimeline(vreoUnit.keyframes)
 
 
         this.controller.videoAgentScene?.videoAgentMesh.mediaOperations?.pause()
@@ -293,17 +297,17 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
      */
     play(currentTime?: number, userAction = false) {
         if (this.disposed || !this.controller.playback.begin(userAction)) return false
-        if (this.controller.playing) return true
-        if (currentTime && this.controller.videoAgentScene?.videoAgentMesh.mediaOperations) {
-            this.controller.videoAgentScene.videoAgentMesh.mediaOperations.currentTime = currentTime / 1000
+        if (currentTime !== undefined) {
+            const media = this.controller.videoAgentScene?.videoAgentMesh.mediaOperations
+            if (media) media.currentTime = currentTime / 1000
+            this.controller.seekTimeline(currentTime)
         }
-        Object.assign(window, { $vreoController: this.controller })
+        if (this.controller.playing) return true
+        if (typeof window !== 'undefined') Object.assign(window, { $vreoController: this.controller })
         this.controller.setEnded(false)
         this.controller.setPlaying(true)
         this.controller.vreoUnit?.keyframes.forEach((keyframe) => {
-            if (keyframe.type === VreoKeyframeEnum.BgMusic) {
-                keyframe.parsed = false
-            }
+            if (keyframe.type === VreoKeyframeEnum.BgMusic) this.controller.resetTimeline(VreoKeyframeEnum.BgMusic)
         })
         return true
     }
@@ -363,9 +367,12 @@ export class Player extends Subscribe<VreoKeyframeEvent> {
         if (this.disposed) return
         this.disposed = true
         ++this.loadGeneration
-        this.disposers.forEach(dispose => dispose())
+        this.disposers.splice(0).forEach(dispose => dispose())
         this.controller.dispose()
-        this.root.unmount()
+        // A host may dispose Vreo from its own React effect cleanup. Unmounting
+        // this nested root in the same commit triggers React's synchronous
+        // unmount warning and can race with the host commit.
+        queueMicrotask(() => this.root.unmount())
     }
 }
 

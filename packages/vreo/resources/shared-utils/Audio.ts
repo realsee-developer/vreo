@@ -4,6 +4,11 @@ const blankAudioSrc = 'data:audio/mpeg;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAASW5mbw
 
 export const audioList: IAudio[] = []
 
+// The module is also imported while a host server builds or renders pages.
+// Audio instances are created only in the browser, but the base class must be
+// defined safely when the browser global is absent.
+const AudioBase = typeof Audio === 'undefined' ? (class {} as typeof Audio) : Audio
+
 export function getAudio(src?: string) {
   let audio = audioList.find((audio) => {
     return !audio.realSrc || audio.realSrc === blankAudioSrc
@@ -53,7 +58,7 @@ function initAudio(audio: IAudio) {
   }
 }
 
-class IAudio extends Audio {
+class IAudio extends AudioBase {
   public preload = 'auto' as const
   
   /**
@@ -70,6 +75,12 @@ class IAudio extends Audio {
    */
   set src(paramsSrc: string) {
     this.muted = true
+    if (paramsSrc === '') {
+      this.removeAttribute('src')
+      this.realSrc = ''
+      this.load()
+      return
+    }
     this.setAttribute('src', paramsSrc)
     this.realSrc = paramsSrc
   }
@@ -101,5 +112,4 @@ class IAudio extends Audio {
 
   }
 }
-
 

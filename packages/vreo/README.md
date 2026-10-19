@@ -31,12 +31,12 @@
 
 ```css
   /* @file xxx.css */
-  @import '@realsee/vreo/stylesheets/default.css';
+  @import '@realsee/vreo/styles/default.css';
 ```
 或
 ```jsx
   /* @file xxx.tsx | xxx.jsx */
-  import '@realsee/vreo/stylesheets/default.css';
+  import '@realsee/vreo/styles/default.css';
 ```
 examples:
 ```tsx
@@ -44,7 +44,7 @@ examples:
 import * as React from 'react'
 import { Five } from '@realsee/five'
 import { Player } from '@realsee/vreo'
-import '@realsee/vreo/stylesheets/default.css';
+import '@realsee/vreo/styles/default.css';
 
 // 创建 Five 实例
 const five = new Five({
@@ -75,10 +75,10 @@ vreoPlayer.pause()
 /* @file App.tsx */
 
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Five, Work, parseWork } from '@realsee/five'
 import { createFiveProvider, FiveCanvas } from '@realsee/five/react'
-import { VreoProvider, useVreoAction } from '@realsee/vreo/lib/react'
+import { VreoProvider, useVreoAction } from '@realsee/vreo/react'
 
 // 创建 FiveProvider
 const FiveProvider = createFiveProvider({
@@ -120,7 +120,7 @@ const App: React.FC = () => {
   )
 }
 
-ReactDOM.render(<App></App>, document.getElementById('app'))
+createRoot(document.getElementById('app')!).render(<App />)
 ```
 
 ## 剧本数据结构

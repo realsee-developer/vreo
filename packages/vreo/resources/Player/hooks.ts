@@ -1,5 +1,5 @@
 import React from 'react'
-import { Vector3 } from 'three'
+import { Vector3 } from 'three/webgpu'
 import { ControllerContext } from './Controller'
 
 export function useController() {

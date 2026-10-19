@@ -1,8 +1,7 @@
 import * as React from 'react'
-import ReactDOM from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Five } from '@realsee/five'
-import { Raycaster, Vector3 } from 'three'
+import { Five } from '@realsee/five-webgpu'
+import { Raycaster, Vector3 } from 'three/webgpu'
 import { tweenProgress } from '../../../shared-utils/animationFrame/BetterTween'
 import { CSS3DRenderPlugin, CSS3DRenderPluginExportType } from '../../../fivePlugins/CSS3DRenderPlugin'
 
@@ -133,7 +132,7 @@ export function SpatialScenePanel(props: CustomVreoKeyframeProps) {
       if (!container) return
 
       const root = createRoot(container)
-      root.render(<Panel ref={(ref) => (panelRef.current = ref)} data={data} />)
+      root.render(<Panel ref={(ref) => { panelRef.current = ref }} data={data} />)
       const startRotateY = -(Math.PI * 2) / 9
       let lastRotateY = 0
     

@@ -1,8 +1,7 @@
 import * as React from 'react'
-import * as THREE from 'three'
-import ReactDOM from 'react-dom'
+import * as THREE from 'three/webgpu'
 import { createRoot } from 'react-dom/client'
-import { Vector3, Quaternion } from 'three'
+import { Vector3, Quaternion } from 'three/webgpu'
 
 import { useController, useFiveInstance } from '../../../hooks'
 import { CSS3DRenderPlugin } from '../../../../fivePlugins/CSS3DRenderPlugin'
@@ -38,37 +37,33 @@ const calcPoints = (
   // _point = new THREE.Points(pointgeometry, pointmaterial)
   // console.log(cameraPosition)
 
-  const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide })
-  const plane = new THREE.Mesh(geometry, material)
-  const v0 = centerPoint.clone()
-  plane.position.copy(v0)
-
-  // 计算传入的四个点的坐标
-  const [v1, v2, v3, v4] = plane.geometry.vertices
-  const downLeft = v0.clone().add(v4)
-  const downRight = v0.clone().add(v3)
-  const upLeft = v0.clone().add(v2)
-  const upRight = v0.clone().add(v1)
-
-  // 插件使用要求：矩形四个点位数据，顺序为**必须**为左下、右下、右上、左上
-  return [downLeft, downRight, upRight, upLeft]
+  const positions = geometry.getAttribute('position')
+  const point = (index: number) => centerPoint.clone().add(
+    new THREE.Vector3().fromBufferAttribute(positions, index),
+  )
+  // PlaneGeometry positions: 左上、右上、左下、右下。
+  return [point(2), point(3), point(1), point(0)]
 }
 
 /**
  * 空间文本标签。
  */
 export function PanoTextLabel() {
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>()
   const controller = useController()
   const five = useFiveInstance()
-  const ref = React.useRef<ReturnType<typeof CSS3DRenderPlugin>>()
+  const ref = React.useRef<ReturnType<typeof CSS3DRenderPlugin> | undefined>(undefined)
 
   React.useEffect(() => {
     if (controller.configs?.keyframeMap.PanoTextLabel === false) {
       return
     }
-    const callback = (keyframe: VreoKeyframe) => {
-      const { start, end, data } = keyframe
+    const labels = new Set<() => void>()
+    const clearLabels = () => {
+      for (const dispose of [...labels]) dispose()
+    }
+    const removePlaybackCleanup = controller.playback.add(clearLabels)
+    const callback = (keyframe: VreoKeyframe, currentTime = keyframe.start) => {
+      const { end, data } = keyframe
       const panoTextLabelData = data as PanoTextLabelData
       // 增加无文本情况的判断
       if (data.text === '') return
@@ -89,30 +84,39 @@ export function PanoTextLabel() {
         const quaternion = new Quaternion(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w)
         css3DObject?.quaternion.copy(quaternion)
       }
-      if (container?.container) {
-        const root = createRoot(container.container)
-        root.render(
-          <div className="PanoTextLabel PanoTextLabel--notHidden">
-            <div className="PanoTextLabel-wrapper">
-              <div style={{ fontSize: `${data.fontSize || 16}px` }} className="PanoText-innerText">
-                {data.text || ''}
-              </div>
+      if (!container?.container) return
+      const root = createRoot(container.container)
+      let timeout: ReturnType<typeof setTimeout> | undefined
+      let disposed = false
+      const dispose = () => {
+        if (disposed) return
+        disposed = true
+        if (timeout !== undefined) clearTimeout(timeout)
+        labels.delete(dispose)
+        container.dispose()
+        // The parent player can unmount this component during its own React
+        // cleanup. Release the CSS3D layer now, then unmount this nested root.
+        queueMicrotask(() => root.unmount())
+      }
+      labels.add(dispose)
+      root.render(
+        <div className="PanoTextLabel PanoTextLabel--notHidden">
+          <div className="PanoTextLabel-wrapper">
+            <div style={{ fontSize: `${data.fontSize || 16}px` }} className="PanoText-innerText">
+              {data.text || ''}
             </div>
           </div>
-        )
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        ref.current?.disposeAll()
-      }, end - start)
+        </div>
+      )
+      timeout = setTimeout(dispose, Math.max(0, end - currentTime))
     }
     controller.on(VreoKeyframeEnum.PanoTextLabel, callback)
 
     return () => {
       controller.off(VreoKeyframeEnum.PanoTextLabel, callback)
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
+      removePlaybackCleanup()
+      clearLabels()
+      ref.current = undefined
     }
   }, [controller])
 

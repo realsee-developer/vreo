@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three/webgpu'
 
 export function createTransMatrix(arr1: number[]) {
   const matrix4 = new THREE.Matrix4()

@@ -1,46 +1,55 @@
-type ResizeHandler =  (width: number, height: number) => void
+type ResizeHandler = (width: number, height: number) => void
 
 const resizeObserverCache = new Map<Element, number>()
 
+function add(element: Element) {
+  resizeObserverCache.set(element, (resizeObserverCache.get(element) ?? 0) + 1)
+}
+
+function remove(element: Element) {
+  const remaining = (resizeObserverCache.get(element) ?? 1) - 1
+  if (remaining > 0) resizeObserverCache.set(element, remaining)
+  else resizeObserverCache.delete(element)
+}
+
 export function addResizeListener(element: Element | undefined | null, resizeHandler: ResizeHandler, immediate = true) {
   if (!element) return () => {}
-
   if (immediate) resizeHandler(element.clientWidth, element.clientHeight)
 
-  if (typeof ResizeObserver !== 'undefined' && ResizeObserver) {
-    const resizeObserver = new ResizeObserver(() => resizeHandler(element.clientWidth, element.clientHeight))
-
-    resizeObserver.observe(element)
-    resizeObserverCache.set(element, resizeObserverCache.get(element) || 0 + 1)
-
+  let disposed = false
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(() => resizeHandler(element.clientWidth, element.clientHeight))
+    observer.observe(element)
+    add(element)
     return () => {
-      if (element) resizeObserver.unobserve(element)
-      if (resizeObserverCache.get(element) === 1) {
-        resizeObserverCache.delete(element)
-      }
+      if (disposed) return
+      disposed = true
+      observer.disconnect()
+      remove(element)
     }
-  } else {
-    const iframe = document.createElement('iframe')
-    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0;visibility:hidden;margin:0;border:0;padding:0;z-index:-1;'
-    iframe.classList.add('resize-sensor-iframe')
-    element.appendChild(iframe)
-    if (!iframe.contentWindow) return () => {}
+  }
 
-    iframe.contentWindow.addEventListener('resize', () => {
-      resizeHandler(iframe.clientWidth, iframe.clientHeight)
-    })
-    resizeObserverCache.set(element, resizeObserverCache.get(element) || 0 + 1)
-
-    return () => {
-      element.removeChild(iframe)
-      if (resizeObserverCache.get(element) === 1) {
-        resizeObserverCache.delete(element)
-      }
-    }
+  const iframe = document.createElement('iframe')
+  iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0;visibility:hidden;margin:0;border:0;padding:0;z-index:-1;'
+  iframe.classList.add('resize-sensor-iframe')
+  element.appendChild(iframe)
+  const contentWindow = iframe.contentWindow
+  if (!contentWindow) {
+    iframe.remove()
+    return () => {}
+  }
+  const onResize = () => resizeHandler(iframe.clientWidth, iframe.clientHeight)
+  contentWindow.addEventListener('resize', onResize)
+  add(element)
+  return () => {
+    if (disposed) return
+    disposed = true
+    contentWindow.removeEventListener('resize', onResize)
+    iframe.remove()
+    remove(element)
   }
 }
 
 export function hasResizeListener(element?: Element | null) {
-  if (!element) return false
-  return resizeObserverCache.get(element) || 0 > 0
+  return !!element && (resizeObserverCache.get(element) ?? 0) > 0
 }

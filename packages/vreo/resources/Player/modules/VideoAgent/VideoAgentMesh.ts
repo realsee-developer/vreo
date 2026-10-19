@@ -1,65 +1,11 @@
 import type { PlaybackRun } from '../../PlaybackLifecycle'
 import type { MediaOperations } from '../../playback-types'
-import * as THREE from 'three'
+import * as THREE from 'three/webgpu'
+import { float, max, smoothstep, texture, uniform, uv } from 'three/tsl'
 import { Preloader } from '../../../shared-utils/Preloader'
-import { makeObservable, observable, runInAction } from 'mobx'
+import { makeObservable, observable, observableRef, runInAction } from 'mobx'
 import AudioLike from '../../../shared-utils/AudioLike'
 import { getMediaType } from '../../../shared-utils/getMediaInfo'
-
-const vertexShader = `
-varying vec2 vUv;
-varying vec2 vColorUv;
-varying vec2 vMaskUv;
-void main(){
-  vUv = uv;
-  vColorUv = vec2(uv.x / 2.0, uv.y);
-  vMaskUv = vec2(0.5 + uv.x / 2.0, uv.y);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`
-const fragmentShaderTpl = () => `
-uniform int enable;
-uniform sampler2D map;
-varying vec2 vUv;
-varying vec2 vColorUv;
-varying vec2 vMaskUv;
-
-vec3 hsv2rgb(vec3 c) {
-  const vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-vec3 rgb2hsv(vec3 c) {
-  const vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-  vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-  vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-  float d = q.x - min(q.w, q.y);
-  return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + 0.001)), d / (q.x + 0.001), q.x);
-}
-
-void main(void) {
-  vec3 color = texture2D(map, vUv).xyz;
-  float amask = 1.0;
-
-  float ref = color.r;
-  if (ref < color.b) ref = color.b;
-  amask = color.g - ref + 0.1;
-  amask = smoothstep(0.1, 0.3, amask);
-  amask = 1.0 - amask;
-
-  vec3 target = rgb2hsv(vec3(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0));
-  vec3 hsv = rgb2hsv(color);
-  float distance = abs(hsv.x - target.x);
-  if (distance < 0.15) {
-    hsv.y = 0.0;
-  }
-  color = hsv2rgb(hsv);
-
-  gl_FragColor = vec4(color.rgb, amask * float(enable));
-}
-`
 
 /**
  * 视频经纪人贴片的配置选项
@@ -111,7 +57,9 @@ export interface VideoAgentMeshOptions {
  * videoMesh.dispose()
  * ```
  */
-export class VideoAgentMesh extends THREE.Mesh {
+export class VideoAgentMesh extends THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicNodeMaterial> {
+  private videoTexture: THREE.VideoTexture
+  private enableNode: ReturnType<typeof uniform>
   /** 配置选项 */
   options: VideoAgentMeshOptions
   /** 当前视频URL */
@@ -157,10 +105,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       return this.audioInstance
     }
 
-    const uniforms = (this.material as THREE.ShaderMaterial).uniforms
-    const videoInstance = uniforms.map.value.image as HTMLVideoElement
-
-    return videoInstance
+    return this.videoTexture.image as HTMLVideoElement
   }
 
   /**
@@ -201,17 +146,20 @@ export class VideoAgentMesh extends THREE.Mesh {
 
     const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments)
     const videoTexture = new THREE.VideoTexture(options.videoInstance)
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        map: { value: videoTexture },
-        enable: { value: 0 },
-      },
-      vertexShader,
-      fragmentShader: fragmentShaderTpl(),
-      transparent: true,
-    })
+    videoTexture.colorSpace = THREE.SRGBColorSpace
+    const enableNode = uniform(0)
+    const videoNode = texture(videoTexture)
+    const sampled = videoNode.sample(uv())
+    const chromaMask = float(1).sub(
+      smoothstep(0.1, 0.3, sampled.g.sub(max(sampled.r, sampled.b)).add(0.1)),
+    )
+    const material = new THREE.MeshBasicNodeMaterial({ transparent: true })
+    material.colorNode = sampled.rgb
+    material.opacityNode = chromaMask.mul(enableNode)
 
     super(geometry, material)
+    this.videoTexture = videoTexture
+    this.enableNode = enableNode
     this.ownsVideo = ownsVideo
     this.ownsAudio = !options.audioInstance
     this.options = options
@@ -229,7 +177,7 @@ export class VideoAgentMesh extends THREE.Mesh {
 
     this.audioLikeInstance = new AudioLike()
 
-    makeObservable(this, { paused: observable })
+    makeObservable(this, { paused: observable, videoUrl: observableRef })
 
     const updatePaused = (paused: boolean) => runInAction(() => (this.paused = paused))
     const onPause = () => updatePaused(true)
@@ -269,7 +217,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     const src = (this.options.preload !== false || getMediaType(videoUrl) === 'video')
       ? URL.createObjectURL(await Preloader.blob(videoUrl) as unknown as Blob) : videoUrl
     if (!valid()) { if (src !== videoUrl) URL.revokeObjectURL(src); return }
-    this.videoUrl = videoUrl
+    runInAction(() => { this.videoUrl = videoUrl })
     if (this.objectURL) URL.revokeObjectURL(this.objectURL)
     this.objectURL = src !== videoUrl ? src : undefined
     media.src = src
@@ -278,7 +226,7 @@ export class VideoAgentMesh extends THREE.Mesh {
       if (!valid() || media.currentTime === 0) return
       this.freeze = false
       media.muted = false
-      ;(this.material as THREE.ShaderMaterial).uniforms.enable.value = getMediaType(videoUrl) ? 1 : 0
+      this.enableNode.value = getMediaType(videoUrl) ? 1 : 0
       this.removeStart?.()
     }
     this.removeStart = () => element.removeEventListener('timeupdate', onStart)
@@ -323,7 +271,10 @@ export class VideoAgentMesh extends THREE.Mesh {
       await this.update(videoUrl, valid, run)
     }
     if (!valid()) return false
-    if (duration && !videoUrl) { this.videoUrl = ''; this.audioLikeInstance.duration = duration }
+    if (duration && !videoUrl) {
+      runInAction(() => { this.videoUrl = '' })
+      this.audioLikeInstance.duration = duration
+    }
     const media = this.videoUrl ? this.operations(run, this.mediaInstance as HTMLMediaElement) : this.audioLikeInstance
     if (videoUrl || duration) media.currentTime = currentTime
     media.muted = true
@@ -376,7 +327,7 @@ export class VideoAgentMesh extends THREE.Mesh {
     if (this.ownsAudio) this.audioInstance.remove()
     if (this.objectURL) URL.revokeObjectURL(this.objectURL)
     this.geometry.dispose()
-    ;(this.material as THREE.ShaderMaterial).uniforms.map.value.dispose()
-    ;(this.material as THREE.ShaderMaterial).dispose()
+    this.videoTexture.dispose()
+    this.material.dispose()
   }
 }

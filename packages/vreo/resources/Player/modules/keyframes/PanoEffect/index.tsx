@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Vector3 } from 'three'
+import { Vector3 } from 'three/webgpu'
 import classNames from 'classnames'
 
 import lineAnime from './lineAnime'
@@ -16,7 +16,7 @@ export function PanoEffect() {
   const five = useFiveInstance()
   const lineRef = React.useRef<BetterTween<{ progress: number }> | null>(null)
   const [pos, setPos] = React.useState<{ left: number; top: number } | null>(null)
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>()
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
   const controller = useController()
   const project2d = useFiveProject2d()

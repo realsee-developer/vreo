@@ -96,7 +96,7 @@ const Title = (props: TitleProps) => {
 }
 
 export function InfoPanel() {
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>()
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const controller = useController()
 
   React.useEffect(() => {

@@ -3,19 +3,17 @@ import { useController } from '../../hooks'
 import { VideoAgentMeshOptions } from './VideoAgentMesh'
 import { VideoAgentScene } from './VideoAgentScene'
 import classNames from 'classnames'
+import { runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
-export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMeshOptions }) {
+export const VideoAgent = observer(function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMeshOptions }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const controller = useController()
 
-  const showAvatar = React.useMemo(() => {
-    return controller.avatar?.url && (controller.avatar.force === true)
-  }, [controller.avatar])
+  const showAvatar = controller.avatar?.url && controller.avatar.force === true
 
-  const showVideoAgent = React.useMemo(() => {
-    if (showAvatar) return false
-    return controller.videoAgentScene?.videoAgentMesh.mediaInstance instanceof HTMLVideoElement
-  }, [controller.videoAgentScene, showAvatar])
+  const showVideoAgent = !showAvatar &&
+    controller.videoAgentScene?.videoAgentMesh.mediaInstance instanceof HTMLVideoElement
 
   React.useEffect(() => {
     if (!ref.current) throw new Error('React 渲染异常，请稍后重试 ...')
@@ -23,15 +21,17 @@ export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMe
       console.warn('VideoAgentScene" 重复初始化，已被过滤')
       return
     }
-    const videoAgentScene = new VideoAgentScene(ref.current, { ...props.options, getPlayback: () => controller.playback.capture() })
-    controller.videoAgentScene = videoAgentScene
+    const forceWebGL = (controller.five.renderer?.backend as { isWebGLBackend?: boolean } | undefined)?.isWebGLBackend === true
+    const videoAgentScene = new VideoAgentScene(ref.current, { ...props.options, getPlayback: () => controller.playback.capture() }, forceWebGL)
+    runInAction(() => { controller.videoAgentScene = videoAgentScene })
 
     return () => {
-      controller.dispose()
-      controller.videoAgentScene?.dispose()
-      controller.videoAgentScene = undefined
+      videoAgentScene.dispose()
+      if (controller.videoAgentScene === videoAgentScene) {
+        runInAction(() => { controller.videoAgentScene = undefined })
+      }
     }
-  }, [])
+  }, [controller])
 
   return (
     <>
@@ -51,4 +51,4 @@ export function VideoAgent(props: { onClick?: () => void; options?: VideoAgentMe
       </div>
     </>
   )
-}
+})

@@ -11,9 +11,9 @@ const PI_2 = PI * 2
 
 export function VideoEffect() {
   const ref = React.useRef<HTMLDivElement>(null)
-  const videoRef = React.useRef<HTMLVideoElement | null>()
+  const videoRef = React.useRef<HTMLVideoElement | null>(null)
   const controller = useController()
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>()
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
   const [visible, setVisible] = React.useState(false)
   const five = useFiveInstance()

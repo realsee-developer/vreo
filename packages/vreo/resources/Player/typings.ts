@@ -1,10 +1,9 @@
 import type { PlaybackManager } from './playback-types'
 import React, { ReactNode } from 'react';
-import { Subscribe, Five } from '@realsee/five';
+import { Subscribe, Five } from '@realsee/five-webgpu';
 
 import { VreoKeyframe, VreoKeyframeConfigMap, VreoKeyframeEvent } from '../typings/VreoUnit'
 import { VideoAgentMeshOptions } from './modules/VideoAgent/VideoAgentMesh';
-import { Overwrite } from '@realsee/dnalogel/libs/typings/utils.type';
 
 export interface PlayerConfigs {
   mediaManager?: PlaybackManager

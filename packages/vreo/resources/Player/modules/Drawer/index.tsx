@@ -1,6 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Controller } from '../../Controller'
 import { useController } from '../../hooks'
 
