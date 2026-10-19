@@ -1,10 +1,10 @@
 {
   "packageName": "@realsee/vreo",
-  "version": "3.0.0-webgpu-react18.8",
+  "version": "3.0.0-webgpu.9",
   "tag": "webgpu",
   "baselineLatest": "2.6.4",
-  "tarball": "ci/release/realsee-vreo-3.0.0-webgpu-react18.8.tgz",
-  "sha256": "12221a901379e289329876c024e563774bb76a0cdfb787496e27c33446bfae6d",
+  "tarball": "ci/release/realsee-vreo-3.0.0-webgpu.9.tgz",
+  "sha256": "3ebaf8ca3a02b43a0a431926a4f35cb868628c27611e09b4c9b6bf852b54e93b",
   "sourceRoot": "packages/vreo",
   "sourceFiles": {
     "CHANGELOG.md": "7471a18aeb0adee6660e920c2437fa0617a83e1c20b7a55677ec285577cf595f",
@@ -28,7 +28,7 @@
     "integration/videoagent-backend/setup.ts": "80f60eed605e8842bf17914bb6866ba265d40c28bccb63ef6c003459f54601f9",
     "integration/videoagent-backend/videoagent-backend.test.tsx": "805ddb73178b6dc08ad086dd7fe3c6e3d18ddcbcc7a829e8496c0cb49ed1ae33",
     "integration/videoagent-backend/vitest.config.mjs": "052866aaf03490ba2a88aa2a22fcbdd3c17b887e76b757e1d3ecddce569db911",
-    "package.json": "4ecda476c1712c0dfd3137e3d4fc5dde83c733c8de4df48e1f38a190b9d857f8",
+    "package.json": "30866e8e8989a318451b2541ce9b09ee20cfd44443a53f76aaa41cbcf4657e75",
     "resources/PlayController/createHTMLAudioElement.ts": "fd5ad2b829a3ff1c001911225e9a0ed6cb8fdae60e34dad8b7d5021b9cb92386",
     "resources/PlayController/index.ts": "eb267001398fdef3ef5904930f523050bbe8b40a487e4453b9b7c419f9e75f04",
     "resources/Player/App.tsx": "9c3caa422146a41a4072e6c7cdde919b75fd5f5c92d539bfee3c6874c5fb5095",
