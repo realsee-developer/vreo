@@ -34,20 +34,14 @@ const BLANK_AUDIO = ''
 
 
 export function createHTMLAudioElement(): HTMLAudioElement {
-  const ndAudio = document.querySelector('#vreo-playController-audio')
-  if (ndAudio) {
-    return ndAudio as HTMLAudioElement
-  }
-
   const audio = document.createElement('audio')
   audio.style.display = 'none'
-  audio.setAttribute('id', 'vreo-playController-audio')
   audio.controls = false
   document.body.appendChild(audio)
   audio.src = BLANK_AUDIO
 
   // 触发一次播放
-  Promise.resolve(async () => await audio.play())
+  void audio.play().catch(() => { /* Browser autoplay policy; the real play remains user-driven. */ })
 
   return audio
 }

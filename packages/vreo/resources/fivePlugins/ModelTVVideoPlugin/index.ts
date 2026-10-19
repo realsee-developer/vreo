@@ -1,5 +1,5 @@
-import * as THREE from 'three'
-import type { FivePlugin } from '@realsee/five'
+import * as THREE from 'three/webgpu'
+import type { FivePlugin } from '@realsee/five-webgpu'
 import type { PlaybackManager, PlaybackSession, MediaOperations } from '../../Player/playback-types'
 
 export interface ModelTVVideoPluginData {
@@ -23,7 +23,7 @@ export interface ModelTVVideoPluginExportType {
 type ModelTVVideoPluginPoints = THREE.Vector3[][]
 
 type ModelTVVideoPluginState = {
-  videoMeshes: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>[]
+  videoMeshes: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicNodeMaterial>[]
   videoTextureEnabled: boolean
   videoSource: string
   rectPoints: ModelTVVideoPluginPoints
@@ -170,7 +170,7 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verticesArray), 3))
       geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(uvArray), 2))
       geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(indicesArray), 1))
-      const material = new THREE.MeshBasicMaterial({
+      const material = new THREE.MeshBasicNodeMaterial({
         map: state.videoTextureEnabled ? state.videoTexture : state.imageTexture,
         side: THREE.DoubleSide,
       })
@@ -185,7 +185,6 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
     const texture = new THREE.TextureLoader().load(source)
     texture.minFilter = THREE.LinearFilter
     texture.magFilter = THREE.LinearFilter
-    texture.format = THREE.RGBFormat
     return texture
   }
 
@@ -209,9 +208,9 @@ export const ModelTVVideoPlugin: FivePlugin<ModelTVVideoPluginParameterType, Mod
             video.playsInline = true
             video.src = url.createObjectURL(xhr.response)
             const texture = new THREE.VideoTexture(video)
+            texture.colorSpace = THREE.SRGBColorSpace
             texture.minFilter = THREE.LinearFilter
             texture.magFilter = THREE.LinearFilter
-            texture.format = THREE.RGBFormat
             resolve(Object.assign(texture, { videoSource: source }))
           } else {
             reject(new Error('Video download Error: ' + xhr.status))

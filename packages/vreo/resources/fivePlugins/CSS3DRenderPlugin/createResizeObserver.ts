@@ -1,17 +1,40 @@
-/**
- * @description: 简陋的 ResizeObserver polyfill
- */
- export default function createResizeObserver(func: () => any, element?: HTMLElement) {
+export default function createResizeObserver(callback: () => void, element?: HTMLElement) {
+  let observing = false
   if (!element || typeof ResizeObserver === 'undefined') {
     return {
-      observe: () => window.addEventListener('resize', func),
-      unobserve: () => window.removeEventListener('resize', func),
+      observe() {
+        if (observing) return
+        observing = true
+        window.addEventListener('resize', callback)
+      },
+      unobserve() {
+        if (!observing) return
+        observing = false
+        window.removeEventListener('resize', callback)
+      },
+      disconnect() {
+        if (!observing) return
+        observing = false
+        window.removeEventListener('resize', callback)
+      },
     }
-  } else {
-    const observer = new ResizeObserver(func)
-    return {
-      observe: () => observer.observe(element),
-      unobserve: () => observer.unobserve(element),
-    }
+  }
+
+  const observer = new ResizeObserver(callback)
+  return {
+    observe() {
+      if (observing) return
+      observing = true
+      observer.observe(element)
+    },
+    unobserve() {
+      if (!observing) return
+      observing = false
+      observer.unobserve(element)
+    },
+    disconnect() {
+      observing = false
+      observer.disconnect()
+    },
   }
 }

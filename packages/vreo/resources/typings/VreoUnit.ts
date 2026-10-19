@@ -1,4 +1,4 @@
-import { Mode, Pose } from '@realsee/five'
+import { Mode, Pose } from '@realsee/five-webgpu'
 import { CameraMovementEffect, Rotation } from '../fivePlugins/CameraMovementPlugin/typings'
 
 export enum VreoKeyframeEnum {

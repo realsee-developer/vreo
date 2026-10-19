@@ -1,48 +1,37 @@
-const _requestAnimationFrame = window.requestAnimationFrame || ((fn) => setTimeout(() => fn(performance.now()), 16))
+const scope = globalThis as typeof globalThis & {
+  requestAnimationFrame?: (callback: FrameRequestCallback) => number
+  cancelAnimationFrame?: (handle: number) => void
+}
 
-const _cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout
+const requestFrame = scope.requestAnimationFrame?.bind(scope)
+  ?? ((callback: FrameRequestCallback) => setTimeout(() => callback(performance.now()), 16) as unknown as number)
+const cancelFrame = scope.cancelAnimationFrame?.bind(scope)
+  ?? ((handle: number) => clearTimeout(handle))
 
-export default _requestAnimationFrame
+export default requestFrame
 
 export function nextFrame(fn: FrameRequestCallback, delay = 0) {
-  if (delay <= 0) _requestAnimationFrame(fn)
-  else _requestAnimationFrame(() => nextFrame(fn, delay - 1))
+  if (delay <= 0) requestFrame(fn)
+  else requestFrame(() => nextFrame(fn, delay - 1))
 }
 
-/**
- * 在每个 AnimationFrame 中调用传入的函数
- * @param callback 每次 AnimationFrame 中调用的函数
- * @param frame 每秒运行多少次
- * @returns 返回一个函数，调用可以停止 AnimationFrameLoop
- */
-export function requestAnimationFrameInterval(callback?: (time: number) => any, frame = 60) {
-  let index = -1
-  let oldTime = 0
+export function requestAnimationFrameInterval(callback?: (time: number) => unknown, frame = 60) {
+  let handle = -1
+  let previousTime = 0
   let startTime = -1
-  const minDeltaTime = 1000 / frame
+  const minimumDelta = 1000 / frame
   function loop(time: number) {
-    startTime === -1 && (startTime = time)
-    index = _requestAnimationFrame(loop)
-    const deltaTime = time - oldTime
-    if (deltaTime < minDeltaTime) return
-    oldTime = time
-    callback && callback(time - startTime)
+    if (startTime === -1) startTime = time
+    handle = requestFrame(loop)
+    if (time - previousTime < minimumDelta) return
+    previousTime = time
+    callback?.(time - startTime)
   }
-  index = _requestAnimationFrame(loop)
-  return function stop() {
-    _cancelAnimationFrame(index)
-  }
+  handle = requestFrame(loop)
+  return () => cancelFrame(handle)
 }
 
-/**
- * 获取两个 AnimationFrame 间隔的时间
- * @returns 返回一个 Promise，resolve 的结果是两个 AnimationFrame 间隔的时间
- */
 export function getFrameTime() {
   const start = Date.now()
-  return new Promise((resolve) => {
-    _requestAnimationFrame(() => {
-      resolve(Date.now() - start)
-    })
-  })
+  return new Promise<number>(resolve => requestFrame(() => resolve(Date.now() - start)))
 }

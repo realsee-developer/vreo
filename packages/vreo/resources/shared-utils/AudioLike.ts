@@ -1,4 +1,4 @@
-import { Subscribe } from '@realsee/five'
+import { Subscribe } from '@realsee/five-webgpu'
 import { requestAnimationFrameInterval } from './animationFrame'
 
 /**

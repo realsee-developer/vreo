@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { parseWork, Work } from '@realsee/five'
+import { parseWork, Work } from '@realsee/five-webgpu'
 import { useController, useFiveInstance } from '../../../hooks'
 import { UpdateVRPanoramaData, VreoKeyframe, VreoKeyframeEnum } from '../../../../typings/VreoUnit'
 

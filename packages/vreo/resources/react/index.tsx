@@ -1,4 +1,4 @@
-import { unsafe__useFiveInstance } from '@realsee/five/react'
+import { unsafe__useFiveInstance } from '@realsee/five-webgpu/react'
 import * as React from 'react'
 import { Player } from '../Player'
 import { PlayerConfigs } from '../Player/typings'
@@ -39,15 +39,17 @@ export const VreoProvider: React.FC<VreoProviderProps> = (props ) => {
 
   const [player, setPlayer] = React.useState<Player | null>(null)
   const playerRef = React.useRef<Player | null>(null)
+  const initialConfigs = React.useRef(props.configs ?? {})
 
   React.useEffect(() => {
-    playerRef.current = new Player(five, props.configs || {})
-    setPlayer(playerRef.current)
-
+    const nextPlayer = new Player(five, initialConfigs.current)
+    playerRef.current = nextPlayer
+    setPlayer(nextPlayer)
     return () => {
-      playerRef.current?.dispose()
+      if (playerRef.current === nextPlayer) playerRef.current = null
+      nextPlayer.dispose()
     }
-  }, [])
+  }, [five])
 
   if (!player) return <></>
 
@@ -96,11 +98,11 @@ export interface VreoActionCallbacks {
    * @param preload 是否开启预载
    * @param force 是否强制载入
    */
-  load: (vreoUnit: VreoUnit, currentTime?: number, preload?: boolean, force?: boolean) => Promise<boolean>
+  load: (vreoUnit: VreoUnit, currentTime?: number, preload?: boolean, force?: boolean, userAction?: boolean) => Promise<boolean>
   /**
    * 播放。
    */
-  play: (currentTime?: number) => void
+  play: (currentTime?: number, userAction?: boolean) => boolean
   /**
    * 暂停。
    */
@@ -152,11 +154,12 @@ export function useVreoAction() {
   const player = useVreoInstance()
 
   const load = React.useCallback(
-    (vreoUnit: VreoUnit, currentTime?: number) => player.load(vreoUnit, currentTime),
+    (vreoUnit: VreoUnit, currentTime?: number, preload?: boolean, force?: boolean, userAction?: boolean) =>
+      player.load(vreoUnit, currentTime, preload, force, userAction),
     [player]
   )
 
-  const play = React.useCallback((currentTime?: number) => player.play(currentTime || 0), [player])
+  const play = React.useCallback((currentTime?: number, userAction?: boolean) => player.play(currentTime, userAction), [player])
   const pause = React.useCallback(() => player.pause(), [player])
   const show = React.useCallback(() => player.show(), [player])
   const hide = React.useCallback(() => player.hide(), [player])

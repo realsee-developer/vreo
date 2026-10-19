@@ -20,9 +20,9 @@ import { Player } from '@realsee/vreo'
 import { VreoProvider, useVreoAction } from '@realsee/vreo/react'
 
 // 导入样式文件
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 // 如果需要SpatialScenePanel样式
-import '@realsee/vreo/stylesheets/custom/SpatialScenePanel.css'
+import '@realsee/vreo/styles/SpatialScenePanel.css'
 
 // 使用播放器
 const player = new Player(five, {
@@ -64,7 +64,7 @@ import { Player } from '@realsee/vreo'
 import type { AppProps } from 'next/app'
 
 // 导入样式文件
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
@@ -118,7 +118,7 @@ import { VreoProvider, useVreoAction, useVreoEventCallback } from '@realsee/vreo
 import { FiveProvider } from '@realsee/five/react'
 
 // 导入样式文件
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 
 function VreoController() {
   const { load, play, pause, show, hide } = useVreoAction()
@@ -181,13 +181,13 @@ export default App
 
 ```typescript
 // 主要样式文件（必需）
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 
 // 自定义组件样式（可选）
-import '@realsee/vreo/stylesheets/custom/SpatialScenePanel.css'
+import '@realsee/vreo/styles/SpatialScenePanel.css'
 
 // 或者使用通配符导入所有样式
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 ```
 
 ## 插件使用
@@ -206,26 +206,15 @@ five.use(ModelTVVideoPlugin)
 
 ## 工具函数
 
-```typescript
-// 导入工具函数
-import { tween, BetterTween } from '@realsee/vreo/utils/animationFrame'
-
-// 使用动画框架
-tween({ x: 0 })
-  .to({ x: 100 }, 1000)
-  .start()
-```
+3.x 不再公开内部 animation-frame/tween 工具。应用应直接使用平台 API 或自行选择动画库。
 
 ## TypeScript 支持
 
 包已包含完整的 TypeScript 类型定义，IDE 会自动提供类型提示和检查。
 
 ```typescript
-import type { 
-  VreoUnit, 
-  VreoKeyframe, 
-  PlayerConfigs 
-} from '@realsee/vreo/typings'
+import type { PlayerConfigs } from '@realsee/vreo'
+import type { VreoUnit, VreoKeyframe } from '@realsee/vreo/types'
 
 const configs: PlayerConfigs = {
   autoPreload: true,
@@ -237,8 +226,8 @@ const configs: PlayerConfigs = {
 
 1. **ES Modules 兼容性**: 确保你的构建工具支持 ES modules
 2. **样式文件导入**: 必须导入 `default.css` 以确保UI组件正常显示
-3. **动态导入**: 在 Next.js 中使用时，建议使用动态导入以避免 SSR 问题
-4. **浏览器兼容性**: 支持现代浏览器（IE11+ 需要 polyfill）
+3. **SSR**: 公共模块可安全导入；Player 实例与渲染容器仍应在浏览器生命周期中创建
+4. **浏览器兼容性**: 仅支持具备现代 ESM 与目标渲染能力的浏览器
 5. **Alpha 版本**: 这是测试版本，请在生产环境使用前充分测试
 
 ## 版本信息

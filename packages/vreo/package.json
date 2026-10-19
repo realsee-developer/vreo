@@ -1,8 +1,8 @@
 {
   "name": "@realsee/vreo",
-  "version": "2.6.4",
+  "version": "3.0.0-webgpu-react18.8",
   "type": "module",
-  "description": "Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 用户界面构建库 React 实现的如视 3D 空间剧本播放器。",
+  "description": "Vreo (VR Video \u7f29\u5199) \u662f\u57fa\u4e8e\u5982\u89c6\u4e09\u7ef4\u6e32\u67d3\u5f15\u64ce Five \u548c \u7528\u6237\u754c\u9762\u6784\u5efa\u5e93 React \u5b9e\u73b0\u7684\u5982\u89c6 3D \u7a7a\u95f4\u5267\u672c\u64ad\u653e\u5668\u3002",
   "keywords": [
     "realsee",
     "vreo"
@@ -10,53 +10,38 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "import": "./lib/index.js",
-      "default": "./lib/index.js"
-    },
-    "./PlayController": {
-      "types": "./lib/PlayController/index.d.ts",
-      "import": "./lib/PlayController/index.js",
-      "default": "./lib/PlayController/index.js"
+      "import": "./lib/index.js"
     },
     "./Player": {
       "types": "./lib/Player/index.d.ts",
-      "import": "./lib/Player/index.js",
-      "default": "./lib/Player/index.js"
+      "import": "./lib/Player/index.js"
+    },
+    "./PlayController": {
+      "types": "./lib/PlayController/index.d.ts",
+      "import": "./lib/PlayController/index.js"
     },
     "./react": {
       "types": "./lib/react/index.d.ts",
-      "import": "./lib/react/index.js",
-      "default": "./lib/react/index.js"
+      "import": "./lib/react/index.js"
     },
     "./plugins/CameraMovementPlugin": {
       "types": "./lib/fivePlugins/CameraMovementPlugin/index.d.ts",
-      "import": "./lib/fivePlugins/CameraMovementPlugin/index.js",
-      "default": "./lib/fivePlugins/CameraMovementPlugin/index.js"
+      "import": "./lib/plugins/CameraMovementPlugin.js"
     },
     "./plugins/CSS3DRenderPlugin": {
       "types": "./lib/fivePlugins/CSS3DRenderPlugin/index.d.ts",
-      "import": "./lib/fivePlugins/CSS3DRenderPlugin/index.js",
-      "default": "./lib/fivePlugins/CSS3DRenderPlugin/index.js"
+      "import": "./lib/plugins/CSS3DRenderPlugin.js"
     },
     "./plugins/ModelTVVideoPlugin": {
       "types": "./lib/fivePlugins/ModelTVVideoPlugin/index.d.ts",
-      "import": "./lib/fivePlugins/ModelTVVideoPlugin/index.js",
-      "default": "./lib/fivePlugins/ModelTVVideoPlugin/index.js"
+      "import": "./lib/plugins/ModelTVVideoPlugin.js"
     },
-    "./utils/animationFrame": {
-      "types": "./lib/shared-utils/animationFrame/index.d.ts",
-      "import": "./lib/shared-utils/animationFrame/index.js",
-      "default": "./lib/shared-utils/animationFrame/index.js"
-    },
-    "./typings": {
+    "./types": {
       "types": "./lib/typings/index.d.ts",
-      "import": "./lib/typings/index.js",
-      "default": "./lib/typings/index.js"
+      "import": "./lib/types/index.js"
     },
-    "./stylesheets/default.css": "./stylesheets/default.css",
-    "./stylesheets/custom/SpatialScenePanel.css": "./stylesheets/custom/SpatialScenePanel.css",
-    "./stylesheets/*": "./stylesheets/*",
-    "./lib/*": "./lib/*",
+    "./styles/default.css": "./stylesheets/default.css",
+    "./styles/SpatialScenePanel.css": "./stylesheets/custom/SpatialScenePanel.css",
     "./package.json": "./package.json"
   },
   "author": "BEIKE REALSEE TECHNOLOGY (HK) LIMITED",
@@ -67,54 +52,49 @@
     "stylesheets",
     "LICENSE",
     "CHANGELOG.md",
-    "docs"
+    "README.md"
   ],
   "scripts": {
     "dev": "vite --port=3088 --host 0.0.0.0",
-    "build": "pnpm packages",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "build": "rm -rf lib && vite build && tsc -p tsconfig.build.json",
     "preview": "vite preview",
-    "docs": "npx typedoc",
-    "packages": "node ./dev-tools/build-packages.js",
-    "postpublish": "cnpm sync @realsee/vreo",
-    "test:audio-focus": "node --test test/audio-focus.test.mjs"
+    "docs": "typedoc"
   },
   "peerDependencies": {
-    "@realsee/dnalogel": "3.81.10",
-    "@realsee/five": "^6.4.0-alpha.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "three": "0.117.1"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.16.0",
-    "@babel/preset-typescript": "^7.16.0",
-    "@realsee/dnalogel": "3.81.10",
-    "@realsee/five": "^6.4.0-alpha.38",
-    "@tweenjs/tween.js": "18.6.4",
-    "@types/node": "^18.11.17",
-    "@types/offscreencanvas": "^2019.6.4",
-    "@types/react": "^18.3.23",
-    "@types/react-dom": "^18.3.7",
-    "@types/react-transition-group": "^4.4.4",
-    "@vitejs/plugin-react": "^4.3.3",
-    "babel-plugin-add-import-extension": "^1.6.0",
-    "cnpm": "^9.2.0",
-    "del": "^6.0.0",
+    "@realsee/dnalogel": "^4.0.0-webgpu.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "three": "0.117.1",
-    "typedoc": "^0.28.5",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "three": "0.183.2",
+    "mobx": "^7.0.0",
+    "mobx-react-lite": "^5.0.0",
+    "@realsee/five-webgpu": "^1.0.0-alpha.7"
+  },
+  "devDependencies": {
+    "@realsee/dnalogel": "4.0.0-webgpu.0",
+    "three": "0.183.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "mobx": "7.0.3",
+    "mobx-react-lite": "5.0.3",
+    "@types/node": "22.20.0",
+    "@types/offscreencanvas": "2019.7.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/react-transition-group": "4.4.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "typedoc": "0.28.20",
+    "typescript": "5.8.3",
+    "vite": "8.3.0",
+    "@realsee/five-webgpu": "1.0.0-alpha.6",
+    "@types/three": "0.183.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.24.3",
-    "classnames": "^2.3.1",
-    "mobx": "^6.3.7",
-    "mobx-react": "^7.2.1"
-  }
+    "classnames": "2.3.2",
+    "@tweenjs/tween.js": "18.6.4"
+  },
+  "sideEffects": [
+    "./stylesheets/**/*.css"
+  ]
 }

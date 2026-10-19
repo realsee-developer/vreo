@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Mode, MovePanoOptions, Pose } from '@realsee/five'
+import { Mode, MovePanoOptions, Pose } from '@realsee/five-webgpu'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CameraMovementPluginParameterType { }

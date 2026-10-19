@@ -1,5 +1,5 @@
-import { Five, MovePanoOptions } from '@realsee/five'
-import type { FivePlugin } from '@realsee/five'
+import { Five, MovePanoOptions } from '@realsee/five-webgpu'
+import type { FivePlugin } from '@realsee/five-webgpu'
 
 import {
   CameraMovementPluginParameterType,
