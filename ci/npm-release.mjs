@@ -53,29 +53,43 @@ function npm(args) {
   assert.equal(result.status, 0, `npm ${args[0]} failed`);
 }
 
-async function publishCandidate(root, manifest) {
+export async function publishCandidate(root, manifest, {
+  readMetadata = metadata,
+  runNpm = npm,
+  sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+  log = console.log,
+} = {}) {
   const { artifact, integrity } = verifyCandidate(root, manifest);
-  const before = await metadata(manifest.packageName);
+  const before = await readMetadata(manifest.packageName);
   assert.equal(before['dist-tags'].latest, manifest.baselineLatest, 'latest changed; review before publishing');
-  const existing = await metadata(manifest.packageName, manifest.version);
+  const existing = await readMetadata(manifest.packageName, manifest.version);
   if (existing) {
     assert.equal(existing.dist.integrity, integrity, 'published version differs from tested artifact');
     if (before['dist-tags'].webgpu !== manifest.version) {
-      npm(['dist-tag', 'add', `${manifest.packageName}@${manifest.version}`, 'webgpu', `--registry=${registry}`]);
+      runNpm(['dist-tag', 'add', `${manifest.packageName}@${manifest.version}`, 'webgpu', `--registry=${registry}`]);
     }
   } else {
-    npm(['publish', artifact, '--tag=webgpu', '--access=public', '--ignore-scripts', `--registry=${registry}`]);
+    runNpm(['publish', artifact, '--tag=webgpu', '--access=public', '--ignore-scripts', `--registry=${registry}`]);
   }
+  // npm may accept the upload before its version and dist-tag become public.
+  // Wait up to five minutes without repeating the publish operation.
   let after;
-  for (let attempt = 0; attempt < 6; attempt += 1) {
-    after = await metadata(manifest.packageName);
-    if (after['dist-tags'].webgpu === manifest.version && after.versions[manifest.version]) break;
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+  for (let attempt = 0; attempt <= 60; attempt += 1) {
+    after = await readMetadata(manifest.packageName);
+    assert.equal(after['dist-tags'].latest, before['dist-tags'].latest, 'latest must remain unchanged');
+    const published = after.versions?.[manifest.version];
+    if (published) {
+      assert.equal(published.dist.integrity, integrity, 'published artifact integrity differs');
+    }
+    if (after['dist-tags'].webgpu === manifest.version && published) break;
+    if (attempt < 60) {
+      log(`Waiting for npm to expose ${manifest.packageName}@${manifest.version} and webgpu tag (${attempt * 5}/300 seconds).`);
+      await sleep(5000);
+    }
   }
-  assert.equal(after['dist-tags'].latest, before['dist-tags'].latest, 'latest must remain unchanged');
-  assert.equal(after['dist-tags'].webgpu, manifest.version, 'webgpu tag was not applied');
-  assert.equal(after.versions[manifest.version]?.dist.integrity, integrity, 'published artifact integrity differs');
-  console.log(JSON.stringify({ name: manifest.packageName, version: manifest.version, tag: 'webgpu', latest: after['dist-tags'].latest, integrity }));
+  assert.equal(after['dist-tags'].webgpu, manifest.version, 'webgpu tag was not applied within five minutes');
+  assert.equal(after.versions?.[manifest.version]?.dist.integrity, integrity, 'published artifact integrity differs');
+  log(JSON.stringify({ name: manifest.packageName, version: manifest.version, tag: 'webgpu', latest: after['dist-tags'].latest, integrity }));
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
