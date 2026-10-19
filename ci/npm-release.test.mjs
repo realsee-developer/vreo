@@ -9,7 +9,7 @@ for (const [version, tag] of [
   ['2.6.5-beta.1', 'beta'],
   ['2.6.5-rc.1', 'rc'],
   ['3.0.0-webgpu-react18.8', 'webgpu'],
-  ['3.0.0-webgpu.2', 'webgpu'],
+  ['3.0.0-webgpu.9', 'webgpu'],
 ]) {
   test(`${version} publishes under ${tag}`, () => assert.equal(npmTag(version), tag));
 }
