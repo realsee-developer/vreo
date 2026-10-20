@@ -1,7 +1,7 @@
-import { unsafe__useFiveInstance } from '@realsee/five/react'
+import { unsafe__useFiveInstance } from '@realsee/five-webgpu/react'
 import * as React from 'react'
 import { PlayController } from '@realsee/vreo/PlayController'
-import { VreoKeyframe, VreoKeyframeEnum, VreoUnit } from '@realsee/vreo/typings'
+import { VreoKeyframe, VreoKeyframeEnum, VreoUnit } from '@realsee/vreo/types'
 
 import './index.css'
 

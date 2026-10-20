@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useVreoAction, useVreoPausedState } from '@realsee/vreo/react'
-import { VreoUnit } from '@realsee/vreo/typings'
+import { VreoUnit } from '@realsee/vreo/types'
 // import { vreoUnit as data } from './data/vreo-units/vreo-unit-work3'
 import { data } from './data/vreo-units/80Lykj3NW2RGgMrG06'
 

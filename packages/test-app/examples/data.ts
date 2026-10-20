@@ -1,4 +1,4 @@
-import { VreoUnit } from '@realsee/vreo/typings'
+import { VreoUnit } from '@realsee/vreo/types'
 
 export const CameraMovementData: VreoUnit = {
   categoryId: "b35b2980-9394-42a4-8ccb-0d2d4c8634fa",

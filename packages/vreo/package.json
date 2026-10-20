@@ -2,7 +2,7 @@
   "name": "@realsee/vreo",
   "version": "3.0.0-webgpu.9",
   "type": "module",
-  "description": "Vreo (VR Video \u7f29\u5199) \u662f\u57fa\u4e8e\u5982\u89c6\u4e09\u7ef4\u6e32\u67d3\u5f15\u64ce Five \u548c \u7528\u6237\u754c\u9762\u6784\u5efa\u5e93 React \u5b9e\u73b0\u7684\u5982\u89c6 3D \u7a7a\u95f4\u5267\u672c\u64ad\u653e\u5668\u3002",
+  "description": "Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 用户界面构建库 React 实现的如视 3D 空间剧本播放器。",
   "keywords": [
     "realsee",
     "vreo"
@@ -72,22 +72,22 @@
     "@realsee/five-webgpu": "^1.0.0-alpha.7"
   },
   "devDependencies": {
-    "@realsee/dnalogel": "4.0.0-webgpu.0",
+    "@realsee/dnalogel": "4.0.0-webgpu.4",
     "three": "0.183.2",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "mobx": "7.0.3",
     "mobx-react-lite": "5.0.3",
     "@types/node": "22.20.0",
     "@types/offscreencanvas": "2019.7.0",
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
     "@types/react-transition-group": "4.4.5",
     "@vitejs/plugin-react": "6.1.1",
     "typedoc": "0.28.20",
     "typescript": "5.8.3",
     "vite": "8.3.0",
-    "@realsee/five-webgpu": "1.0.0-alpha.6",
+    "@realsee/five-webgpu": "1.0.0-alpha.7",
     "@types/three": "0.183.1"
   },
   "dependencies": {

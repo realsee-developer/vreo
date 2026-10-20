@@ -5,48 +5,31 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3088 --host 0.0.0.0",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "docs": "npx typedoc && yarn run build",
-    "packages": "node ./dev-tools/build-packages.js",
-    "postpublish": "cnpm sync @realsee/vreo"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@realsee/vreo": "workspace:*",
-    "classnames": "^2.3.1",
-    "mobx": "^6.3.7",
-    "mobx-react": "^7.2.1"
+    "classnames": "2.3.2",
+    "mobx": "7.0.3",
+    "mobx-react-lite": "5.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.16.0",
-    "@babel/preset-typescript": "^7.16.0",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    "@realsee/dnalogel": "3.81.10",
-    "@realsee/five": "^6.4.0-alpha.38",
+    "@realsee/dnalogel": "4.0.0-webgpu.4",
     "@tweenjs/tween.js": "18.6.4",
-    "@types/node": "^18.11.17",
-    "@types/offscreencanvas": "^2019.6.4",
-    "@types/react": "^18.3.23",
-    "@types/react-dom": "^18.3.7",
-    "@types/react-transition-group": "^4.4.4",
-    "@vitejs/plugin-react": "^4.3.3",
-    "cnpm": "^9.2.0",
-    "del": "^6.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "0.117.1",
-    "typedoc": "^0.28.5",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5"
-  },
-  "peerDependencies": {
-    "@realsee/dnalogel": "3.81.10",
-    "@realsee/five": "^6.4.0-alpha.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "three": "0.117.1"
+    "three": "0.183.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@types/node": "22.20.0",
+    "@types/offscreencanvas": "2019.7.0",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@types/react-transition-group": "4.4.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "typescript": "5.8.3",
+    "vite": "8.3.0",
+    "@realsee/five-webgpu": "1.0.0-alpha.7",
+    "@types/three": "0.183.1"
   }
 }

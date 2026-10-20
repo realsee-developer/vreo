@@ -1,6 +1,6 @@
 
 
-import { VreoUnit } from '@realsee/vreo/typings'
+import { VreoUnit } from '@realsee/vreo/types'
 
 // 讲全屋
 export const vreoUnitNoVideo: VreoUnit = {

@@ -5,15 +5,19 @@
   "description": "Vreo monorepo - VR Video player for Realsee 3D spaces",
   "scripts": {
     "build": "pnpm --filter @realsee/vreo build",
-    "packages": "pnpm --filter @realsee/vreo packages",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @realsee/vreo test",
+    "test:build": "pnpm build && pnpm --filter @realsee/vreo-test build",
     "docs": "pnpm --filter @realsee/vreo docs",
     "dev:vreo": "pnpm --filter @realsee/vreo dev",
     "dev:test": "pnpm --filter @realsee/vreo-test dev",
-    "test:build": "pnpm build && pnpm --filter @realsee/vreo-test build",
     "test:preview": "pnpm --filter @realsee/vreo-test preview"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "5.8.3"
   },
-  "packageManager": "pnpm@8.15.0"
-} 
+  "packageManager": "pnpm@12.5.1",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

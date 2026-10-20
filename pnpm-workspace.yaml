@@ -1,2 +1,7 @@
 packages:
-  - 'packages/*' 
+  - 'packages/*'
+allowBuilds:
+  protobufjs: true
+  sharp: true
+minimumReleaseAgeExclude:
+  - '@realsee/dnalogel@4.0.0-webgpu.4'

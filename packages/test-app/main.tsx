@@ -1,7 +1,7 @@
 import * as React from 'react'
-import ReactDOM from 'react-dom'
-import { FiveInitArgs, parseWork } from '@realsee/five'
-import { createFiveProvider } from '@realsee/five/react'
+import { createRoot } from 'react-dom/client'
+import { FiveInitArgs, parseWork } from '@realsee/five-webgpu'
+import { createFiveProvider } from '@realsee/five-webgpu/react'
 
 // import { work } from './data/works/znRoyv06SZQeqA7m'
 
@@ -17,7 +17,7 @@ import { App } from './App'
 
 import './index.css'
 
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 
 const defaultInitArgs: FiveInitArgs = {
   imageOptions: { size: 1024 },
@@ -30,12 +30,13 @@ const defaultInitArgs: FiveInitArgs = {
 
 const FiveProvider = createFiveProvider(defaultInitArgs)
 
-ReactDOM.render(
-  <React.StrictMode>
-      <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Root element not found')
+createRoot(rootElement).render(
+<React.StrictMode>
+      <FiveProvider initialWork={parseWork(work)} ref={(ref) => { Object.assign(window, { $five: ref?.five }) }}>
           <ResponsiveFullScreenFiveCanvas />
           <App />
       </FiveProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )

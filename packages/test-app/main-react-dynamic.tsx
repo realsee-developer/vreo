@@ -1,7 +1,7 @@
 import * as React from 'react'
-import ReactDOM from 'react-dom'
-import { FiveInitArgs, parseWork } from '@realsee/five'
-import { createFiveProvider } from '@realsee/five/react'
+import { createRoot } from 'react-dom/client'
+import { FiveInitArgs, parseWork } from '@realsee/five-webgpu'
+import { createFiveProvider } from '@realsee/five-webgpu/react'
 
 import { work } from './data/works/znRoyv06SZQeqA7m'
 
@@ -11,7 +11,7 @@ import { App } from './AppReact'
 
 import './index.css'
 
-import '@realsee/vreo/stylesheets/default.css'
+import '@realsee/vreo/styles/default.css'
 import { VreoProvider } from '@realsee/vreo/react'
 
 const defaultInitArgs: FiveInitArgs = {
@@ -28,7 +28,7 @@ const FiveProvider = createFiveProvider(defaultInitArgs)
 function DynamicDebug() {
   const [state, setState] = React.useState(false)
   const content = state ? (
-    <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
+    <FiveProvider initialWork={parseWork(work)} ref={(ref) => { Object.assign(window, { $five: ref?.five }) }}>
       <ResponsiveFullScreenFiveCanvas />
       <VreoProvider>
         <App />
@@ -56,9 +56,10 @@ function DynamicDebug() {
   )
 }
 
-ReactDOM.render(
-  <React.StrictMode>
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Root element not found')
+createRoot(rootElement).render(
+<React.StrictMode>
     <DynamicDebug />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )
