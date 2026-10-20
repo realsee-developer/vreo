@@ -1,6 +1,6 @@
-import { unsafe__useFiveInstance } from '@realsee/five/react'
+import { unsafe__useFiveInstance } from '@realsee/five-webgpu/react'
 import { Player } from '@realsee/vreo/Player'
-import { VreoKeyframeEnum } from '@realsee/vreo/typings'
+import { VreoKeyframeEnum } from '@realsee/vreo/types'
 import * as React from 'react'
 import { CameraMovementData, PanoTagData, ModelVideoData, VideoEffectData, BgMusicData } from './data'
 
@@ -20,7 +20,7 @@ enum PlayerState {
 }
 
 export function VreoPlayer() {
-    const vreoPlayerRef = React.useRef<Player>()
+    const vreoPlayerRef = React.useRef<Player | undefined>(undefined)
     const five = unsafe__useFiveInstance()
     const [playerState, setPlayerState] = React.useState<PlayerState>(PlayerState.notReady)
 
@@ -39,6 +39,10 @@ export function VreoPlayer() {
             setPlayerState(PlayerState.playing)
         })
         player.on(VreoKeyframeEnum.Exit, () => {})
+        return () => {
+            if (vreoPlayerRef.current === player) vreoPlayerRef.current = undefined
+            player.dispose()
+        }
     }, [five])
 
     const handleVreoFunction = (value: any, e: any) => {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FiveCanvas } from '@realsee/five/react'
+import { FiveCanvas } from '@realsee/five-webgpu/react'
 
 /**
  * 响应式 FiveCanvas

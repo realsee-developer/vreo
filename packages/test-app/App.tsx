@@ -1,7 +1,7 @@
-import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five/react'
+import { unsafe__useFiveInstance, useFiveWork } from '@realsee/five-webgpu/react'
 import * as React from 'react'
 import { Player } from '@realsee/vreo/Player'
-import { VreoUnit } from '@realsee/vreo/typings'
+import { VreoUnit } from '@realsee/vreo/types'
 // import { data } from './data/vreo-units/vreo-unit-a'
 
 // import { data } from './data/vreo-units/vreo-XQeernmw'
@@ -48,7 +48,7 @@ enum PlayerState {
 
 
 export function App() {
-  const ref = React.useRef<Player>()
+  const ref = React.useRef<Player | undefined>(undefined)
   const five = unsafe__useFiveInstance()
   const [state, setState] = React.useState(PlayerState.notReady)
 
@@ -64,7 +64,11 @@ export function App() {
     player.on('playing', () => console.log('playing'))
     player.on('paused', (ended?: boolean) => console.log({ended}))
     Object.assign(window, { $player: player })
-  }, [])
+    return () => {
+      if (ref.current === player) ref.current = undefined
+      player.dispose()
+    }
+  }, [five])
 
   return (
     <div className="btns">

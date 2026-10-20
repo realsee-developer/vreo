@@ -8,7 +8,7 @@ export const debounce = <F extends (...args: any) => any>(
   callback: F,
   waitFor = 1000 / 60,
 ): ((...args: Parameters<F>) => ReturnType<F>) => {
-  let timer: NodeJS.Timer | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
   const savedFunc = callback
 
   const fn = (...args: any) => {

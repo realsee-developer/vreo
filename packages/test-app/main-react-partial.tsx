@@ -1,7 +1,7 @@
 import * as React from 'react'
-import ReactDOM from 'react-dom'
-import { FiveInitArgs, parseWork } from '@realsee/five'
-import { createFiveProvider } from '@realsee/five/react'
+import { createRoot } from 'react-dom/client'
+import { FiveInitArgs, parseWork } from '@realsee/five-webgpu'
+import { createFiveProvider } from '@realsee/five-webgpu/react'
 
 // import work  from './data/works/work3.json'
 
@@ -13,8 +13,8 @@ import { App } from './AppReact'
 
 import './index.css'
 
-import '@realsee/vreo/stylesheets/default.css'
-import '@realsee/vreo/stylesheets/custom/SpatialScenePanel.css'
+import '@realsee/vreo/styles/default.css'
+import '@realsee/vreo/styles/SpatialScenePanel.css'
 
 import { VreoProvider } from '@realsee/vreo/react'
 import { SpatialScenePanel } from '@realsee/vreo/Player'
@@ -58,8 +58,10 @@ function PartialVreoProvider() {
   )
 }
 
-ReactDOM.render(
-  <React.StrictMode>
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Root element not found')
+createRoot(rootElement).render(
+<React.StrictMode>
     <div
       style={{
         position: 'absolute',
@@ -71,11 +73,10 @@ ReactDOM.render(
         overflow: 'hidden',
       }}
     >
-      <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
+      <FiveProvider initialWork={parseWork(work)} ref={(ref) => { Object.assign(window, { $five: ref?.five }) }}>
         <ResponsiveFiveCanvas />
         <PartialVreoProvider />
       </FiveProvider>
     </div>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )

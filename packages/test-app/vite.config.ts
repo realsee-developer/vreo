@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 import react from '@vitejs/plugin-react'
@@ -16,11 +16,11 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        react: resolve(__dirname, 'index-react.html'),
-        dynamic: resolve(__dirname, 'index-react-dynamic.html'),
-        partial: resolve(__dirname, 'index-react-partial.html'),
-        playController: resolve(__dirname, 'index-react-playController.html'),
+        main: resolve(import.meta.dirname, 'index.html'),
+        react: resolve(import.meta.dirname, 'index-react.html'),
+        dynamic: resolve(import.meta.dirname, 'index-react-dynamic.html'),
+        partial: resolve(import.meta.dirname, 'index-react-partial.html'),
+        playController: resolve(import.meta.dirname, 'index-react-playController.html'),
       }
     }
   }

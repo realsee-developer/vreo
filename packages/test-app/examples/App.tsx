@@ -1,5 +1,5 @@
-import { createFiveProvider } from '@realsee/five/react'
-import { parseWork } from '@realsee/five'
+import { createFiveProvider } from '@realsee/five-webgpu/react'
+import { parseWork } from '@realsee/five-webgpu'
 import { ResponsiveFiveCanvas } from '../components/ResponsiveFiveCanvas'
 import { work } from './work'
 import { VreoPlayer } from './player'
@@ -15,7 +15,7 @@ const FiveProvider = createFiveProvider({
 
 export default function App() {
   return (
-    <FiveProvider initialWork={parseWork(work)} ref={(ref) => Object.assign(window, { $five: ref?.five })}>
+    <FiveProvider initialWork={parseWork(work)} ref={(ref) => { Object.assign(window, { $five: ref?.five }) }}>
       <ResponsiveFiveCanvas />
       <VreoPlayer />
     </FiveProvider>
