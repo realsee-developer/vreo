@@ -1,6 +1,6 @@
 {
   "name": "@realsee/vreo",
-  "version": "2.6.4",
+  "version": "2.6.5",
   "type": "module",
   "description": "Vreo (VR Video 缩写) 是基于如视三维渲染引擎 Five 和 用户界面构建库 React 实现的如视 3D 空间剧本播放器。",
   "keywords": [
@@ -60,7 +60,7 @@
     "./package.json": "./package.json"
   },
   "author": "BEIKE REALSEE TECHNOLOGY (HK) LIMITED",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "private": false,
   "files": [
     "lib",
